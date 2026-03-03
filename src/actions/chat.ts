@@ -177,7 +177,7 @@ export async function startOrGetDM(otherUserId: string): Promise<{ success: bool
             .select('room_id')
             .eq('profile_id', user.id);
 
-        const myRoomIds = (myRooms || []).map(r => r.room_id);
+        const myRoomIds = (myRooms || []).map((r: any) => r.room_id);
 
         if (myRoomIds.length > 0) {
             // Verifica se o outro usuário participa de alguma dessas rooms que seja DM
