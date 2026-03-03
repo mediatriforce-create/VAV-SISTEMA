@@ -21,17 +21,16 @@ export function LocalCalendar() {
     const month = currentDate.getMonth();
 
     useEffect(() => {
+        const fetchMonthEvents = async () => {
+            setIsLoading(true);
+            const res = await getUserEvents(year, month + 1);
+            if (res.success && res.data) {
+                setEvents(res.data);
+            }
+            setIsLoading(false);
+        };
         fetchMonthEvents();
     }, [year, month]);
-
-    const fetchMonthEvents = async () => {
-        setIsLoading(true);
-        const res = await getUserEvents(year, month + 1);
-        if (res.success && res.data) {
-            setEvents(res.data);
-        }
-        setIsLoading(false);
-    };
 
     // Lógica do Builder de Calendário (Semanas/Dias)
     const daysInMonth = new Date(year, month + 1, 0).getDate();

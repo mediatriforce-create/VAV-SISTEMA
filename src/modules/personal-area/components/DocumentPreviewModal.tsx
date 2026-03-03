@@ -16,13 +16,18 @@ export function DocumentPreviewModal({ document, onClose }: DocumentPreviewModal
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
+        let isMounted = true;
+
         if (!document) {
-            setSignedUrl(null);
-            setError(null);
+            // Avoid synchronous setState during render phase by wrapping in microtask
+            Promise.resolve().then(() => {
+                if (isMounted) {
+                    setSignedUrl(null);
+                    setError(null);
+                }
+            });
             return;
         }
-
-        let isMounted = true;
 
         async function fetchUrl() {
             setIsLoading(true);
