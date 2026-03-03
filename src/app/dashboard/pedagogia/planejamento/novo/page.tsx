@@ -4,9 +4,9 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { createLessonPlan } from '@/actions/pedagogia_fase2';
+import { createLessonPlan, getBnccSkills, getEducationalActivities } from '@/actions/pedagogia_fase2';
 import { getMyClasses } from '@/actions/pedagogia';
-import type { Class } from '@/types/pedagogia';
+import type { Class, BnccSkill, EducationalActivity } from '@/types/pedagogia';
 
 export default function NovoPlanoPage() {
     const router = useRouter();
@@ -22,6 +22,17 @@ export default function NovoPlanoPage() {
 
     const [classes, setClasses] = useState<Class[]>([]);
 
+    // BNCC State
+    const [selectedSkills, setSelectedSkills] = useState<BnccSkill[]>([]);
+    const [bnccResults, setBnccResults] = useState<BnccSkill[]>([]);
+    const [bnccSearch, setBnccSearch] = useState('');
+    const [bnccLoading, setBnccLoading] = useState(false);
+
+    // Atividades State
+    const [selectedActivities, setSelectedActivities] = useState<EducationalActivity[]>([]);
+    const [activityResults, setActivityResults] = useState<EducationalActivity[]>([]);
+    const [actLoading, setActLoading] = useState(false);
+
     // Abas laterais: 'bncc' ou 'atividades'
     const [activeSidebar, setActiveSidebar] = useState<'bncc' | 'atividades' | null>(null);
 
@@ -30,6 +41,52 @@ export default function NovoPlanoPage() {
             if (res.success && res.data) setClasses(res.data);
         });
     }, []);
+
+    // Carregar BNCC quando sidebar abre
+    useEffect(() => {
+        if (activeSidebar === 'bncc' && bnccResults.length === 0) {
+            loadBnccSkills();
+        }
+        if (activeSidebar === 'atividades' && activityResults.length === 0) {
+            loadActivities();
+        }
+    }, [activeSidebar]);
+
+    const loadBnccSkills = async (search?: string) => {
+        setBnccLoading(true);
+        const res = await getBnccSkills();
+        if (res.success && res.data) {
+            setBnccResults(res.data);
+        }
+        setBnccLoading(false);
+    };
+
+    const loadActivities = async () => {
+        setActLoading(true);
+        const res = await getEducationalActivities();
+        if (res.success && res.data) setActivityResults(res.data);
+        setActLoading(false);
+    };
+
+    const toggleSkill = (skill: BnccSkill) => {
+        setSelectedSkills(prev =>
+            prev.find(s => s.id === skill.id)
+                ? prev.filter(s => s.id !== skill.id)
+                : [...prev, skill]
+        );
+    };
+
+    const toggleActivity = (act: EducationalActivity) => {
+        setSelectedActivities(prev =>
+            prev.find(a => a.id === act.id)
+                ? prev.filter(a => a.id !== act.id)
+                : [...prev, act]
+        );
+    };
+
+    const filteredBncc = bnccSearch.trim()
+        ? bnccResults.filter(s => s.code.toLowerCase().includes(bnccSearch.toLowerCase()) || s.description.toLowerCase().includes(bnccSearch.toLowerCase()))
+        : bnccResults;
 
     const handleSave = async (status: 'Rascunho' | 'Publicado', e?: React.FormEvent) => {
         if (e) e.preventDefault();
@@ -48,6 +105,8 @@ export default function NovoPlanoPage() {
             objectives,
             methodology,
             status,
+            skill_ids: selectedSkills.map(s => s.id),
+            activity_ids: selectedActivities.map(a => a.id),
         });
 
         if (res.success) {
@@ -168,6 +227,38 @@ export default function NovoPlanoPage() {
                             />
                         </div>
 
+                        {/* Chips dos itens selecionados (BNCC + Atividades) */}
+                        {(selectedSkills.length > 0 || selectedActivities.length > 0) && (
+                            <div className="bg-zinc-50 dark:bg-zinc-800/30 p-4 rounded-2xl border border-zinc-100 dark:border-zinc-800">
+                                {selectedSkills.length > 0 && (
+                                    <div className="mb-3">
+                                        <span className="text-[10px] font-bold text-blue-500 uppercase tracking-wider block mb-2">Habilidades BNCC Vinculadas ({selectedSkills.length})</span>
+                                        <div className="flex flex-wrap gap-2">
+                                            {selectedSkills.map(s => (
+                                                <span key={s.id} className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 dark:bg-blue-500/10 text-blue-700 dark:text-blue-400 rounded-full text-xs font-bold border border-blue-100 dark:border-blue-800">
+                                                    {s.code}
+                                                    <button type="button" onClick={() => toggleSkill(s)} className="hover:text-red-500 transition-colors">×</button>
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+                                {selectedActivities.length > 0 && (
+                                    <div>
+                                        <span className="text-[10px] font-bold text-amber-500 uppercase tracking-wider block mb-2">Atividades Anexadas ({selectedActivities.length})</span>
+                                        <div className="flex flex-wrap gap-2">
+                                            {selectedActivities.map(a => (
+                                                <span key={a.id} className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400 rounded-full text-xs font-bold border border-amber-100 dark:border-amber-800">
+                                                    {a.title}
+                                                    <button type="button" onClick={() => toggleActivity(a)} className="hover:text-red-500 transition-colors">×</button>
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
                     </form>
                 </div>
             </div>
@@ -194,7 +285,9 @@ export default function NovoPlanoPage() {
                             <span className="material-symbols-outlined">menu_book</span>
                             <span className="font-bold text-sm">Catálogo BNCC</span>
                         </div>
-                        <span className="bg-zinc-100 dark:bg-zinc-900 px-2 py-0.5 rounded-full text-xs font-bold text-zinc-500">0</span>
+                        <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${selectedSkills.length > 0 ? 'bg-blue-500 text-white' : 'bg-zinc-100 dark:bg-zinc-900 text-zinc-500'}`}>
+                            {selectedSkills.length}
+                        </span>
                     </button>
 
                     {/* Botão Atividades */}
@@ -209,30 +302,117 @@ export default function NovoPlanoPage() {
                             <span className="material-symbols-outlined">source</span>
                             <span className="font-bold text-sm">Banco de Atividades</span>
                         </div>
-                        <span className="bg-zinc-100 dark:bg-zinc-900 px-2 py-0.5 rounded-full text-xs font-bold text-zinc-500">0</span>
+                        <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${selectedActivities.length > 0 ? 'bg-amber-500 text-white' : 'bg-zinc-100 dark:bg-zinc-900 text-zinc-500'}`}>
+                            {selectedActivities.length}
+                        </span>
                     </button>
 
                 </div>
 
-                {/* Sub-painel Dinâmico que aparece ao clicar no botão acima */}
+                {/* Sub-painel Dinâmico */}
                 <AnimatePresence mode="popLayout">
                     {activeSidebar && (
                         <motion.div
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: 'auto' }}
                             exit={{ opacity: 0, height: 0 }}
-                            className="flex-1 overflow-y-auto px-4 pb-4"
+                            className="flex-1 overflow-y-auto px-4 pb-4 flex flex-col min-h-0"
                         >
-                            <div className="w-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl p-4 shadow-sm text-sm text-zinc-500 text-center flex flex-col items-center justify-center py-10">
-                                <span className={`material-symbols-outlined text-4xl mb-3 ${activeSidebar === 'bncc' ? 'text-blue-400' : 'text-amber-400'}`}>
-                                    {activeSidebar === 'bncc' ? 'search' : 'cloud_download'}
-                                </span>
-                                {activeSidebar === 'bncc' ? (
-                                    <>Nenhuma habilidade vinculada.<br /><span className="text-blue-500 font-bold mt-2 cursor-pointer hover:underline">Buscar na Base BNCC</span></>
-                                ) : (
-                                    <>Nenhum anexo selecionado.<br /><span className="text-amber-500 font-bold mt-2 cursor-pointer hover:underline">Buscar no Banco</span></>
-                                )}
-                            </div>
+                            {activeSidebar === 'bncc' ? (
+                                <div className="flex flex-col gap-3 flex-1 min-h-0">
+                                    {/* Busca BNCC */}
+                                    <div className="relative shrink-0">
+                                        <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 text-sm">search</span>
+                                        <input
+                                            type="text"
+                                            placeholder="Buscar código ou descrição..."
+                                            value={bnccSearch} onChange={e => setBnccSearch(e.target.value)}
+                                            className="w-full pl-9 pr-3 py-2.5 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl text-xs outline-none focus:border-blue-500"
+                                        />
+                                    </div>
+
+                                    {/* Lista de Resultados */}
+                                    <div className="flex-1 overflow-y-auto flex flex-col gap-1.5 max-h-[400px]">
+                                        {bnccLoading ? (
+                                            <div className="flex items-center justify-center py-8">
+                                                <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                                            </div>
+                                        ) : filteredBncc.length === 0 ? (
+                                            <p className="text-xs text-zinc-500 text-center py-8">Nenhuma habilidade encontrada.</p>
+                                        ) : (
+                                            filteredBncc.map(skill => {
+                                                const isSelected = selectedSkills.some(s => s.id === skill.id);
+                                                return (
+                                                    <button
+                                                        key={skill.id}
+                                                        type="button"
+                                                        onClick={() => toggleSkill(skill)}
+                                                        className={`w-full text-left p-3 rounded-xl border text-xs transition-all ${isSelected
+                                                            ? 'bg-blue-50 dark:bg-blue-500/10 border-blue-300 dark:border-blue-700'
+                                                            : 'bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 hover:border-blue-300 dark:hover:border-blue-600'
+                                                            }`}
+                                                    >
+                                                        <div className="flex items-start gap-2">
+                                                            <span className={`material-symbols-outlined text-sm mt-0.5 shrink-0 ${isSelected ? 'text-blue-500' : 'text-zinc-400'}`}>
+                                                                {isSelected ? 'check_circle' : 'radio_button_unchecked'}
+                                                            </span>
+                                                            <div className="min-w-0">
+                                                                <div className="flex items-center gap-2 mb-0.5">
+                                                                    <span className="font-bold text-blue-600 dark:text-blue-400">{skill.code}</span>
+                                                                    <span className="text-[10px] text-zinc-400 font-medium">{skill.year_group}</span>
+                                                                </div>
+                                                                <p className="text-zinc-600 dark:text-zinc-400 leading-snug line-clamp-2">{skill.description}</p>
+                                                            </div>
+                                                        </div>
+                                                    </button>
+                                                );
+                                            })
+                                        )}
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="flex flex-col gap-3 flex-1 min-h-0">
+                                    <div className="flex-1 overflow-y-auto flex flex-col gap-1.5 max-h-[400px]">
+                                        {actLoading ? (
+                                            <div className="flex items-center justify-center py-8">
+                                                <div className="w-5 h-5 border-2 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
+                                            </div>
+                                        ) : activityResults.length === 0 ? (
+                                            <div className="text-center py-8">
+                                                <p className="text-xs text-zinc-500 mb-2">Nenhuma atividade no banco.</p>
+                                                <Link href="/dashboard/pedagogia/atividades">
+                                                    <span className="text-xs text-amber-500 font-bold hover:underline">Ir para o Banco de Atividades →</span>
+                                                </Link>
+                                            </div>
+                                        ) : (
+                                            activityResults.map(act => {
+                                                const isSelected = selectedActivities.some(a => a.id === act.id);
+                                                return (
+                                                    <button
+                                                        key={act.id}
+                                                        type="button"
+                                                        onClick={() => toggleActivity(act)}
+                                                        className={`w-full text-left p-3 rounded-xl border text-xs transition-all ${isSelected
+                                                            ? 'bg-amber-50 dark:bg-amber-500/10 border-amber-300 dark:border-amber-700'
+                                                            : 'bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 hover:border-amber-300 dark:hover:border-amber-600'
+                                                            }`}
+                                                    >
+                                                        <div className="flex items-center gap-2">
+                                                            <span className={`material-symbols-outlined text-sm shrink-0 ${isSelected ? 'text-amber-500' : 'text-zinc-400'}`}>
+                                                                {isSelected ? 'check_circle' : 'radio_button_unchecked'}
+                                                            </span>
+                                                            <div className="min-w-0">
+                                                                <p className="font-bold text-zinc-800 dark:text-zinc-200 truncate">{act.title}</p>
+                                                                <p className="text-zinc-400 text-[10px]">{act.activity_type}</p>
+                                                            </div>
+                                                        </div>
+                                                    </button>
+                                                );
+                                            })
+                                        )}
+                                    </div>
+                                </div>
+                            )}
                         </motion.div>
                     )}
                 </AnimatePresence>
