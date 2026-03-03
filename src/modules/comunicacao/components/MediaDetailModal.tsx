@@ -3,7 +3,7 @@
 import { CommunicationPost } from '@/types/communication';
 import { X, Download, ExternalLink, Calendar, User, FileVideo, Image as ImageIcon, Trash2, Loader2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import Image from 'next/image';
+
 import { createClient } from '@/lib/supabase';
 import toast from 'react-hot-toast';
 import { deleteGoogleDriveFiles } from '../actions';

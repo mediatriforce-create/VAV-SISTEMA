@@ -1,7 +1,7 @@
 'use client';
 
 import { CommunicationPost } from '@/types/communication';
-import Image from 'next/image';
+
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface FeedGridProps {
