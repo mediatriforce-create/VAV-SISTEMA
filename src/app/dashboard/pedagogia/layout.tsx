@@ -5,16 +5,9 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 const NAV_ITEMS = [
-    { label: 'Início', href: '/dashboard/pedagogia', icon: 'home' },
-    { label: 'Turmas', href: '/dashboard/pedagogia/turmas', icon: 'groups' },
-    // Fases atuais (Fase 2):
-    { label: 'Planejamento', href: '/dashboard/pedagogia/planejamento', icon: 'event_note' },
-    { label: 'Atividades', href: '/dashboard/pedagogia/atividades', icon: 'library_books' },
-    // Fases futuras:
-    // { label: 'Avaliações', href: '/dashboard/pedagogia/avaliacoes', icon: 'grading' },
-    // { label: 'Alunos', href: '/dashboard/pedagogia/alunos', icon: 'school' },
-    // { label: 'Intervenções', href: '/dashboard/pedagogia/intervencoes', icon: 'support' },
-    // { label: 'Relatórios', href: '/dashboard/pedagogia/relatorios', icon: 'analytics' },
+    { label: 'Kanban', href: '/dashboard/pedagogia/kanban', icon: 'view_kanban' },
+    { label: 'Atividades', href: '/dashboard/pedagogia/atividades', icon: 'edit_note' },
+    { label: 'Arquivos', href: '/dashboard/pedagogia/arquivos', icon: 'folder_open' },
 ];
 
 export default function PedagogiaLayout({ children }: { children: React.ReactNode }) {
@@ -22,10 +15,9 @@ export default function PedagogiaLayout({ children }: { children: React.ReactNod
 
     return (
         <div className="w-full h-full flex flex-col min-h-0">
-            {/* Top HUD — Navegação compacta */}
+            {/* Top HUD */}
             <div className="shrink-0 px-4 sm:px-8 pt-4 pb-0">
                 <div className="flex items-center gap-6 pb-3 border-b border-zinc-200 dark:border-white/10">
-                    {/* Module Title */}
                     <div className="flex items-center gap-3 mr-4">
                         <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/20">
                             <span className="material-symbols-outlined text-white text-xl">school</span>
@@ -36,11 +28,9 @@ export default function PedagogiaLayout({ children }: { children: React.ReactNod
                         </div>
                     </div>
 
-                    {/* Nav Tabs */}
                     <nav className="flex items-center gap-1 overflow-x-auto scrollbar-hide">
                         {NAV_ITEMS.map((item) => {
-                            const isActive = pathname === item.href ||
-                                (item.href !== '/dashboard/pedagogia' && pathname.startsWith(item.href));
+                            const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
 
                             return (
                                 <Link key={item.href} href={item.href}>

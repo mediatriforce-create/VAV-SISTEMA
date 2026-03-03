@@ -1,473 +1,351 @@
 'use server';
 
 import { createClient } from '@/lib/supabase/server';
-import type { Class, Student, LessonSession, AttendanceRecord, Subject, AttendanceStatus } from '@/types/pedagogia';
+import { revalidatePath } from 'next/cache';
+import type { Class, PedKanbanCard, PedActivity, PedFolder, PedFile } from '@/types/pedagogia';
+
+const MODULE_PATH = '/dashboard/pedagogia';
 
 // ============================================================
-// TURMAS
+// TURMAS (reutiliza tabela 'classes')
 // ============================================================
 
 export async function getMyClasses(): Promise<{ success: boolean; data?: Class[]; message?: string }> {
     try {
         const supabase = await createClient();
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) throw new Error('Não autorizado');
-
-        const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
-        const isCoord = ['Coord. Geral', 'Presidente', 'Dir. Financeiro', 'Coord. Pedagógica'].includes(profile?.role || '');
-
-        let query = supabase
+        const { data, error } = await supabase
             .from('classes')
-            .select(`
-                *,
-                teacher:teacher_id (id, full_name, avatar_url)
-            `)
+            .select(`*, teacher:teacher_id (id, full_name, avatar_url)`)
             .order('year_group', { ascending: true })
             .order('name', { ascending: true });
 
-        // TRAVA TEMPORARIAMENTE DESATIVADA PARA TESTE: 
-        // Mostrar todas as turmas para qualquer usuário, pra podermos testar o fluxo.
-        // if (!isCoord) {
-        //     query = query.eq('teacher_id', user.id);
-        // }
+        if (error) throw error;
+        return { success: true, data: data as Class[] };
+    } catch (error: any) {
+        console.error('getMyClasses Error:', error.message);
+        return { success: false, message: error.message };
+    }
+}
 
-        const { data, error } = await query;
+// ============================================================
+// KANBAN
+// ============================================================
+
+export async function getKanbanCards(): Promise<{ success: boolean; data?: PedKanbanCard[]; message?: string }> {
+    try {
+        const supabase = await createClient();
+        const { data, error } = await supabase
+            .from('ped_kanban_cards')
+            .select(`
+                *,
+                creator:created_by(full_name),
+                classes:ped_kanban_card_classes(class_id, class:class_id(id, name, year_group))
+            `)
+            .order('created_at', { ascending: true });
+
         if (error) throw error;
 
-        // Contar alunos por turma
-        const classIds = (data || []).map((c: any) => c.id);
-        const { data: counts } = await supabase
-            .from('class_memberships')
-            .select('class_id')
-            .in('class_id', classIds)
-            .eq('status', 'active');
-
-        const countMap: Record<string, number> = {};
-        (counts || []).forEach((c: any) => {
-            countMap[c.class_id] = (countMap[c.class_id] || 0) + 1;
-        });
-
-        const enriched = (data || []).map((c: any) => ({
-            ...c,
-            student_count: countMap[c.id] || 0,
+        // Flatten classes join
+        const cards = (data || []).map((card: any) => ({
+            ...card,
+            classes: card.classes?.map((c: any) => c.class).filter(Boolean) || []
         }));
 
-        return { success: true, data: enriched as Class[] };
-    } catch (e: any) {
-        return { success: false, message: e.message };
+        return { success: true, data: cards as PedKanbanCard[] };
+    } catch (error: any) {
+        console.error('getKanbanCards Error:', error.message);
+        return { success: false, message: error.message };
     }
 }
 
-export async function getClassById(classId: string): Promise<{ success: boolean; data?: any; message?: string }> {
-    try {
-        const supabase = await createClient();
-        const { data, error } = await supabase
-            .from('classes')
-            .select(`
-                *,
-                teacher:teacher_id (id, full_name, avatar_url)
-            `)
-            .eq('id', classId)
-            .single();
-
-        if (error) throw error;
-
-        // Buscar alunos matriculados
-        const { data: memberships } = await supabase
-            .from('class_memberships')
-            .select(`
-                *,
-                student:student_id (*)
-            `)
-            .eq('class_id', classId)
-            .eq('status', 'active')
-            .order('enrolled_at', { ascending: true });
-
-        return {
-            success: true,
-            data: {
-                ...data,
-                memberships: memberships || [],
-                student_count: memberships?.length || 0,
-            }
-        };
-    } catch (e: any) {
-        return { success: false, message: e.message };
-    }
-}
-
-export async function createClass(input: {
-    name: string;
-    year_group: string;
-    school_year: number;
-    shift: string;
-    teacher_id: string | null;
-}): Promise<{ success: boolean; data?: Class; message?: string }> {
-    try {
-        console.log('[createClass] INICIANDO...', input);
-        const supabase = await createClient();
-        const { data: { user }, error: userError } = await supabase.auth.getUser();
-
-        if (userError || !user) {
-            console.error('[createClass] Usuário não logado ou erro de sessão:', userError);
-            throw new Error('Não autorizado ou sessão expirada.');
-        }
-
-        console.log('[createClass] INSERINDO NO BANCO...');
-        const { data, error } = await supabase
-            .from('classes')
-            .insert(input)
-            .select()
-            .single();
-
-        if (error) throw error;
-        return { success: true, data: data as Class };
-    } catch (e: any) {
-        console.error('ERRO EM createClass:', e);
-        return { success: false, message: e.message };
-    }
-}
-
-export async function updateClass(classId: string, input: Partial<{
-    name: string;
-    year_group: string;
-    shift: string;
-    teacher_id: string | null;
-}>): Promise<{ success: boolean; message?: string }> {
-    try {
-        const supabase = await createClient();
-        const { error } = await supabase
-            .from('classes')
-            .update(input)
-            .eq('id', classId);
-
-        if (error) throw error;
-        return { success: true };
-    } catch (e: any) {
-        return { success: false, message: e.message };
-    }
-}
-
-// ============================================================
-// ALUNOS
-// ============================================================
-
-export async function createStudent(input: {
-    full_name: string;
-    birth_date?: string;
-    guardian_name?: string;
-    guardian_phone?: string;
-    guardian_email?: string;
-    notes?: string;
-}): Promise<{ success: boolean; data?: Student; message?: string }> {
-    try {
-        const supabase = await createClient();
-        const { data, error } = await supabase
-            .from('students')
-            .insert(input)
-            .select()
-            .single();
-
-        if (error) throw error;
-        return { success: true, data: data as Student };
-    } catch (e: any) {
-        return { success: false, message: e.message };
-    }
-}
-
-export async function getAllStudents(): Promise<{ success: boolean; data?: Student[]; message?: string }> {
-    try {
-        const supabase = await createClient();
-        const { data, error } = await supabase
-            .from('students')
-            .select('*')
-            .eq('active', true)
-            .order('full_name', { ascending: true });
-
-        if (error) throw error;
-        return { success: true, data: data as Student[] };
-    } catch (e: any) {
-        return { success: false, message: e.message };
-    }
-}
-
-export async function enrollStudent(classId: string, studentId: string): Promise<{ success: boolean; message?: string }> {
-    try {
-        const supabase = await createClient();
-        const { error } = await supabase
-            .from('class_memberships')
-            .upsert({
-                class_id: classId,
-                student_id: studentId,
-                status: 'active',
-            }, { onConflict: 'class_id,student_id' });
-
-        if (error) throw error;
-        return { success: true };
-    } catch (e: any) {
-        return { success: false, message: e.message };
-    }
-}
-
-export async function removeStudentFromClass(classId: string, studentId: string): Promise<{ success: boolean; message?: string }> {
-    try {
-        const supabase = await createClient();
-        const { error } = await supabase
-            .from('class_memberships')
-            .delete()
-            .eq('class_id', classId)
-            .eq('student_id', studentId);
-
-        if (error) throw error;
-        return { success: true };
-    } catch (e: any) {
-        return { success: false, message: e.message };
-    }
-}
-
-// ============================================================
-// COMPONENTES CURRICULARES
-// ============================================================
-
-export async function getSubjects(): Promise<{ success: boolean; data?: Subject[]; message?: string }> {
-    try {
-        const supabase = await createClient();
-        const { data, error } = await supabase
-            .from('subjects')
-            .select('*')
-            .order('name', { ascending: true });
-
-        if (error) throw error;
-        return { success: true, data: data as Subject[] };
-    } catch (e: any) {
-        return { success: false, message: e.message };
-    }
-}
-
-// ============================================================
-// SESSÕES DE AULA (DIÁRIO)
-// ============================================================
-
-export async function createOrUpdateSession(input: {
-    class_id: string;
-    subject_id?: string | null;
-    date: string;
-    content_summary?: string;
-    bncc_skills?: string;
-    observations?: string;
-}): Promise<{ success: boolean; data?: LessonSession; message?: string }> {
+export async function createKanbanCard(input: {
+    title: string;
+    card_type?: string;
+    description?: string;
+    due_date?: string;
+    column_status?: string;
+    class_ids?: string[];
+}): Promise<{ success: boolean; data?: PedKanbanCard; message?: string }> {
     try {
         const supabase = await createClient();
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) throw new Error('Não autorizado');
 
-        // Verifica se já existe sessão para essa turma/data/componente
-        const { data: existing } = await supabase
-            .from('lesson_sessions')
-            .select('id')
-            .eq('class_id', input.class_id)
-            .eq('date', input.date)
-            .eq('subject_id', input.subject_id || '')
-            .maybeSingle();
-
-        if (existing) {
-            const { data, error } = await supabase
-                .from('lesson_sessions')
-                .update({
-                    content_summary: input.content_summary,
-                    bncc_skills: input.bncc_skills,
-                    observations: input.observations,
-                })
-                .eq('id', existing.id)
-                .select()
-                .single();
-
-            if (error) throw error;
-            return { success: true, data: data as LessonSession };
-        }
-
-        const { data, error } = await supabase
-            .from('lesson_sessions')
+        const { data: card, error } = await supabase
+            .from('ped_kanban_cards')
             .insert({
-                ...input,
-                teacher_id: user.id,
+                title: input.title,
+                card_type: input.card_type || null,
+                description: input.description || null,
+                due_date: input.due_date || null,
+                column_status: input.column_status || 'backlog',
+                created_by: user.id
             })
             .select()
             .single();
 
         if (error) throw error;
-        return { success: true, data: data as LessonSession };
-    } catch (e: any) {
-        return { success: false, message: e.message };
+
+        // Vincular turmas
+        if (input.class_ids && input.class_ids.length > 0) {
+            const inserts = input.class_ids.map(cid => ({ card_id: card.id, class_id: cid }));
+            await supabase.from('ped_kanban_card_classes').insert(inserts);
+        }
+
+        revalidatePath(`${MODULE_PATH}/kanban`);
+        return { success: true, data: card as PedKanbanCard };
+    } catch (error: any) {
+        console.error('createKanbanCard Error:', error.message);
+        return { success: false, message: error.message };
     }
 }
 
-export async function getSessionByClassAndDate(
-    classId: string,
-    date: string
-): Promise<{ success: boolean; data?: LessonSession; message?: string }> {
+export async function updateKanbanCardStatus(cardId: string, newStatus: string): Promise<{ success: boolean; message?: string }> {
     try {
         const supabase = await createClient();
-        const { data, error } = await supabase
-            .from('lesson_sessions')
-            .select(`
-                *,
-                subject:subject_id (id, name),
-                attendance_records (
-                    id, student_id, status, note,
-                    student:student_id (id, full_name, photo_url)
-                )
-            `)
-            .eq('class_id', classId)
-            .eq('date', date)
-            .maybeSingle();
-
-        if (error) throw error;
-        return { success: true, data: data as LessonSession | undefined };
-    } catch (e: any) {
-        return { success: false, message: e.message };
-    }
-}
-
-export async function getSessionsByClassMonth(
-    classId: string,
-    year: number,
-    month: number
-): Promise<{ success: boolean; data?: LessonSession[]; message?: string }> {
-    try {
-        const supabase = await createClient();
-        const startDate = `${year}-${String(month).padStart(2, '0')}-01`;
-        const endDate = `${year}-${String(month).padStart(2, '0')}-31`;
-
-        const { data, error } = await supabase
-            .from('lesson_sessions')
-            .select('id, date, content_summary, subject:subject_id (name)')
-            .eq('class_id', classId)
-            .gte('date', startDate)
-            .lte('date', endDate)
-            .order('date', { ascending: true });
-
-        if (error) throw error;
-        return { success: true, data: data as any[] };
-    } catch (e: any) {
-        return { success: false, message: e.message };
-    }
-}
-
-// ============================================================
-// FREQUÊNCIA
-// ============================================================
-
-export async function saveAttendance(
-    sessionId: string,
-    records: { student_id: string; status: AttendanceStatus; note?: string }[]
-): Promise<{ success: boolean; message?: string }> {
-    try {
-        const supabase = await createClient();
-
-        const upsertData = records.map(r => ({
-            session_id: sessionId,
-            student_id: r.student_id,
-            status: r.status,
-            note: r.note || null,
-        }));
-
         const { error } = await supabase
-            .from('attendance_records')
-            .upsert(upsertData, { onConflict: 'session_id,student_id' });
+            .from('ped_kanban_cards')
+            .update({ column_status: newStatus })
+            .eq('id', cardId);
 
         if (error) throw error;
         return { success: true };
-    } catch (e: any) {
-        return { success: false, message: e.message };
+    } catch (error: any) {
+        console.error('updateKanbanCardStatus Error:', error.message);
+        return { success: false, message: error.message };
+    }
+}
+
+export async function deleteKanbanCard(cardId: string): Promise<{ success: boolean; message?: string }> {
+    try {
+        const supabase = await createClient();
+        const { error } = await supabase.from('ped_kanban_cards').delete().eq('id', cardId);
+        if (error) throw error;
+        revalidatePath(`${MODULE_PATH}/kanban`);
+        return { success: true };
+    } catch (error: any) {
+        console.error('deleteKanbanCard Error:', error.message);
+        return { success: false, message: error.message };
     }
 }
 
 // ============================================================
-// DASHBOARD STATS
+// ATIVIDADES DO DIA
 // ============================================================
 
-export async function getPedagogiaStats(): Promise<{
-    success: boolean;
-    data?: {
-        totalClasses: number;
-        totalStudents: number;
-        todaySessions: number;
-        pendingDiaries: number;
-    };
-    message?: string;
-}> {
+export async function getActivities(classId?: string, date?: string): Promise<{ success: boolean; data?: PedActivity[]; message?: string }> {
+    try {
+        const supabase = await createClient();
+        let query = supabase
+            .from('ped_activities')
+            .select(`
+                *,
+                class_info:class_id(id, name, year_group, shift),
+                creator:created_by(full_name),
+                files:ped_activity_files(file:file_id(*))
+            `)
+            .order('activity_date', { ascending: false });
+
+        if (classId) query = query.eq('class_id', classId);
+        if (date) query = query.eq('activity_date', date);
+
+        const { data, error } = await query;
+        if (error) throw error;
+
+        // Flatten files
+        const activities = (data || []).map((act: any) => ({
+            ...act,
+            files: act.files?.map((f: any) => f.file).filter(Boolean) || []
+        }));
+
+        return { success: true, data: activities as PedActivity[] };
+    } catch (error: any) {
+        console.error('getActivities Error:', error.message);
+        return { success: false, message: error.message };
+    }
+}
+
+export async function createActivity(input: {
+    class_id: string;
+    activity_date: string;
+    title: string;
+    description?: string;
+    notes?: string;
+    file_ids?: string[];
+}): Promise<{ success: boolean; data?: PedActivity; message?: string }> {
     try {
         const supabase = await createClient();
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) throw new Error('Não autorizado');
 
-        const today = new Date().toISOString().split('T')[0];
+        const { data: activity, error } = await supabase
+            .from('ped_activities')
+            .insert({
+                class_id: input.class_id,
+                activity_date: input.activity_date,
+                title: input.title,
+                description: input.description || null,
+                notes: input.notes || null,
+                created_by: user.id
+            })
+            .select()
+            .single();
 
-        // Total de turmas
-        const { count: totalClasses } = await supabase
-            .from('classes')
-            .select('*', { count: 'exact', head: true });
+        if (error) throw error;
 
-        // Total de alunos ativos
-        const { count: totalStudents } = await supabase
-            .from('students')
-            .select('*', { count: 'exact', head: true })
-            .eq('active', true);
+        // Vincular arquivos
+        if (input.file_ids && input.file_ids.length > 0) {
+            const inserts = input.file_ids.map(fid => ({ activity_id: activity.id, file_id: fid }));
+            await supabase.from('ped_activity_files').insert(inserts);
+        }
 
-        // Sessões de hoje
-        const { count: todaySessions } = await supabase
-            .from('lesson_sessions')
-            .select('*', { count: 'exact', head: true })
-            .eq('date', today);
-
-        // Turmas sem diário hoje (pendências)
-        const myClasses = await supabase
-            .from('classes')
-            .select('id')
-            .eq('teacher_id', user.id);
-
-        const myClassIds = (myClasses.data || []).map((c: any) => c.id);
-
-        const { data: todaysSessionIds } = await supabase
-            .from('lesson_sessions')
-            .select('class_id')
-            .eq('date', today)
-            .in('class_id', myClassIds.length > 0 ? myClassIds : ['_none_']);
-
-        const sessionsToday = new Set((todaysSessionIds || []).map((s: any) => s.class_id));
-        const pendingDiaries = myClassIds.filter((id: any) => !sessionsToday.has(id)).length;
-
-        return {
-            success: true,
-            data: {
-                totalClasses: totalClasses || 0,
-                totalStudents: totalStudents || 0,
-                todaySessions: todaySessions || 0,
-                pendingDiaries,
-            }
-        };
-    } catch (e: any) {
-        return { success: false, message: e.message };
+        revalidatePath(`${MODULE_PATH}/atividades`);
+        return { success: true, data: activity as PedActivity };
+    } catch (error: any) {
+        console.error('createActivity Error:', error.message);
+        return { success: false, message: error.message };
     }
 }
 
 // ============================================================
-// PROFESSORES (para selectors)
+// ARQUIVOS & PASTAS
 // ============================================================
 
-export async function getTeachers(): Promise<{ success: boolean; data?: any[]; message?: string }> {
+export async function getFolders(): Promise<{ success: boolean; data?: PedFolder[]; message?: string }> {
     try {
         const supabase = await createClient();
         const { data, error } = await supabase
-            .from('profiles')
-            .select('id, full_name, avatar_url, role')
-            .in('role', ['Educadora', 'Estágio Pedagógico', 'Coord. Pedagógica', 'Coord. Geral'])
-            .order('full_name', { ascending: true });
+            .from('ped_folders')
+            .select('*')
+            .order('school_year', { ascending: true })
+            .order('name', { ascending: true });
 
         if (error) throw error;
-        return { success: true, data: data || [] };
-    } catch (e: any) {
-        return { success: false, message: e.message };
+        return { success: true, data: data as PedFolder[] };
+    } catch (error: any) {
+        console.error('getFolders Error:', error.message);
+        return { success: false, message: error.message };
+    }
+}
+
+export async function createFolder(input: { name: string; school_year?: string; folder_type?: string }): Promise<{ success: boolean; data?: PedFolder; message?: string }> {
+    try {
+        const supabase = await createClient();
+        const { data, error } = await supabase
+            .from('ped_folders')
+            .insert({
+                name: input.name,
+                school_year: input.school_year || 'multi',
+                folder_type: input.folder_type || 'materiais'
+            })
+            .select()
+            .single();
+
+        if (error) throw error;
+        revalidatePath(`${MODULE_PATH}/arquivos`);
+        return { success: true, data: data as PedFolder };
+    } catch (error: any) {
+        console.error('createFolder Error:', error.message);
+        return { success: false, message: error.message };
+    }
+}
+
+export async function getFilesInFolder(folderId: string): Promise<{ success: boolean; data?: PedFile[]; message?: string }> {
+    try {
+        const supabase = await createClient();
+        const { data, error } = await supabase
+            .from('ped_files')
+            .select('*')
+            .eq('folder_id', folderId)
+            .order('created_at', { ascending: false });
+
+        if (error) throw error;
+        return { success: true, data: data as PedFile[] };
+    } catch (error: any) {
+        console.error('getFilesInFolder Error:', error.message);
+        return { success: false, message: error.message };
+    }
+}
+
+export async function uploadPedFile(formData: FormData, folderId: string): Promise<{ success: boolean; data?: PedFile; message?: string }> {
+    try {
+        const supabase = await createClient();
+        const file = formData.get('file') as File;
+        if (!file || file.size === 0) throw new Error('Arquivo obrigatório');
+
+        // Inferir tipo
+        let fileType = 'doc';
+        if (file.type.includes('pdf')) fileType = 'pdf';
+        else if (file.type.includes('image')) fileType = 'image';
+
+        // Upload para Google Drive (VAV SISTEMA > PEDAGOGIA > ARQUIVOS)
+        const { getGoogleDriveClient } = await import('@/lib/google/drive');
+        const drive = await getGoogleDriveClient();
+
+        const ensureFolder = async (d: any, name: string, parentId?: string) => {
+            const qp = [`mimeType='application/vnd.google-apps.folder'`, `name='${name}'`, `trashed=false`];
+            if (parentId) qp.push(`'${parentId}' in parents`);
+            const res = await d.files.list({ q: qp.join(' and '), spaces: 'drive', fields: 'files(id)' });
+            if (res.data.files?.length > 0) return res.data.files[0].id!;
+            const meta: any = { name, mimeType: 'application/vnd.google-apps.folder' };
+            if (parentId) meta.parents = [parentId];
+            const c = await d.files.create({ requestBody: meta, fields: 'id' });
+            return c.data.id!;
+        };
+
+        const rootId = await ensureFolder(drive, 'VAV SISTEMA');
+        const pedId = await ensureFolder(drive, 'PEDAGOGIA', rootId);
+        const arqId = await ensureFolder(drive, 'ARQUIVOS', pedId);
+
+        const arrayBuffer = await file.arrayBuffer();
+        const buffer = Buffer.from(arrayBuffer);
+        const stream = require('stream');
+        const bs = new stream.PassThrough();
+        bs.end(buffer);
+
+        const driveRes = await drive.files.create({
+            requestBody: { name: file.name, parents: [arqId] },
+            media: { mimeType: file.type, body: bs },
+            fields: 'id, name, webViewLink'
+        });
+
+        const driveFile = driveRes.data;
+        const fileUrl = driveFile.webViewLink || `https://drive.google.com/file/d/${driveFile.id}/view`;
+
+        // Salvar no banco
+        const { data, error } = await supabase
+            .from('ped_files')
+            .insert({
+                folder_id: folderId,
+                name: file.name,
+                file_url: fileUrl,
+                drive_file_id: driveFile.id || null,
+                file_type: fileType
+            })
+            .select()
+            .single();
+
+        if (error) throw error;
+        revalidatePath(`${MODULE_PATH}/arquivos`);
+        return { success: true, data: data as PedFile };
+    } catch (error: any) {
+        console.error('uploadPedFile Error:', error.message);
+        return { success: false, message: error.message };
+    }
+}
+
+export async function getAllFiles(): Promise<{ success: boolean; data?: PedFile[]; message?: string }> {
+    try {
+        const supabase = await createClient();
+        const { data, error } = await supabase
+            .from('ped_files')
+            .select('*, folder:folder_id(id, name, school_year)')
+            .order('created_at', { ascending: false });
+
+        if (error) throw error;
+        return { success: true, data: data as PedFile[] };
+    } catch (error: any) {
+        console.error('getAllFiles Error:', error.message);
+        return { success: false, message: error.message };
     }
 }
