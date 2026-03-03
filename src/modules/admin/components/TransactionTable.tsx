@@ -1,0 +1,112 @@
+'use client'
+
+import React from 'react'
+import { FinancialEntry, deleteFinancialEntry } from '../actions'
+import { motion } from 'framer-motion'
+
+interface TransactionTableProps {
+    entries: FinancialEntry[]
+}
+
+export function TransactionTable({ entries }: TransactionTableProps) {
+
+    async function handleDelete(id: string) {
+        if (!confirm('Tem certeza que deseja excluir este lançamento?')) return
+
+        const result = await deleteFinancialEntry(id)
+        if (result.error) {
+            alert(result.error)
+        }
+    }
+
+    if (entries.length === 0) {
+        return (
+            <div className="text-center py-12 bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700">
+                <span className="material-icons text-gray-300 dark:text-gray-600 text-5xl mb-3">receipt_long</span>
+                <p className="text-gray-500 dark:text-gray-400">Nenhum lançamento encontrado neste banco.</p>
+            </div>
+        )
+    }
+
+    return (
+        <div className="flex-1 min-h-0 flex flex-col bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl border border-slate-200/50 dark:border-gray-700/50 shadow-sm overflow-hidden">
+            <div className="flex-1 min-h-0 overflow-auto custom-scrollbar">
+                <table className="min-w-full divide-y divide-gray-200/50 dark:divide-gray-700/50">
+                    <thead className="bg-slate-50/50 dark:bg-gray-800/50 backdrop-blur-md">
+                        <tr>
+                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Data</th>
+                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Descrição</th>
+                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Categoria</th>
+                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Responsável</th>
+                            <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Valor</th>
+                            <th scope="col" className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Anexo</th>
+                            <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Ações</th>
+                        </tr>
+                    </thead>
+                    <motion.tbody
+                        initial="hidden"
+                        animate="visible"
+                        variants={{
+                            visible: { transition: { staggerChildren: 0.05 } },
+                            hidden: {}
+                        }}
+                        className="bg-white/50 dark:bg-gray-800/50 divide-y divide-gray-100 dark:divide-gray-700/50"
+                    >
+                        {entries.map((entry) => (
+                            <motion.tr
+                                variants={{
+                                    hidden: { opacity: 0, y: 10 },
+                                    visible: { opacity: 1, y: 0 }
+                                }}
+                                key={entry.id}
+                                className="group hover:bg-slate-50/80 dark:hover:bg-gray-700/80 transition-colors"
+                            >
+                                <td className="px-6 py-5 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                                    {(() => {
+                                        if (!entry.entry_date) return 'N/A'
+                                        const [y, m, d] = entry.entry_date.split('-')
+                                        return `${d}/${m}/${y}`
+                                    })()}
+                                </td>
+                                <td className="px-6 py-5 whitespace-nowrap">
+                                    <div className="flex items-center">
+                                        <div className={`flex-shrink-0 h-10 w-10 rounded-xl flex items-center justify-center mr-4 shadow-sm ${entry.type === 'entrada' ? 'bg-gradient-to-br from-green-100 to-green-50 text-green-600' : 'bg-gradient-to-br from-red-100 to-red-50 text-red-600'}`}>
+                                            <span className="material-icons text-base">{entry.type === 'entrada' ? 'arrow_upward' : 'arrow_downward'}</span>
+                                        </div>
+                                        <div className="text-sm font-semibold text-gray-900 dark:text-white">{entry.description}</div>
+                                    </div>
+                                </td>
+                                <td className="px-6 py-5 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                                    <span className="px-2.5 py-1 inline-flex text-xs leading-5 font-bold rounded-md bg-slate-100 text-slate-800 dark:bg-gray-700 dark:text-gray-300 shadow-sm border border-slate-200/50 dark:border-gray-600/50">
+                                        {entry.category}
+                                    </span>
+                                </td>
+                                <td className="px-6 py-5 whitespace-nowrap text-sm font-medium text-gray-700 dark:text-gray-300">
+                                    {(entry as any).profiles?.full_name || 'N/A'}
+                                </td>
+                                <td className={`px-6 py-5 whitespace-nowrap text-sm text-right font-bold tracking-tight ${entry.type === 'entrada' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+                                    {entry.type === 'saida' ? '-' : '+'}
+                                    {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(entry.amount)}
+                                </td>
+                                <td className="px-6 py-5 whitespace-nowrap text-center text-sm font-medium">
+                                    {entry.attachment_url ? (
+                                        <a href="#" className="inline-flex items-center justify-center p-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-400 dark:hover:bg-blue-900/50 transition-colors" title="Ver Comprovante">
+                                            <span className="material-icons text-[20px]">attachment</span>
+                                        </a>
+                                    ) : (
+                                        <span className="text-gray-300 dark:text-gray-600">-</span>
+                                    )}
+                                </td>
+                                <td className="px-6 py-5 whitespace-nowrap text-right text-sm font-medium">
+                                    <button onClick={() => handleDelete(entry.id)} className="p-2 rounded-lg text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors">
+                                        <span className="material-icons text-[20px]">delete</span>
+                                    </button>
+                                </td>
+                            </motion.tr>
+                        ))}
+                    </motion.tbody>
+                </table>
+            </div>
+        </div>
+    )
+}

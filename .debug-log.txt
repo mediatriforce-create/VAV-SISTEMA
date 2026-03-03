@@ -1,0 +1,19 @@
+{
+  "profile": {
+    "role": "Coord. Geral"
+  },
+  "channels": null,
+  "channelsError": {
+    "code": "42P17",
+    "details": null,
+    "hint": null,
+    "message": "infinite recursion detected in policy for relation \"room_participants\""
+  },
+  "dmsError": {
+    "code": "42P17",
+    "details": null,
+    "hint": null,
+    "message": "infinite recursion detected in policy for relation \"room_participants\""
+  },
+  "allowedChannels": []
+}

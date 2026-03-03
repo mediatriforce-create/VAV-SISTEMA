@@ -1,0 +1,120 @@
+--- NEW PDF UPLOAD: 2026-02-15T13:24:26.356Z ---
+Detected: BANCO DO BRASIL
+
+--- START PARSE BB: 47 lines ---
+Line 8 MATCH VALUE: 20.824,36 (+)
+Line 9 MATCH DATE: 07/11/2025
+Line 11 MATCH VALUE: 1.000,00 (-)
+Tx Identified as Saldo Anterior: 20824.36
+Adding Tx: Saldo Anterior (Importado) | 20824.36
+Line 12 MATCH DATE: 10/12/2025
+Line 16 MATCH VALUE: 400,00 (-)
+Adding Tx: Pix - Enviado 10/12 11:57 RAQUEL PAIXAO DA SILVA | 1000
+Line 17 MATCH DATE: 10/12/2025
+Line 21 MATCH VALUE: 1.500,00 (-)
+Adding Tx: Pix - Enviado 10/12 11:57 MARCIA JULIETA FIGUEREDO | 400
+Line 22 MATCH DATE: 10/12/2025
+Line 26 MATCH VALUE: 3,96 (-)
+Adding Tx: Pagamento de Boleto 14820608 Evelin Salles De Mora | 1500
+Line 27 MATCH DATE: 10/12/2025
+Line 31 MATCH VALUE: 17.920,40 (+)
+Adding Tx: Tarifa Pix Enviado Tar. agrupadas - ocorrencia 10/12/2025 | 3.96
+Line 32 MATCH DATE: 00/00/0000
+Line 32 IGNORED 00/00/0000
+Line 34 MATCH VALUE: 17.920,40 (+)
+Skipping Tx: No Date or Blacklisted. Desc: "13113Saldo do dia" Date: ""
+Line 35 MATCH DATE: 12/12/2025
+Line 38 MATCH VALUE: 17.920,40 (+)
+Skipping Tx: No Date or Blacklisted. Desc: "S A L D O Informações Adicionais" Date: "2025-12-12"
+Line 40 MATCH DATE: 31/12/2025
+Skipping Tx: No Date or Blacklisted. Desc: "0,00Juros * Data de Debito de Juros 0,00IOF * 02/01/2026Data de Debito de IOF Total Aplicações Financeiras * Saldos por dia Base Sujeitos a confirmação no momento da contratação 0,00" Date: "2025-12-31"
+--- NEW PDF UPLOAD: 2026-02-15T13:24:57.770Z ---
+Detected: BANCO DO BRASIL
+
+--- START PARSE BB: 47 lines ---
+Line 8 MATCH VALUE: 20.824,36 (+)
+Line 9 MATCH DATE: 07/11/2025
+Line 11 MATCH VALUE: 1.000,00 (-)
+Tx Identified as Saldo Anterior: 20824.36
+Adding Tx: Saldo Anterior (Importado) | 20824.36
+Line 12 MATCH DATE: 10/12/2025
+Line 16 MATCH VALUE: 400,00 (-)
+Adding Tx: Pix - Enviado 10/12 11:57 RAQUEL PAIXAO DA SILVA | 1000
+Line 17 MATCH DATE: 10/12/2025
+Line 21 MATCH VALUE: 1.500,00 (-)
+Adding Tx: Pix - Enviado 10/12 11:57 MARCIA JULIETA FIGUEREDO | 400
+Line 22 MATCH DATE: 10/12/2025
+Line 26 MATCH VALUE: 3,96 (-)
+Adding Tx: Pagamento de Boleto 14820608 Evelin Salles De Mora | 1500
+Line 27 MATCH DATE: 10/12/2025
+Line 31 MATCH VALUE: 17.920,40 (+)
+Adding Tx: Tarifa Pix Enviado Tar. agrupadas - ocorrencia 10/12/2025 | 3.96
+Line 32 MATCH DATE: 00/00/0000
+Line 32 IGNORED 00/00/0000
+Line 34 MATCH VALUE: 17.920,40 (+)
+Skipping Tx: No Date or Blacklisted. Desc: "13113Saldo do dia" Date: ""
+Line 35 MATCH DATE: 12/12/2025
+Line 38 MATCH VALUE: 17.920,40 (+)
+Skipping Tx: No Date or Blacklisted. Desc: "S A L D O Informações Adicionais" Date: "2025-12-12"
+Line 40 MATCH DATE: 31/12/2025
+Skipping Tx: No Date or Blacklisted. Desc: "0,00Juros * Data de Debito de Juros 0,00IOF * 02/01/2026Data de Debito de IOF Total Aplicações Financeiras * Saldos por dia Base Sujeitos a confirmação no momento da contratação 0,00" Date: "2025-12-31"
+--- NEW PDF UPLOAD: 2026-02-15T13:26:26.235Z ---
+Detected: BANCO DO BRASIL
+
+--- START PARSE BB: 47 lines ---
+Line 8 MATCH VALUE: 20.824,36 (+)
+Line 9 MATCH DATE: 07/11/2025
+Line 11 MATCH VALUE: 1.000,00 (-)
+Tx Identified as Saldo Anterior: 20824.36
+Adding Tx: Saldo Anterior (Importado) | 20824.36
+Line 12 MATCH DATE: 10/12/2025
+Line 16 MATCH VALUE: 400,00 (-)
+Adding Tx: Pix - Enviado 10/12 11:57 RAQUEL PAIXAO DA SILVA | 1000
+Line 17 MATCH DATE: 10/12/2025
+Line 21 MATCH VALUE: 1.500,00 (-)
+Adding Tx: Pix - Enviado 10/12 11:57 MARCIA JULIETA FIGUEREDO | 400
+Line 22 MATCH DATE: 10/12/2025
+Line 26 MATCH VALUE: 3,96 (-)
+Adding Tx: Pagamento de Boleto 14820608 Evelin Salles De Mora | 1500
+Line 27 MATCH DATE: 10/12/2025
+Line 31 MATCH VALUE: 17.920,40 (+)
+Adding Tx: Tarifa Pix Enviado Tar. agrupadas - ocorrencia 10/12/2025 | 3.96
+Line 32 MATCH DATE: 00/00/0000
+Line 32 IGNORED 00/00/0000
+Line 34 MATCH VALUE: 17.920,40 (+)
+Skipping Tx: No Date or Blacklisted. Desc: "13113Saldo do dia" Date: ""
+Line 35 MATCH DATE: 12/12/2025
+Line 38 MATCH VALUE: 17.920,40 (+)
+Skipping Tx: No Date or Blacklisted. Desc: "S A L D O Informações Adicionais" Date: "2025-12-12"
+Line 40 MATCH DATE: 31/12/2025
+Skipping Tx: No Date or Blacklisted. Desc: "0,00Juros * Data de Debito de Juros 0,00IOF * 02/01/2026Data de Debito de IOF Total Aplicações Financeiras * Saldos por dia Base Sujeitos a confirmação no momento da contratação 0,00" Date: "2025-12-31"
+--- NEW PDF UPLOAD: 2026-02-15T13:30:55.365Z ---
+Detected: BANCO DO BRASIL
+
+--- START PARSE BB: 47 lines ---
+Line 8 MATCH VALUE: 20.824,36 (+)
+Line 9 MATCH DATE: 07/11/2025
+Line 11 MATCH VALUE: 1.000,00 (-)
+Tx Identified as Saldo Anterior: 20824.36
+Adding Tx: Saldo Anterior (Importado) | 20824.36
+Line 12 MATCH DATE: 10/12/2025
+Line 16 MATCH VALUE: 400,00 (-)
+Adding Tx: Pix - Enviado 10/12 11:57 RAQUEL PAIXAO DA SILVA | 1000
+Line 17 MATCH DATE: 10/12/2025
+Line 21 MATCH VALUE: 1.500,00 (-)
+Adding Tx: Pix - Enviado 10/12 11:57 MARCIA JULIETA FIGUEREDO | 400
+Line 22 MATCH DATE: 10/12/2025
+Line 26 MATCH VALUE: 3,96 (-)
+Adding Tx: Pagamento de Boleto 14820608 Evelin Salles De Mora | 1500
+Line 27 MATCH DATE: 10/12/2025
+Line 31 MATCH VALUE: 17.920,40 (+)
+Adding Tx: Tarifa Pix Enviado Tar. agrupadas - ocorrencia 10/12/2025 | 3.96
+Line 32 MATCH DATE: 00/00/0000
+Line 32 IGNORED 00/00/0000
+Line 34 MATCH VALUE: 17.920,40 (+)
+Skipping Tx: No Date or Blacklisted. Desc: "13113Saldo do dia" Date: ""
+Line 35 MATCH DATE: 12/12/2025
+Line 38 MATCH VALUE: 17.920,40 (+)
+Skipping Tx: No Date or Blacklisted. Desc: "S A L D O Informações Adicionais" Date: "2025-12-12"
+Line 40 MATCH DATE: 31/12/2025
+Skipping Tx: No Date or Blacklisted. Desc: "0,00Juros * Data de Debito de Juros 0,00IOF * 02/01/2026Data de Debito de IOF Total Aplicações Financeiras * Saldos por dia Base Sujeitos a confirmação no momento da contratação 0,00" Date: "2025-12-31"
