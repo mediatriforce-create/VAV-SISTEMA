@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 
 const NAV_ITEMS = [
     { label: 'Kanban', href: '/dashboard/pedagogia/kanban', icon: 'view_kanban' },
+    { label: 'Turmas', href: '/dashboard/pedagogia/turmas', icon: 'groups' },
     { label: 'Atividades', href: '/dashboard/pedagogia/atividades', icon: 'edit_note' },
     { label: 'Arquivos', href: '/dashboard/pedagogia/arquivos', icon: 'folder_open' },
 ];
