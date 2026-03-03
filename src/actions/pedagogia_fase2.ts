@@ -190,3 +190,73 @@ export async function getEducationalActivities(subjectId?: string): Promise<{ su
         return { success: false, message: error.message };
     }
 }
+
+export async function uploadEducationalActivity(formData: FormData): Promise<{ success: boolean; data?: EducationalActivity; message?: string }> {
+    try {
+        const supabase = await createClient();
+        const { data: { user }, error: userError } = await supabase.auth.getUser();
+        if (userError || !user) throw new Error('Não autorizado');
+
+        const title = formData.get('title') as string;
+        const description = formData.get('description') as string;
+        const subjectId = formData.get('subject_id') as string;
+        const file = formData.get('file') as File;
+
+        if (!title || !file || file.size === 0) throw new Error('Título e arquivo são obrigatórios');
+
+        // Inferir o tipo do arquivo
+        let activityType = 'Documento';
+        if (file.type.includes('pdf')) activityType = 'PDF';
+        else if (file.type.includes('image')) activityType = 'Imagem';
+        else if (file.type.includes('word') || file.type.includes('doc')) activityType = 'Texto';
+
+        // 1. Upload do Arquivo para Storage
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+        const filePath = `${user.id}/${fileName}`; // Organizado na pasta do professor
+
+        const { error: uploadError } = await supabase.storage
+            .from('pedagogia_activities')
+            .upload(filePath, file);
+
+        if (uploadError) throw new Error(`Erro no upload: ${uploadError.message}`);
+
+        // Obter URL pública
+        const { data: { publicUrl } } = supabase.storage
+            .from('pedagogia_activities')
+            .getPublicUrl(filePath);
+
+        // 2. Criar a Atividade no banco
+        const { data: activityData, error: activityError } = await supabase
+            .from('activities')
+            .insert({
+                title,
+                description: description || null,
+                activity_type: activityType,
+                subject_id: subjectId || null,
+                teacher_id: user.id,
+                is_public: true
+            })
+            .select()
+            .single();
+
+        if (activityError) throw activityError;
+
+        // 3. Criar o Asset vinculado
+        const { error: assetError } = await supabase
+            .from('activity_assets')
+            .insert({
+                activity_id: activityData.id,
+                file_name: file.name,
+                file_url: publicUrl
+            });
+
+        if (assetError) throw assetError;
+
+        revalidatePath(`${MODULE_PATH}/atividades`);
+        return { success: true, data: activityData as EducationalActivity };
+    } catch (error: any) {
+        console.error('uploadEducationalActivity Error:', error.message);
+        return { success: false, message: error.message };
+    }
+}
