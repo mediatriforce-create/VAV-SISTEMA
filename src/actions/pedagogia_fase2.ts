@@ -210,23 +210,38 @@ export async function uploadEducationalActivity(formData: FormData): Promise<{ s
         else if (file.type.includes('image')) activityType = 'Imagem';
         else if (file.type.includes('word') || file.type.includes('doc')) activityType = 'Texto';
 
-        // 1. Upload do Arquivo para Storage
-        const fileExt = file.name.split('.').pop();
-        const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
-        const filePath = `${user.id}/${fileName}`; // Organizado na pasta do professor
+        // 1. Upload do Arquivo para Google Drive (VAV SISTEMA > PEDAGOGIA > ATIVIDADES)
+        const { getGoogleDriveClient } = await import('@/lib/google/drive');
+        const drive = await getGoogleDriveClient();
 
-        const { error: uploadError } = await supabase.storage
-            .from('pedagogia_activities')
-            .upload(filePath, file);
+        // Garantir estrutura de pastas no Drive
+        const rootId = await ensureDriveFolder(drive, 'VAV SISTEMA');
+        const pedId = await ensureDriveFolder(drive, 'PEDAGOGIA', rootId);
+        const actFolderId = await ensureDriveFolder(drive, 'ATIVIDADES', pedId);
 
-        if (uploadError) throw new Error(`Erro no upload: ${uploadError.message}`);
+        // Converter File para Buffer e fazer upload
+        const arrayBuffer = await file.arrayBuffer();
+        const buffer = Buffer.from(arrayBuffer);
+        const stream = require('stream');
+        const bufferStream = new stream.PassThrough();
+        bufferStream.end(buffer);
 
-        // Obter URL pública
-        const { data: { publicUrl } } = supabase.storage
-            .from('pedagogia_activities')
-            .getPublicUrl(filePath);
+        const driveResponse = await drive.files.create({
+            requestBody: {
+                name: file.name,
+                parents: [actFolderId],
+            },
+            media: {
+                mimeType: file.type,
+                body: bufferStream,
+            },
+            fields: 'id, name, webViewLink'
+        });
 
-        // 2. Criar a Atividade no banco
+        const driveFile = driveResponse.data;
+        const fileUrl = driveFile.webViewLink || `https://drive.google.com/file/d/${driveFile.id}/view`;
+
+        // 2. Criar a Atividade no banco Supabase
         const { data: activityData, error: activityError } = await supabase
             .from('activities')
             .insert({
@@ -242,13 +257,14 @@ export async function uploadEducationalActivity(formData: FormData): Promise<{ s
 
         if (activityError) throw activityError;
 
-        // 3. Criar o Asset vinculado
+        // 3. Criar o Asset vinculado (com referência ao Drive)
         const { error: assetError } = await supabase
             .from('activity_assets')
             .insert({
                 activity_id: activityData.id,
                 file_name: file.name,
-                file_url: publicUrl
+                file_url: fileUrl,
+                drive_file_id: driveFile.id || null
             });
 
         if (assetError) throw assetError;
@@ -259,4 +275,37 @@ export async function uploadEducationalActivity(formData: FormData): Promise<{ s
         console.error('uploadEducationalActivity Error:', error.message);
         return { success: false, message: error.message };
     }
+}
+
+// Helper: Garante que uma pasta existe no Drive (mesma lógica do módulo de Comunicação)
+async function ensureDriveFolder(drive: any, folderName: string, parentId?: string): Promise<string> {
+    const queryParts = [
+        `mimeType='application/vnd.google-apps.folder'`,
+        `name='${folderName}'`,
+        `trashed=false`
+    ];
+    if (parentId) queryParts.push(`'${parentId}' in parents`);
+
+    const res = await drive.files.list({
+        q: queryParts.join(' and '),
+        spaces: 'drive',
+        fields: 'files(id, name)',
+    });
+
+    if (res.data.files && res.data.files.length > 0) {
+        return res.data.files[0].id!;
+    }
+
+    const fileMetadata: any = {
+        name: folderName,
+        mimeType: 'application/vnd.google-apps.folder',
+    };
+    if (parentId) fileMetadata.parents = [parentId];
+
+    const created = await drive.files.create({
+        requestBody: fileMetadata,
+        fields: 'id',
+    });
+
+    return created.data.id!;
 }
