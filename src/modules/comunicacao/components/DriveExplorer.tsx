@@ -233,7 +233,7 @@ export default function DriveExplorer({ initialFolderId, initialFolderName = 'CO
                 if (linkedPosts && linkedPosts.length > 0) {
                     // 1. Delete from Supabase Storage
                     const storagePathsToRemove: string[] = [];
-                    linkedPosts.forEach(post => {
+                    linkedPosts.forEach((post: any) => {
                         if (post.media_url.includes('/communication_media/')) {
                             const pathParts = post.media_url.split('/communication_media/');
                             if (pathParts.length > 1) {

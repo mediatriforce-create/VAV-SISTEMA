@@ -61,8 +61,8 @@ export default async function CoordPage() {
 
     // 3. Simple aggregation for "Active Demands" count per member
     // (We could do this in SQL or here. Doing here for simplicity vs creating a view)
-    const memberStats = teamMembers?.map(member => {
-        const activeCount = demands?.filter(d =>
+    const memberStats = teamMembers?.map((member: any) => {
+        const activeCount = demands?.filter((d: any) =>
             d.assigned_to === member.id && d.status !== 'finalizado'
         ).length || 0;
 

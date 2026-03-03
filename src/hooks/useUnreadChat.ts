@@ -98,7 +98,7 @@ export function useUnreadChat() {
                 event: 'INSERT',
                 schema: 'public',
                 table: 'messages',
-            }, (payload) => {
+            }, (payload: any) => {
                 const newMsg = payload.new as any;
                 // Nova mensagem — marca como unread imediatamente
                 setHasUnread(true);

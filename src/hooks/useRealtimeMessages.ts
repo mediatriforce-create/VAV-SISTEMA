@@ -78,14 +78,14 @@ export function useRealtimeMessages(roomId: string, initialMessages: Message[]) 
                     schema: 'public',
                     table: 'messages',
                 },
-                (payload) => {
+                (payload: any) => {
                     console.log(`[WebSocket] NOVO PAYLOAD RECEBIDO NA SALA ${roomId}:`, payload);
                     if (handleNewMessageRef.current) {
                         handleNewMessageRef.current(payload);
                     }
                 }
             )
-            .subscribe((status) => {
+            .subscribe((status: any) => {
                 console.log(`[WebSocket] Status da inscrição na sala ${roomId}:`, status);
             });
 

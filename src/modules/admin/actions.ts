@@ -82,7 +82,7 @@ export async function getFinancialEntries(bankId: string) {
     }
 
     // Transform data to match type
-    return data.map(item => ({
+    return data.map((item: any) => ({
         ...item,
         responsible_name: item.profiles?.full_name || 'N/A'
     }))

@@ -57,7 +57,7 @@ export async function getLessonPlans(classId: string): Promise<{ success: boolea
         if (error) throw error;
 
         // Flatten the many-to-many results for easier frontend consumption
-        const formattedData = data.map(plan => ({
+        const formattedData = data.map((plan: any) => ({
             ...plan,
             bncc_skills: plan.bncc_skills?.map((ps: any) => ps.bncc_skills).filter(Boolean) || [],
             activities: plan.activities?.map((pa: any) => pa.activities).filter(Boolean) || [],

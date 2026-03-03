@@ -436,7 +436,7 @@ export async function getPedagogiaStats(): Promise<{
             .in('class_id', myClassIds.length > 0 ? myClassIds : ['_none_']);
 
         const sessionsToday = new Set((todaysSessionIds || []).map((s: any) => s.class_id));
-        const pendingDiaries = myClassIds.filter(id => !sessionsToday.has(id)).length;
+        const pendingDiaries = myClassIds.filter((id: any) => !sessionsToday.has(id)).length;
 
         return {
             success: true,

@@ -23,7 +23,7 @@ export async function getUserNotes(): Promise<StandardResponse<CoordinationNote[
         if (error) throw error;
 
         // Limpeza do retorno para o modelo da Interface
-        const formattedData: CoordinationNote[] = data.map(note => ({
+        const formattedData: CoordinationNote[] = data.map((note: any) => ({
             id: note.id,
             target_user_id: note.target_user_id,
             author_id: note.author_id,

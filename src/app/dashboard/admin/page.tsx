@@ -48,12 +48,12 @@ export default async function AdminPage({
 
     // Calculate Stats
     const totalInput = entries
-        .filter(e => e.type === 'entrada')
-        .reduce((acc, curr) => acc + curr.amount, 0)
+        .filter((e: any) => e.type === 'entrada')
+        .reduce((acc: number, curr: any) => acc + curr.amount, 0)
 
     const totalOutput = entries
-        .filter(e => e.type === 'saida')
-        .reduce((acc, curr) => acc + curr.amount, 0)
+        .filter((e: any) => e.type === 'saida')
+        .reduce((acc: number, curr: any) => acc + curr.amount, 0)
 
     const balance = totalInput - totalOutput
 
