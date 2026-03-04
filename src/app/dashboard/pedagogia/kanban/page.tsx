@@ -233,12 +233,12 @@ export default function PedagogiaKanbanPage() {
                         <motion.div
                             initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }}
                             onClick={e => e.stopPropagation()}
-                            className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-zinc-200 dark:border-zinc-800 w-full max-w-lg"
+                            className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-zinc-200 dark:border-zinc-800 w-full max-w-lg max-h-[90vh] flex flex-col"
                         >
                             <div className="p-6 border-b border-zinc-100 dark:border-zinc-800">
                                 <h3 className="text-lg font-extrabold text-zinc-900 dark:text-white">Novo Card</h3>
                             </div>
-                            <div className="p-6 flex flex-col gap-4">
+                            <div className="p-6 flex flex-col gap-4 overflow-y-auto flex-1 min-h-0">
                                 <div>
                                     <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1 block">Título *</label>
                                     <input value={formTitle} onChange={e => setFormTitle(e.target.value)} placeholder="Ex: Atividade de leitura 1º ano"
@@ -273,7 +273,7 @@ export default function PedagogiaKanbanPage() {
                                 </div>
                                 <div>
                                     <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1 block">Turma(s)</label>
-                                    <div className="flex flex-wrap gap-2">
+                                    <div className="flex flex-wrap gap-2 max-h-32 overflow-y-auto">
                                         {classes.map(c => (
                                             <button key={c.id} type="button" onClick={() => toggleClass(c.id)}
                                                 className={`px-3 py-1.5 rounded-full text-xs font-bold border transition-all ${formClassIds.includes(c.id)
