@@ -7,6 +7,8 @@ export const metadata: Metadata = {
     description: 'Agendamento e acesso às salas do Google Meet',
 };
 
+export const dynamic = 'force-dynamic';
+
 export default async function MeetingsPage() {
     const meetings = await getMeetingsAction();
 
