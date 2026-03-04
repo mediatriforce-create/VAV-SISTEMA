@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -34,8 +34,8 @@ export default function TurmasPage() {
     // Modal nova turma
     const [showClassModal, setShowClassModal] = useState(false);
     const [className, setClassName] = useState('');
-    const [classYear, setClassYear] = useState('1º Ano');
-    const [classShift, setClassShift] = useState('Manhã');
+    const [classYear, setClassYear] = useState('1Âº Ano');
+    const [classShift, setClassShift] = useState('ManhÃ£');
     const [creatingClass, setCreatingClass] = useState(false);
 
     // Modal novo aluno
@@ -85,7 +85,7 @@ export default function TurmasPage() {
             .single();
 
         if (!error && data) setClasses(prev => [...prev, data as Class]);
-        setClassName(''); setClassYear('1º Ano'); setClassShift('Manhã');
+        setClassName(''); setClassYear('1Âº Ano'); setClassShift('ManhÃ£');
         setCreatingClass(false);
         setShowClassModal(false);
     };
@@ -108,7 +108,7 @@ export default function TurmasPage() {
 
         if (sErr || !student) { setCreatingStudent(false); return; }
 
-        // Vincular à turma
+        // Vincular Ã  turma
         const { data: membership, error: mErr } = await supabase
             .from('class_memberships')
             .insert({ class_id: selectedClass.id, student_id: student.id, status: 'active' })
@@ -141,7 +141,7 @@ export default function TurmasPage() {
                         <span className="material-symbols-outlined text-lg">add</span>
                     </motion.button>
                 </div>
-                <div className="flex-1 overflow-y-auto p-2 space-y-1">
+                <div className="flex-1 overflow-y-auto custom-scrollbar p-2 space-y-1">
                     {loading ? (
                         <div className="flex justify-center py-8">
                             <div className="w-6 h-6 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
@@ -156,7 +156,7 @@ export default function TurmasPage() {
                                     : 'hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-transparent'
                                     }`}>
                                 <p className="font-bold">{cls.name}</p>
-                                <p className="text-[10px] text-zinc-400 mt-0.5">{cls.year_group} · {cls.shift}</p>
+                                <p className="text-[10px] text-zinc-400 mt-0.5">{cls.year_group} Â· {cls.shift}</p>
                             </button>
                         ))
                     )}
@@ -169,14 +169,14 @@ export default function TurmasPage() {
                     <div className="flex-1 flex flex-col items-center justify-center text-center">
                         <span className="material-symbols-outlined text-5xl text-zinc-200 dark:text-zinc-700 mb-3">groups</span>
                         <h3 className="text-lg font-bold text-zinc-400">Selecione uma turma</h3>
-                        <p className="text-xs text-zinc-400 mt-1">Escolha uma turma na lista à esquerda para ver os alunos.</p>
+                        <p className="text-xs text-zinc-400 mt-1">Escolha uma turma na lista Ã  esquerda para ver os alunos.</p>
                     </div>
                 ) : (
                     <>
                         <div className="shrink-0 flex items-center justify-between mb-5">
                             <div>
                                 <h2 className="text-2xl font-extrabold text-zinc-900 dark:text-white">{selectedClass.name}</h2>
-                                <p className="text-xs text-zinc-500">{selectedClass.year_group} · {selectedClass.shift} · {members.length} aluno(s)</p>
+                                <p className="text-xs text-zinc-500">{selectedClass.year_group} Â· {selectedClass.shift} Â· {members.length} aluno(s)</p>
                             </div>
                             <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
                                 onClick={() => setShowStudentModal(true)}
@@ -186,7 +186,7 @@ export default function TurmasPage() {
                             </motion.button>
                         </div>
 
-                        <div className="flex-1 min-h-0 overflow-y-auto">
+                        <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar">
                             {membersLoading ? (
                                 <div className="flex justify-center py-16">
                                     <div className="w-8 h-8 border-3 border-emerald-500 border-t-transparent rounded-full animate-spin" />
@@ -238,7 +238,7 @@ export default function TurmasPage() {
                             <div className="p-6 flex flex-col gap-4">
                                 <div>
                                     <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1 block">Nome *</label>
-                                    <input value={className} onChange={e => setClassName(e.target.value)} placeholder="Ex: 1º Ano A"
+                                    <input value={className} onChange={e => setClassName(e.target.value)} placeholder="Ex: 1Âº Ano A"
                                         className="w-full px-4 py-3 bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 rounded-xl outline-none focus:border-emerald-500 text-sm" />
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
@@ -246,14 +246,14 @@ export default function TurmasPage() {
                                         <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1 block">Ano</label>
                                         <select value={classYear} onChange={e => setClassYear(e.target.value)}
                                             className="w-full px-4 py-3 bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 rounded-xl outline-none text-sm">
-                                            {['1º Ano', '2º Ano', '3º Ano', '4º Ano', '5º Ano'].map(y => <option key={y}>{y}</option>)}
+                                            {['1Âº Ano', '2Âº Ano', '3Âº Ano', '4Âº Ano', '5Âº Ano'].map(y => <option key={y}>{y}</option>)}
                                         </select>
                                     </div>
                                     <div>
                                         <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1 block">Turno</label>
                                         <select value={classShift} onChange={e => setClassShift(e.target.value)}
                                             className="w-full px-4 py-3 bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 rounded-xl outline-none text-sm">
-                                            {['Manhã', 'Tarde', 'Integral'].map(s => <option key={s}>{s}</option>)}
+                                            {['ManhÃ£', 'Tarde', 'Integral'].map(s => <option key={s}>{s}</option>)}
                                         </select>
                                     </div>
                                 </div>
@@ -295,12 +295,12 @@ export default function TurmasPage() {
                                         className="w-full px-4 py-3 bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 rounded-xl outline-none text-sm" />
                                 </div>
                                 <div>
-                                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1 block">Nome do responsável</label>
+                                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1 block">Nome do responsÃ¡vel</label>
                                     <input value={studentGuardian} onChange={e => setStudentGuardian(e.target.value)} placeholder="Nome"
                                         className="w-full px-4 py-3 bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 rounded-xl outline-none text-sm" />
                                 </div>
                                 <div>
-                                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1 block">Telefone do responsável</label>
+                                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1 block">Telefone do responsÃ¡vel</label>
                                     <input value={studentPhone} onChange={e => setStudentPhone(e.target.value)} placeholder="(xx) xxxxx-xxxx"
                                         className="w-full px-4 py-3 bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 rounded-xl outline-none text-sm" />
                                 </div>
@@ -319,3 +319,4 @@ export default function TurmasPage() {
         </div>
     );
 }
+

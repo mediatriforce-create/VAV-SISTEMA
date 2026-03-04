@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -29,7 +29,7 @@ function getFileIcon(mimeType: string) {
 }
 
 export default function ArquivosPage() {
-    // Seções: pastas do Drive separadas
+    // SeÃ§Ãµes: pastas do Drive separadas
     const [commFolders, setCommFolders] = useState<DriveItem[]>([]);
     const [pedFolders, setPedFolders] = useState<DriveItem[]>([]);
     const [activeFolder, setActiveFolder] = useState<DriveItem | null>(null);
@@ -53,7 +53,7 @@ export default function ArquivosPage() {
     const loadDriveFolders = async () => {
         setLoading(true);
         try {
-            // Importar a action de comunicação para pegar a estrutura do Drive
+            // Importar a action de comunicaÃ§Ã£o para pegar a estrutura do Drive
             const { syncGoogleDriveStructure, listGoogleDriveFiles } = await import('@/modules/comunicacao/actions');
 
             // 1. Sync para garantir que as pastas existem e pegar os IDs
@@ -62,7 +62,7 @@ export default function ArquivosPage() {
 
             const { rootId, commId, folders: commFolderIds } = syncRes.data;
 
-            // 2. Listar sub-pastas de Comunicação (1 ANO - 5 ANO)
+            // 2. Listar sub-pastas de ComunicaÃ§Ã£o (1 ANO - 5 ANO)
             const yearFolders = ['1 ANO', '2 ANO', '3 ANO', '4 ANO', '5 ANO'];
             const commItems: DriveItem[] = yearFolders
                 .filter(name => commFolderIds[name])
@@ -168,7 +168,7 @@ export default function ArquivosPage() {
                             <div>
                                 <h2 className="text-2xl font-extrabold text-zinc-900 dark:text-white">{activeFolder.name}</h2>
                                 <p className="text-xs text-zinc-500">
-                                    {activeFolderSource === 'comm' ? 'Comunicação' : 'Pedagogia'} · Google Drive
+                                    {activeFolderSource === 'comm' ? 'ComunicaÃ§Ã£o' : 'Pedagogia'} Â· Google Drive
                                 </p>
                             </div>
                         </>
@@ -203,7 +203,7 @@ export default function ArquivosPage() {
             </div>
 
             {/* Content */}
-            <div className="flex-1 min-h-0 overflow-y-auto">
+            <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar">
                 {loading ? (
                     <div className="flex items-center justify-center py-16">
                         <div className="w-8 h-8 border-3 border-emerald-500 border-t-transparent rounded-full animate-spin" />
@@ -253,11 +253,11 @@ export default function ArquivosPage() {
                 ) : (
                     /* === LISTA DE PASTAS DO DRIVE === */
                     <div className="space-y-8">
-                        {/* Seção: Pastas por Ano (de Comunicação) */}
+                        {/* SeÃ§Ã£o: Pastas por Ano (de ComunicaÃ§Ã£o) */}
                         <div>
                             <div className="flex items-center gap-2 mb-4">
                                 <span className="material-symbols-outlined text-blue-500 text-lg">campaign</span>
-                                <h3 className="font-bold text-sm text-zinc-700 dark:text-zinc-300 uppercase tracking-wider">Pastas por Ano (Comunicação)</h3>
+                                <h3 className="font-bold text-sm text-zinc-700 dark:text-zinc-300 uppercase tracking-wider">Pastas por Ano (ComunicaÃ§Ã£o)</h3>
                             </div>
                             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
                                 {commFolders.map(folder => (
@@ -267,13 +267,13 @@ export default function ArquivosPage() {
                                         className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-2xl p-6 flex flex-col items-center text-center hover:shadow-lg hover:border-blue-300 dark:hover:border-blue-700 transition-all cursor-pointer group">
                                         <span className="material-symbols-outlined text-4xl text-blue-400 group-hover:text-blue-500 mb-3 transition-colors">folder</span>
                                         <h4 className="font-bold text-sm text-zinc-800 dark:text-zinc-200">{folder.name}</h4>
-                                        <p className="text-[10px] text-zinc-400 mt-1">Comunicação</p>
+                                        <p className="text-[10px] text-zinc-400 mt-1">ComunicaÃ§Ã£o</p>
                                     </motion.button>
                                 ))}
                             </div>
                         </div>
 
-                        {/* Seção: Pastas de Pedagogia */}
+                        {/* SeÃ§Ã£o: Pastas de Pedagogia */}
                         <div>
                             <div className="flex items-center gap-2 mb-4">
                                 <span className="material-symbols-outlined text-emerald-500 text-lg">school</span>
@@ -282,7 +282,7 @@ export default function ArquivosPage() {
                             {pedFolders.length === 0 ? (
                                 <div className="bg-zinc-50 dark:bg-zinc-800/30 border border-dashed border-zinc-200 dark:border-zinc-700 rounded-2xl p-8 text-center">
                                     <span className="material-symbols-outlined text-3xl text-zinc-300 dark:text-zinc-600 mb-2">create_new_folder</span>
-                                    <p className="text-xs text-zinc-400">Nenhuma pasta pedagógica. Clique em "Nova Pasta" para criar.</p>
+                                    <p className="text-xs text-zinc-400">Nenhuma pasta pedagÃ³gica. Clique em "Nova Pasta" para criar.</p>
                                 </div>
                             ) : (
                                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
@@ -314,12 +314,12 @@ export default function ArquivosPage() {
                             className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-zinc-200 dark:border-zinc-800 w-full max-w-md">
                             <div className="p-6 border-b border-zinc-100 dark:border-zinc-800">
                                 <h3 className="text-lg font-extrabold text-zinc-900 dark:text-white">Nova Pasta</h3>
-                                <p className="text-xs text-zinc-500 mt-1">Será criada em: VAV SISTEMA → PEDAGOGIA</p>
+                                <p className="text-xs text-zinc-500 mt-1">SerÃ¡ criada em: VAV SISTEMA â†’ PEDAGOGIA</p>
                             </div>
                             <div className="p-6">
                                 <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1 block">Nome da pasta *</label>
                                 <input value={newFolderName} onChange={e => setNewFolderName(e.target.value)}
-                                    placeholder="Ex: Jogos Matemáticos, Fotos Sábado 12/04..."
+                                    placeholder="Ex: Jogos MatemÃ¡ticos, Fotos SÃ¡bado 12/04..."
                                     className="w-full px-4 py-3 bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 rounded-xl outline-none focus:border-emerald-500 text-sm" />
                             </div>
                             <div className="p-6 border-t border-zinc-100 dark:border-zinc-800 flex justify-end gap-3">
@@ -336,3 +336,4 @@ export default function ArquivosPage() {
         </div>
     );
 }
+

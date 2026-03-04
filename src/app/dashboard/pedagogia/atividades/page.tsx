@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -77,7 +77,7 @@ export default function AtividadesPage() {
             <div className="shrink-0 flex items-center justify-between mb-5">
                 <div>
                     <h2 className="text-2xl font-extrabold text-zinc-900 dark:text-white">Atividades do Dia</h2>
-                    <p className="text-xs text-zinc-500">Registre o que será/foi feito em cada encontro</p>
+                    <p className="text-xs text-zinc-500">Registre o que serÃ¡/foi feito em cada encontro</p>
                 </div>
                 <motion.button
                     whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
@@ -106,7 +106,7 @@ export default function AtividadesPage() {
             </div>
 
             {/* Lista de Atividades */}
-            <div className="flex-1 min-h-0 overflow-y-auto space-y-4 pr-1">
+            <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar space-y-4 pr-1">
                 {loading ? (
                     <div className="flex items-center justify-center py-16">
                         <div className="w-8 h-8 border-3 border-emerald-500 border-t-transparent rounded-full animate-spin" />
@@ -166,25 +166,25 @@ export default function AtividadesPage() {
                         <motion.div
                             initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }}
                             onClick={e => e.stopPropagation()}
-                            className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-zinc-200 dark:border-zinc-800 w-full max-w-lg max-h-[90vh] overflow-y-auto"
+                            className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-zinc-200 dark:border-zinc-800 w-full max-w-lg max-h-[90vh] overflow-y-auto custom-scrollbar"
                         >
                             <div className="p-6 border-b border-zinc-100 dark:border-zinc-800">
                                 <h3 className="text-lg font-extrabold text-zinc-900 dark:text-white">Nova Atividade</h3>
-                                <p className="text-xs text-zinc-500 mt-1">{selectedClassName} — {new Date(selectedDate + 'T12:00:00').toLocaleDateString('pt-BR')}</p>
+                                <p className="text-xs text-zinc-500 mt-1">{selectedClassName} â€” {new Date(selectedDate + 'T12:00:00').toLocaleDateString('pt-BR')}</p>
                             </div>
                             <div className="p-6 flex flex-col gap-4">
                                 <div>
-                                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1 block">Título *</label>
-                                    <input value={formTitle} onChange={e => setFormTitle(e.target.value)} placeholder="Ex: Jogo de Matemática com tampinhas"
+                                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1 block">TÃ­tulo *</label>
+                                    <input value={formTitle} onChange={e => setFormTitle(e.target.value)} placeholder="Ex: Jogo de MatemÃ¡tica com tampinhas"
                                         className="w-full px-4 py-3 bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 rounded-xl outline-none focus:border-emerald-500 text-sm" />
                                 </div>
                                 <div>
-                                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1 block">Descrição</label>
-                                    <textarea value={formDesc} onChange={e => setFormDesc(e.target.value)} rows={3} placeholder="O que será feito e como..."
+                                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1 block">DescriÃ§Ã£o</label>
+                                    <textarea value={formDesc} onChange={e => setFormDesc(e.target.value)} rows={3} placeholder="O que serÃ¡ feito e como..."
                                         className="w-full p-4 bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 rounded-xl outline-none text-sm resize-none" />
                                 </div>
                                 <div>
-                                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1 block">Observações</label>
+                                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1 block">ObservaÃ§Ãµes</label>
                                     <textarea value={formNotes} onChange={e => setFormNotes(e.target.value)} rows={2} placeholder="Ex: Levar cartolina, fulano precisa de apoio..."
                                         className="w-full p-4 bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 rounded-xl outline-none text-sm resize-none" />
                                 </div>
@@ -206,7 +206,7 @@ export default function AtividadesPage() {
                                                 return f ? (
                                                     <span key={fid} className="inline-flex items-center gap-1 px-2.5 py-1 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 rounded-full text-xs font-bold border border-emerald-100 dark:border-emerald-800">
                                                         {f.name}
-                                                        <button onClick={() => toggleFile(fid)} className="hover:text-red-500">×</button>
+                                                        <button onClick={() => toggleFile(fid)} className="hover:text-red-500">Ã—</button>
                                                     </span>
                                                 ) : null;
                                             })}
@@ -218,9 +218,9 @@ export default function AtividadesPage() {
                                                 initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }}
                                                 className="border border-zinc-200 dark:border-zinc-700 rounded-xl overflow-hidden"
                                             >
-                                                <div className="max-h-40 overflow-y-auto p-2 space-y-1">
+                                                <div className="max-h-40 overflow-y-auto custom-scrollbar p-2 space-y-1">
                                                     {allFiles.length === 0 ? (
-                                                        <p className="text-xs text-zinc-400 text-center py-4">Nenhum arquivo no banco. Faça upload na aba Arquivos.</p>
+                                                        <p className="text-xs text-zinc-400 text-center py-4">Nenhum arquivo no banco. FaÃ§a upload na aba Arquivos.</p>
                                                     ) : (
                                                         allFiles.map(f => {
                                                             const sel = formFileIds.includes(f.id);
@@ -256,3 +256,4 @@ export default function AtividadesPage() {
         </div>
     );
 }
+

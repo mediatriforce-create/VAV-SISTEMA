@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
@@ -114,11 +114,11 @@ export default function Sidebar({ rooms, selectedRoomId, onSelectRoom, onDMCreat
         <div className="w-full h-full flex flex-col p-4 bg-transparent isolate">
             {/* Header */}
             <div className="flex items-center justify-between mb-4 pb-3 border-b border-zinc-200 dark:border-white/10 shrink-0">
-                <h2 className="text-xl font-extrabold text-zinc-900 dark:text-white tracking-tight">Comunicação</h2>
+                <h2 className="text-xl font-extrabold text-zinc-900 dark:text-white tracking-tight">ComunicaÃ§Ã£o</h2>
             </div>
 
-            {/* Listas Scrolláveis */}
-            <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide flex flex-col gap-4 scroll-smooth pr-1">
+            {/* Listas ScrollÃ¡veis */}
+            <div className="flex-1 overflow-y-auto custom-scrollbar overflow-x-hidden scrollbar-hide flex flex-col gap-4 scroll-smooth pr-1">
 
                 {channels.length > 0 && (
                     <div className="flex flex-col gap-1">
@@ -157,14 +157,14 @@ export default function Sidebar({ rooms, selectedRoomId, onSelectRoom, onDMCreat
                                 autoFocus
                                 className="w-full px-3 py-2 text-sm bg-white dark:bg-black/40 border border-zinc-200 dark:border-white/10 rounded-lg outline-none focus:ring-2 focus:ring-secondary/30 dark:focus:ring-primary/30 text-zinc-900 dark:text-white placeholder-zinc-400"
                             />
-                            <div className="max-h-40 overflow-y-auto flex flex-col gap-1 scrollbar-hide">
+                            <div className="max-h-40 overflow-y-auto custom-scrollbar flex flex-col gap-1 scrollbar-hide">
                                 {loadingUsers ? (
                                     <div className="py-3 text-center">
                                         <span className="text-xs text-zinc-400">Carregando...</span>
                                     </div>
                                 ) : filteredUsers.length === 0 ? (
                                     <div className="py-3 text-center">
-                                        <span className="text-xs text-zinc-400">Nenhum usuário encontrado.</span>
+                                        <span className="text-xs text-zinc-400">Nenhum usuÃ¡rio encontrado.</span>
                                     </div>
                                 ) : (
                                     filteredUsers.map((u) => (
@@ -214,3 +214,4 @@ export default function Sidebar({ rooms, selectedRoomId, onSelectRoom, onDMCreat
         </div>
     );
 }
+

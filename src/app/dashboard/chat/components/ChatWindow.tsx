@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+﻿import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChatListItem, Message, FileMetadata } from '@/types/chat';
 import { getRoomMessages, sendMessage } from '@/actions/chat';
@@ -133,7 +133,7 @@ export default function ChatWindow({ room, onBack }: ChatWindowProps) {
             }
 
             // Envia uma mensagem com o arquivo anexado
-            const msgContent = `📎 ${file.name}`;
+            const msgContent = `ðŸ“Ž ${file.name}`;
             const optimisticId = crypto.randomUUID();
             const optimisticMessage: Message = {
                 id: optimisticId,
@@ -186,12 +186,12 @@ export default function ChatWindow({ room, onBack }: ChatWindowProps) {
                             <span className="material-symbols-outlined text-white text-3xl opacity-0 group-hover/img:opacity-100 transition-opacity drop-shadow-lg">open_in_new</span>
                         </div>
                     </div>
-                    <p className="text-[10px] text-zinc-400 mt-1 truncate">{fileMeta.file_name} • {formatFileSize(fileMeta.size)}</p>
+                    <p className="text-[10px] text-zinc-400 mt-1 truncate">{fileMeta.file_name} â€¢ {formatFileSize(fileMeta.size)}</p>
                 </a>
             );
         }
 
-        // Card de arquivo genérico
+        // Card de arquivo genÃ©rico
         return (
             <a
                 href={fileMeta.web_view_link}
@@ -271,7 +271,7 @@ export default function ChatWindow({ room, onBack }: ChatWindowProps) {
             </div>
 
             {/* Message Feed */}
-            <div ref={messagesContainerRef} className="flex-1 min-h-0 overflow-y-auto px-4 sm:px-8 py-6 flex flex-col gap-6 custom-scrollbar scroll-smooth">
+            <div ref={messagesContainerRef} className="flex-1 min-h-0 overflow-y-auto custom-scrollbar px-4 sm:px-8 py-6 flex flex-col gap-6 custom-scrollbar scroll-smooth">
                 {isLoading ? (
                     <div className="flex flex-col gap-4 w-full h-full justify-end pb-8">
                         <div className="flex gap-3 items-end self-start w-full max-w-sm opacity-60">
@@ -292,7 +292,7 @@ export default function ChatWindow({ room, onBack }: ChatWindowProps) {
                             <span className="material-symbols-outlined text-5xl text-zinc-400">forum</span>
                         </div>
                         <h4 className="font-bold text-zinc-700 dark:text-zinc-300">Sala Vazia</h4>
-                        <p className="text-sm text-zinc-500 max-w-xs mt-1">Ninguém enviou mensagens aqui ainda. Seja o primeiro a quebrar o gelo!</p>
+                        <p className="text-sm text-zinc-500 max-w-xs mt-1">NinguÃ©m enviou mensagens aqui ainda. Seja o primeiro a quebrar o gelo!</p>
                     </div>
                 ) : (
                     <AnimatePresence initial={false}>
@@ -339,7 +339,7 @@ export default function ChatWindow({ room, onBack }: ChatWindowProps) {
                                                 msg.content
                                             )}
 
-                                            {/* Renderização do arquivo */}
+                                            {/* RenderizaÃ§Ã£o do arquivo */}
                                             {fileMeta && renderFileAttachment(fileMeta, isMe)}
                                         </div>
                                     </div>
@@ -365,7 +365,7 @@ export default function ChatWindow({ room, onBack }: ChatWindowProps) {
                     onSubmit={handleSend}
                     className="flex items-center gap-2 bg-white dark:bg-black/40 rounded-2xl px-2 py-1.5 border border-zinc-200 dark:border-white/10 shadow-inner focus-within:border-secondary/50 dark:focus-within:border-primary/50 focus-within:ring-1 focus-within:ring-secondary/20 dark:focus-within:ring-primary/20 transition-all"
                 >
-                    {/* Botão de Anexar Arquivo */}
+                    {/* BotÃ£o de Anexar Arquivo */}
                     <input
                         ref={fileInputRef}
                         type="file"
@@ -407,3 +407,4 @@ export default function ChatWindow({ room, onBack }: ChatWindowProps) {
         </div>
     );
 }
+

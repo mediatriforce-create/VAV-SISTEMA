@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import React, { useState, useRef, useEffect } from 'react'
 import { createPortal } from 'react-dom'
@@ -56,7 +56,7 @@ export function ImportModal({ isOpen, onClose, bankId, bankName }: ImportModalPr
         setLoading(true)
         const result = await saveImportedTransactions(bankId, parsedData)
         if (result.success) {
-            alert('Transações importadas com sucesso!')
+            alert('TransaÃ§Ãµes importadas com sucesso!')
             onClose()
             setStep('upload')
             setFile(null)
@@ -95,7 +95,7 @@ export function ImportModal({ isOpen, onClose, bankId, bankName }: ImportModalPr
                                 </div>
                                 <h3 className="text-lg font-medium text-gray-900 dark:text-white">Selecione o arquivo do extrato</h3>
                                 <p className="text-sm text-gray-500 max-w-sm mx-auto">
-                                    Suportamos arquivos <strong>PDF, OFX e CSV</strong>. O sistema tentará identificar automaticamente as transações.
+                                    Suportamos arquivos <strong>PDF, OFX e CSV</strong>. O sistema tentarÃ¡ identificar automaticamente as transaÃ§Ãµes.
                                 </p>
                             </div>
 
@@ -127,7 +127,7 @@ export function ImportModal({ isOpen, onClose, bankId, bankName }: ImportModalPr
                         <div className="space-y-4">
                             <div className="flex justify-between items-center">
                                 <h3 className="font-bold text-gray-700 dark:text-white">
-                                    {parsedData.length} Transações Encontradas
+                                    {parsedData.length} TransaÃ§Ãµes Encontradas
                                 </h3>
                                 <button
                                     onClick={() => setStep('upload')}
@@ -137,12 +137,12 @@ export function ImportModal({ isOpen, onClose, bankId, bankName }: ImportModalPr
                                 </button>
                             </div>
 
-                            <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden max-h-[50vh] overflow-y-auto">
+                            <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden max-h-[50vh] overflow-y-auto custom-scrollbar">
                                 <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                                     <thead className="bg-gray-50 dark:bg-gray-700 sticky top-0">
                                         <tr>
                                             <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Data</th>
-                                            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Descrição</th>
+                                            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">DescriÃ§Ã£o</th>
                                             <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Valor</th>
                                             <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Tipo</th>
                                         </tr>
@@ -179,7 +179,7 @@ export function ImportModal({ isOpen, onClose, bankId, bankName }: ImportModalPr
                                     disabled={loading}
                                     className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium disabled:opacity-50 flex items-center gap-2"
                                 >
-                                    {loading ? 'Salvando...' : 'Confirmar Importação'}
+                                    {loading ? 'Salvando...' : 'Confirmar ImportaÃ§Ã£o'}
                                 </button>
                             </div>
                         </div>
@@ -190,3 +190,4 @@ export function ImportModal({ isOpen, onClose, bankId, bankName }: ImportModalPr
         document.body
     )
 }
+

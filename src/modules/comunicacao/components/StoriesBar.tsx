@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { CommunicationPost } from '@/types/communication';
 
@@ -11,7 +11,7 @@ export default function StoriesBar({ stories, onSelect }: StoriesBarProps) {
     if (stories.length === 0) return null;
 
     return (
-        <div className="flex gap-4 overflow-x-auto pb-2 pt-2">
+        <div className="flex gap-4 overflow-x-auto custom-scrollbar pb-2 pt-2">
             {/* New Story Button (Placeholder) */}
             <div className="flex flex-col items-center gap-1 cursor-pointer min-w-[60px]">
                 <div className="w-12 h-12 rounded-full border-2 border-slate-200 flex items-center justify-center bg-slate-50 text-slate-400 text-xl font-light">
@@ -37,3 +37,4 @@ export default function StoriesBar({ stories, onSelect }: StoriesBarProps) {
         </div>
     );
 }
+

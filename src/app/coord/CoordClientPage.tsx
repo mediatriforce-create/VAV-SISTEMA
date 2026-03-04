@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState } from 'react';
 import { Demand } from '@/types/demands';
@@ -36,7 +36,7 @@ export default function CoordClientPage({ currentUser, initialDemands, teamMembe
                     <div>
                         <h1 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
                             <LayoutDashboard className="text-primary" />
-                            Coordenação & Demandas
+                            CoordenaÃ§Ã£o & Demandas
                         </h1>
                         <p className="text-slate-500 mt-1">Gerencie tarefas e distribua demandas para a equipe.</p>
                     </div>
@@ -70,7 +70,7 @@ export default function CoordClientPage({ currentUser, initialDemands, teamMembe
                                 <Users size={18} />
                                 Equipe
                             </h3>
-                            <div className="flex-1 min-h-0 overflow-y-auto space-y-3 custom-scrollbar pr-2">
+                            <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar space-y-3 custom-scrollbar pr-2">
                                 {teamMembers.map(member => (
                                     <TeamMemberCard key={member.id} member={member} />
                                 ))}
@@ -91,3 +91,4 @@ export default function CoordClientPage({ currentUser, initialDemands, teamMembe
         </div>
     );
 }
+

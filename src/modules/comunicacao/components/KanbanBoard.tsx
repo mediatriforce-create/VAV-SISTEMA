@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState } from 'react';
 import {
@@ -22,7 +22,7 @@ interface KanbanBoardProps {
 const COLUMNS = [
     { id: 'a_fazer', title: 'A Fazer', color: 'bg-slate-200' },
     { id: 'em_andamento', title: 'Em Andamento', color: 'bg-yellow-200' },
-    { id: 'revisao', title: 'Revisão', color: 'bg-purple-200' },
+    { id: 'revisao', title: 'RevisÃ£o', color: 'bg-purple-200' },
     { id: 'finalizado', title: 'Finalizado', color: 'bg-green-200' },
 ];
 
@@ -79,7 +79,7 @@ export default function KanbanBoard({ initialDemands }: KanbanBoardProps) {
             onDragStart={handleDragStart}
             onDragEnd={handleDragEnd}
         >
-            <div className="flex-1 min-h-0 flex flex-col md:flex-row gap-6 overflow-x-auto pb-4 items-start custom-scrollbar">
+            <div className="flex-1 min-h-0 flex flex-col md:flex-row gap-6 overflow-x-auto custom-scrollbar pb-4 items-start custom-scrollbar">
                 {COLUMNS.map(col => (
                     <KanbanColumn
                         key={col.id}
@@ -101,3 +101,4 @@ export default function KanbanBoard({ initialDemands }: KanbanBoardProps) {
         </DndContext >
     );
 }
+

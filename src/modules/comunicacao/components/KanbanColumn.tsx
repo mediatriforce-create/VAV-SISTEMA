@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useDroppable } from '@dnd-kit/core';
 import { Demand } from '@/types/demands';
@@ -31,7 +31,7 @@ export default function KanbanColumn({ id, title, demands, color }: KanbanColumn
             {/* Cards Container */}
             <div
                 ref={setNodeRef}
-                className={`flex-1 p-3 space-y-3 overflow-y-auto min-h-[150px] transition-colors ${isOver ? 'bg-primary/5 ring-2 ring-primary/20 ring-inset' : ''
+                className={`flex-1 p-3 space-y-3 overflow-y-auto custom-scrollbar min-h-[150px] transition-colors ${isOver ? 'bg-primary/5 ring-2 ring-primary/20 ring-inset' : ''
                     }`}
             >
                 {demands.map(demand => (
@@ -46,3 +46,4 @@ export default function KanbanColumn({ id, title, demands, color }: KanbanColumn
         </div>
     );
 }
+

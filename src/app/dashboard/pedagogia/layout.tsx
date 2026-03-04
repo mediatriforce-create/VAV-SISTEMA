@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
@@ -25,11 +25,11 @@ export default function PedagogiaLayout({ children }: { children: React.ReactNod
                         </div>
                         <div className="hidden sm:block">
                             <h1 className="text-lg font-extrabold text-zinc-900 dark:text-white tracking-tight leading-none">Pedagogia</h1>
-                            <p className="text-[10px] uppercase tracking-widest text-emerald-600 dark:text-emerald-400 font-bold">Módulo Educacional</p>
+                            <p className="text-[10px] uppercase tracking-widest text-emerald-600 dark:text-emerald-400 font-bold">MÃ³dulo Educacional</p>
                         </div>
                     </div>
 
-                    <nav className="flex items-center gap-1 overflow-x-auto scrollbar-hide">
+                    <nav className="flex items-center gap-1 overflow-x-auto custom-scrollbar scrollbar-hide">
                         {NAV_ITEMS.map((item) => {
                             const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
 
@@ -54,10 +54,11 @@ export default function PedagogiaLayout({ children }: { children: React.ReactNod
                 </div>
             </div>
 
-            {/* Content Area — fit-to-screen */}
+            {/* Content Area â€” fit-to-screen */}
             <div className="flex-1 min-h-0 overflow-hidden">
                 {children}
             </div>
         </div>
     );
 }
+

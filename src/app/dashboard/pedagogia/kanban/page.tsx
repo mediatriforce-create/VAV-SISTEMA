@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -13,10 +13,10 @@ const COLUMNS: { id: KanbanColumnStatus; title: string; color: string; icon: str
     { id: 'backlog', title: 'Backlog', color: 'from-slate-400 to-slate-500', icon: 'inbox' },
     { id: 'planejado', title: 'Planejado', color: 'from-blue-400 to-blue-600', icon: 'event' },
     { id: 'andamento', title: 'Em Andamento', color: 'from-amber-400 to-orange-500', icon: 'pending' },
-    { id: 'concluido', title: 'Concluído', color: 'from-emerald-400 to-green-600', icon: 'check_circle' },
+    { id: 'concluido', title: 'ConcluÃ­do', color: 'from-emerald-400 to-green-600', icon: 'check_circle' },
 ];
 
-const CARD_TYPES = ['Atividade de aula', 'Organização', 'Evento especial', 'Outro'];
+const CARD_TYPES = ['Atividade de aula', 'OrganizaÃ§Ã£o', 'Evento especial', 'Outro'];
 
 // ---- CARD COMPONENT (draggable) ----
 function KanbanCardItem({ card, onDelete }: { card: PedKanbanCard; onDelete: (id: string) => void }) {
@@ -90,7 +90,7 @@ function KanbanColumn({ col, cards, onDelete }: { col: typeof COLUMNS[0]; cards:
             {/* Body */}
             <div
                 ref={setNodeRef}
-                className={`flex-1 bg-zinc-50 dark:bg-zinc-900/50 rounded-b-2xl border border-t-0 border-zinc-200 dark:border-zinc-800 p-3 space-y-3 overflow-y-auto transition-all ${isOver ? 'ring-2 ring-inset ring-emerald-400/30 bg-emerald-50/30 dark:bg-emerald-900/10' : ''}`}
+                className={`flex-1 bg-zinc-50 dark:bg-zinc-900/50 rounded-b-2xl border border-t-0 border-zinc-200 dark:border-zinc-800 p-3 space-y-3 overflow-y-auto custom-scrollbar transition-all ${isOver ? 'ring-2 ring-inset ring-emerald-400/30 bg-emerald-50/30 dark:bg-emerald-900/10' : ''}`}
             >
                 {cards.map(card => (
                     <KanbanCardItem key={card.id} card={card} onDelete={onDelete} />
@@ -191,7 +191,7 @@ export default function PedagogiaKanbanPage() {
             <div className="shrink-0 flex items-center justify-between mb-4">
                 <div>
                     <h2 className="text-2xl font-extrabold text-zinc-900 dark:text-white">Quadro de Tarefas</h2>
-                    <p className="text-xs text-zinc-500">Organize as tarefas pedagógicas da equipe</p>
+                    <p className="text-xs text-zinc-500">Organize as tarefas pedagÃ³gicas da equipe</p>
                 </div>
                 <motion.button
                     whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
@@ -205,7 +205,7 @@ export default function PedagogiaKanbanPage() {
 
             {/* Kanban Board */}
             <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-                <div className="flex-1 min-h-0 flex gap-5 overflow-x-auto pb-2 items-stretch">
+                <div className="flex-1 min-h-0 flex gap-5 overflow-x-auto custom-scrollbar pb-2 items-stretch">
                     {COLUMNS.map(col => (
                         <KanbanColumn key={col.id} col={col} cards={cards.filter(c => c.column_status === col.id)} onDelete={handleDelete} />
                     ))}
@@ -238,10 +238,10 @@ export default function PedagogiaKanbanPage() {
                             <div className="p-6 border-b border-zinc-100 dark:border-zinc-800">
                                 <h3 className="text-lg font-extrabold text-zinc-900 dark:text-white">Novo Card</h3>
                             </div>
-                            <div className="p-6 flex flex-col gap-4 overflow-y-auto flex-1 min-h-0">
+                            <div className="p-6 flex flex-col gap-4 overflow-y-auto custom-scrollbar flex-1 min-h-0 custom-scrollbar">
                                 <div>
-                                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1 block">Título *</label>
-                                    <input value={formTitle} onChange={e => setFormTitle(e.target.value)} placeholder="Ex: Atividade de leitura 1º ano"
+                                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1 block">TÃ­tulo *</label>
+                                    <input value={formTitle} onChange={e => setFormTitle(e.target.value)} placeholder="Ex: Atividade de leitura 1Âº ano"
                                         className="w-full px-4 py-3 bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 rounded-xl outline-none focus:border-emerald-500 text-sm" />
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
@@ -267,13 +267,13 @@ export default function PedagogiaKanbanPage() {
                                         className="w-full px-4 py-3 bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 rounded-xl outline-none text-sm" />
                                 </div>
                                 <div>
-                                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1 block">Descrição</label>
-                                    <textarea value={formDesc} onChange={e => setFormDesc(e.target.value)} rows={3} placeholder="Breve descrição..."
+                                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1 block">DescriÃ§Ã£o</label>
+                                    <textarea value={formDesc} onChange={e => setFormDesc(e.target.value)} rows={3} placeholder="Breve descriÃ§Ã£o..."
                                         className="w-full p-4 bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 rounded-xl outline-none text-sm resize-none" />
                                 </div>
                                 <div>
                                     <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1 block">Turma(s)</label>
-                                    <div className="flex flex-wrap gap-2 max-h-32 overflow-y-auto">
+                                    <div className="flex flex-wrap gap-2 max-h-32 overflow-y-auto custom-scrollbar">
                                         {classes.map(c => (
                                             <button key={c.id} type="button" onClick={() => toggleClass(c.id)}
                                                 className={`px-3 py-1.5 rounded-full text-xs font-bold border transition-all ${formClassIds.includes(c.id)
@@ -301,3 +301,4 @@ export default function PedagogiaKanbanPage() {
         </div>
     );
 }
+

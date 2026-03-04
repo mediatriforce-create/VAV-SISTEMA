@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -32,7 +32,7 @@ export function LocalCalendar() {
         fetchMonthEvents();
     }, [year, month]);
 
-    // Lógica do Builder de Calendário (Semanas/Dias)
+    // LÃ³gica do Builder de CalendÃ¡rio (Semanas/Dias)
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     const firstDayOfMonth = new Date(year, month, 1).getDay();
     const lastDayOfPrevMonth = new Date(year, month, 0).getDate();
@@ -76,7 +76,7 @@ export function LocalCalendar() {
             date.getFullYear() === today.getFullYear();
     };
 
-    // Actions Visão
+    // Actions VisÃ£o
     const handleDayClick = (dateObj: Date) => {
         // Normalizado pra string YYYY-MM-DD local sem Timezone Shifts bizarros
         const localDate = new Date(dateObj.getTime() - (dateObj.getTimezoneOffset() * 60000)).toISOString().split('T')[0];
@@ -127,7 +127,7 @@ export function LocalCalendar() {
 
             {/* Calendar Grid Header (Mon-Sun) */}
             <div className="grid grid-cols-7 border-b border-zinc-200 dark:border-white/10 shrink-0 bg-zinc-50/50 dark:bg-black/20">
-                {['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'].map(day => (
+                {['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'SÃ¡b'].map(day => (
                     <div key={day} className="py-3 text-center text-[10px] sm:text-sm font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
                         {day}
                     </div>
@@ -135,7 +135,7 @@ export function LocalCalendar() {
             </div>
 
             {/* Calendar Body */}
-            <div className="flex-1 min-h-0 overflow-y-auto grid grid-cols-7 auto-rows-fr bg-zinc-100 dark:bg-black/40 gap-[1px] custom-scrollbar">
+            <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar grid grid-cols-7 auto-rows-fr bg-zinc-100 dark:bg-black/40 gap-[1px] custom-scrollbar">
                 {isLoading ? (
                     // Loading State
                     <div className="col-span-7 row-span-6 bg-white dark:bg-zinc-900 flex justify-center py-20">
@@ -161,7 +161,7 @@ export function LocalCalendar() {
                                 </span>
 
                                 {/* Eventos no dia */}
-                                <div className="flex-1 min-h-0 flex flex-col gap-1 overflow-y-auto no-scrollbar">
+                                <div className="flex-1 min-h-0 flex flex-col gap-1 overflow-y-auto custom-scrollbar no-scrollbar">
                                     {dayEvents.map(ev => (
                                         <div
                                             key={ev.id}
@@ -174,7 +174,7 @@ export function LocalCalendar() {
                                                 onClick={(e) => handleDelete(e, ev.id)}
                                                 className="absolute right-1 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 hover:text-red-500 transition-all font-black text-xs"
                                             >
-                                                ✕
+                                                âœ•
                                             </button>
                                         </div>
                                     ))}
@@ -205,7 +205,7 @@ export function LocalCalendar() {
                                 autoFocus
                                 value={newEventTitle}
                                 onChange={e => setNewEventTitle(e.target.value)}
-                                placeholder="Pagar Conta, Reunião Externa, Folga..."
+                                placeholder="Pagar Conta, ReuniÃ£o Externa, Folga..."
                                 className="w-full bg-zinc-100 dark:bg-black/40 border border-zinc-200 dark:border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-secondary/50 font-medium text-zinc-900 dark:text-white"
                                 onKeyDown={(e) => e.key === 'Enter' && handleSaveEvent()}
                             />
@@ -232,3 +232,4 @@ export function LocalCalendar() {
         </div>
     );
 }
+

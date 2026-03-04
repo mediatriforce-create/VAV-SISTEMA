@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState, useTransition } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -78,7 +78,7 @@ export default function CreateMeetingModal({ isOpen, onClose, onSuccess }: Creat
                                         <span className="material-symbols-outlined text-xl">event_upcoming</span>
                                     </div>
                                     <div>
-                                        <h2 className="text-xl font-bold text-zinc-900 dark:text-white">Nova Reunião</h2>
+                                        <h2 className="text-xl font-bold text-zinc-900 dark:text-white">Nova ReuniÃ£o</h2>
                                         <p className="text-xs text-zinc-500 dark:text-zinc-400">Gera um link do Google Meet automaticamente</p>
                                     </div>
                                 </div>
@@ -90,8 +90,8 @@ export default function CreateMeetingModal({ isOpen, onClose, onSuccess }: Creat
                                 </button>
                             </div>
 
-                            {/* Formulário - Área Scrollável */}
-                            <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden p-6 custom-scrollbar">
+                            {/* FormulÃ¡rio - Ãrea ScrollÃ¡vel */}
+                            <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar overflow-x-hidden p-6 custom-scrollbar">
                                 <form id="meeting-form" onSubmit={handleSubmit} className="space-y-5">
 
                                     {errorMsg && (
@@ -103,27 +103,27 @@ export default function CreateMeetingModal({ isOpen, onClose, onSuccess }: Creat
 
                                     <div>
                                         <label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">
-                                            Título da Reunião
+                                            TÃ­tulo da ReuniÃ£o
                                         </label>
                                         <input
                                             type="text"
                                             required
                                             value={title}
                                             onChange={(e) => setTitle(e.target.value)}
-                                            placeholder="Ex: Alinhamento Estratégico"
+                                            placeholder="Ex: Alinhamento EstratÃ©gico"
                                             className="input-modern bg-zinc-100 dark:bg-black/50 border border-zinc-200 dark:border-white/5"
                                         />
                                     </div>
 
                                     <div>
                                         <label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">
-                                            Descrição <span className="text-zinc-400 font-normal">(Opcional)</span>
+                                            DescriÃ§Ã£o <span className="text-zinc-400 font-normal">(Opcional)</span>
                                         </label>
                                         <textarea
                                             rows={3}
                                             value={description}
                                             onChange={(e) => setDescription(e.target.value)}
-                                            placeholder="Pauta da reunião..."
+                                            placeholder="Pauta da reuniÃ£o..."
                                             className="input-modern bg-zinc-100 dark:bg-black/50 border border-zinc-200 dark:border-white/5 resize-none w-full"
                                         />
                                     </div>
@@ -144,7 +144,7 @@ export default function CreateMeetingModal({ isOpen, onClose, onSuccess }: Creat
                                         <div className="grid grid-cols-2 gap-3">
                                             <div>
                                                 <label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">
-                                                    Início
+                                                    InÃ­cio
                                                 </label>
                                                 <input
                                                     type="time"
@@ -156,7 +156,7 @@ export default function CreateMeetingModal({ isOpen, onClose, onSuccess }: Creat
                                             </div>
                                             <div>
                                                 <label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">
-                                                    Término
+                                                    TÃ©rmino
                                                 </label>
                                                 <input
                                                     type="time"
@@ -202,3 +202,4 @@ export default function CreateMeetingModal({ isOpen, onClose, onSuccess }: Creat
         </AnimatePresence>
     );
 }
+
