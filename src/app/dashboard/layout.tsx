@@ -83,7 +83,7 @@ export default function DashboardLayout({
     }
 
     return (
-        <div className="flex h-screen w-screen overflow-hidden bg-background-base font-display text-foreground selection:bg-primary/30">
+        <div className="flex h-[100dvh] w-screen overflow-hidden bg-background-base font-display text-foreground selection:bg-primary/30">
             {/* Ambient Base Glows */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
                 <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[150px] mix-blend-screen pointer-events-none"></div>
@@ -91,7 +91,7 @@ export default function DashboardLayout({
             </div>
 
             {/* Main Content Area */}
-            <div className="w-full flex-1 flex flex-col h-screen min-w-0 overflow-hidden relative z-10">
+            <div className="w-full flex-1 flex flex-col h-[100dvh] min-w-0 overflow-hidden relative z-10">
 
                 {/* Barra Lateral Vertical â€” oculta no dashboard principal */}
                 <div className={`fixed left-0 top-0 h-full z-50 flex ${pathname === '/dashboard' ? 'hidden' : ''}`}>
