@@ -35,23 +35,40 @@ function KanbanCardItem({ card, onDelete }: { card: PedKanbanCard; onDelete: (id
         <div ref={setNodeRef} style={style} {...listeners} {...attributes}>
             <motion.div
                 layout
-                className="bg-white dark:bg-zinc-800 rounded-xl border border-zinc-200 dark:border-zinc-700 p-4 shadow-sm hover:shadow-md transition-shadow cursor-grab active:cursor-grabbing group"
+                className={`bg-white dark:bg-zinc-800 rounded-xl border p-4 shadow-sm hover:shadow-md transition-shadow cursor-grab active:cursor-grabbing group ${card.demand_id
+                        ? 'border-amber-300 dark:border-amber-600 ring-1 ring-amber-200/50 dark:ring-amber-600/30'
+                        : 'border-zinc-200 dark:border-zinc-700'
+                    }`}
             >
+                {/* Tag de Demanda da Coordenação */}
+                {card.demand_id && (
+                    <div className="flex items-center gap-1.5 mb-2 px-2 py-1 bg-amber-50 dark:bg-amber-500/10 rounded-lg w-fit">
+                        <span className="text-xs">👑</span>
+                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-amber-700 dark:text-amber-400">
+                            Demanda Coordenação
+                        </span>
+                    </div>
+                )}
                 <div className="flex items-start justify-between gap-2 mb-2">
                     <h4 className="font-bold text-sm text-zinc-900 dark:text-white leading-snug">{card.title}</h4>
-                    <button
-                        onClick={(e) => { e.stopPropagation(); onDelete(card.id); }}
-                        className="opacity-0 group-hover:opacity-100 text-zinc-400 hover:text-red-500 transition-all shrink-0"
-                    >
-                        <span className="material-symbols-outlined text-base">close</span>
-                    </button>
+                    {!card.demand_id && (
+                        <button
+                            onClick={(e) => { e.stopPropagation(); onDelete(card.id); }}
+                            className="opacity-0 group-hover:opacity-100 text-zinc-400 hover:text-red-500 transition-all shrink-0"
+                        >
+                            <span className="material-symbols-outlined text-base">close</span>
+                        </button>
+                    )}
                 </div>
                 {card.description && (
                     <p className="text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2 mb-2">{card.description}</p>
                 )}
                 <div className="flex items-center gap-2 flex-wrap">
                     {card.card_type && (
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-700 text-zinc-500 dark:text-zinc-400">
+                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${card.demand_id
+                                ? 'bg-amber-100 dark:bg-amber-500/15 text-amber-600 dark:text-amber-400'
+                                : 'bg-zinc-100 dark:bg-zinc-700 text-zinc-500 dark:text-zinc-400'
+                            }`}>
                             {card.card_type}
                         </span>
                     )}

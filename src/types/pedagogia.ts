@@ -26,6 +26,7 @@ export interface PedKanbanCard {
     card_type: string | null;
     description: string | null;
     due_date: string | null;
+    demand_id: string | null; // Se veio de uma demanda da Coordenação
     created_by: string | null;
     created_at: string;
     updated_at: string;
