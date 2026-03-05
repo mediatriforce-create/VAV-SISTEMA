@@ -82,14 +82,14 @@ export default function ChatClient({ initialRooms }: ChatClientProps) {
                         onBack={() => setSelectedRoomId(null)}
                     />
                 ) : unreadRooms.length > 0 ? (
-                    /* Estado com mensagens nÃ£o lidas */
+                    /* Estado com mensagens não lidas */
                     <div className="w-full h-full flex flex-col p-6 overflow-y-auto custom-scrollbar">
                         <div className="flex items-center gap-3 mb-6">
                             <div className="w-10 h-10 rounded-xl bg-red-50 dark:bg-red-500/10 flex items-center justify-center border border-red-200 dark:border-red-500/20">
                                 <span className="material-symbols-outlined text-red-500 text-xl">mark_email_unread</span>
                             </div>
                             <div>
-                                <h3 className="text-lg font-bold text-zinc-900 dark:text-white">Mensagens nÃ£o lidas</h3>
+                                <h3 className="text-lg font-bold text-zinc-900 dark:text-white">Mensagens não lidas</h3>
                                 <p className="text-xs text-zinc-500">{unreadRooms.length} conversa{unreadRooms.length > 1 ? 's' : ''} com novas mensagens</p>
                             </div>
                         </div>
@@ -133,9 +133,9 @@ export default function ChatClient({ initialRooms }: ChatClientProps) {
                         <div className="w-20 h-20 rounded-full bg-zinc-100 dark:bg-white/5 flex items-center justify-center mb-6 border border-zinc-200 dark:border-white/10 shadow-inner">
                             <span className="material-symbols-outlined text-4xl text-zinc-300 dark:text-zinc-600">forum</span>
                         </div>
-                        <h3 className="text-xl font-bold text-zinc-900 dark:text-white mb-2">Plataforma de ComunicaÃ§Ã£o VAV</h3>
+                        <h3 className="text-xl font-bold text-zinc-900 dark:text-white mb-2">Plataforma de Comunicação VAV</h3>
                         <p className="text-zinc-500 dark:text-zinc-400 max-w-sm">
-                            Selecione um canal lateral ou inicie uma conversa privada para comeÃ§ar a interagir em tempo real com sua equipe.
+                            Selecione um canal lateral ou inicie uma conversa privada para começar a interagir em tempo real com sua equipe.
                         </p>
                     </div>
                 )}

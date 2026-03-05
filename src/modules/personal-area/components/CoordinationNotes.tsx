@@ -28,9 +28,9 @@ export function CoordinationNotes() {
                     <span className="material-symbols-outlined text-2xl">campaign</span>
                 </div>
                 <div>
-                    <h3 className="text-xl font-bold text-zinc-800 dark:text-zinc-100">Mural da CoordenaÃ§Ã£o</h3>
+                    <h3 className="text-xl font-bold text-zinc-800 dark:text-zinc-100">Mural da Coordenação</h3>
                     <p className="text-sm font-medium text-zinc-500 line-clamp-1">
-                        Avisos, diretrizes e observaÃ§Ãµes deixadas por seus lÃ­deres.
+                        Avisos, diretrizes e observações deixadas por seus líderes.
                     </p>
                 </div>
             </div>
@@ -43,8 +43,8 @@ export function CoordinationNotes() {
                 ) : notes.length === 0 ? (
                     <div className="w-full py-16 flex flex-col items-center justify-center border-2 border-dashed border-zinc-200 dark:border-white/5 rounded-2xl bg-zinc-50/50 dark:bg-black/10">
                         <span className="material-symbols-outlined text-5xl text-zinc-300 dark:text-zinc-700 mb-3">inbox</span>
-                        <p className="text-zinc-500 font-medium">VocÃª nÃ£o tem observaÃ§Ãµes ativas.</p>
-                        <p className="text-xs text-zinc-400 mt-1">Seu mural estÃ¡ limpo.</p>
+                        <p className="text-zinc-500 font-medium">Você não tem observações ativas.</p>
+                        <p className="text-xs text-zinc-400 mt-1">Seu mural está limpo.</p>
                     </div>
                 ) : (
                     notes.map((note, index) => (

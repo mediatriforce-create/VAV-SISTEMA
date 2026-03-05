@@ -36,7 +36,7 @@ export default function CoordClientPage({ currentUser, initialDemands, teamMembe
                     <div>
                         <h1 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
                             <LayoutDashboard className="text-primary" />
-                            CoordenaÃ§Ã£o & Demandas
+                            Coordenação & Demandas
                         </h1>
                         <p className="text-slate-500 mt-1">Gerencie tarefas e distribua demandas para a equipe.</p>
                     </div>

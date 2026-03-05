@@ -24,8 +24,8 @@ export default function ComunicacaoLayout({
                 {/* Header Module */}
                 <div className="shrink-0 flex flex-col md:flex-row justify-between items-end gap-4 border-b border-slate-200 pb-4">
                     <div>
-                        <h1 className="text-2xl font-bold text-slate-800">ComunicaÃ§Ã£o</h1>
-                        <p className="text-slate-500">GestÃ£o de demandas, artes e arquivos.</p>
+                        <h1 className="text-2xl font-bold text-slate-800">Comunicação</h1>
+                        <p className="text-slate-500">Gestão de demandas, artes e arquivos.</p>
                     </div>
 
                     {/* Navigation Tabs and Drive Action */}

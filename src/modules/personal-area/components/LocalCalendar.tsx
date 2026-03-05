@@ -32,7 +32,7 @@ export function LocalCalendar() {
         fetchMonthEvents();
     }, [year, month]);
 
-    // LÃ³gica do Builder de CalendÃ¡rio (Semanas/Dias)
+    // Lógica do Builder de Calendário (Semanas/Dias)
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     const firstDayOfMonth = new Date(year, month, 1).getDay();
     const lastDayOfPrevMonth = new Date(year, month, 0).getDate();
@@ -76,7 +76,7 @@ export function LocalCalendar() {
             date.getFullYear() === today.getFullYear();
     };
 
-    // Actions VisÃ£o
+    // Actions Visão
     const handleDayClick = (dateObj: Date) => {
         // Normalizado pra string YYYY-MM-DD local sem Timezone Shifts bizarros
         const localDate = new Date(dateObj.getTime() - (dateObj.getTimezoneOffset() * 60000)).toISOString().split('T')[0];
@@ -127,7 +127,7 @@ export function LocalCalendar() {
 
             {/* Calendar Grid Header (Mon-Sun) */}
             <div className="grid grid-cols-7 border-b border-zinc-200 dark:border-white/10 shrink-0 bg-zinc-50/50 dark:bg-black/20">
-                {['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'SÃ¡b'].map(day => (
+                {['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'].map(day => (
                     <div key={day} className="py-3 text-center text-[10px] sm:text-sm font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
                         {day}
                     </div>
@@ -205,7 +205,7 @@ export function LocalCalendar() {
                                 autoFocus
                                 value={newEventTitle}
                                 onChange={e => setNewEventTitle(e.target.value)}
-                                placeholder="Pagar Conta, ReuniÃ£o Externa, Folga..."
+                                placeholder="Pagar Conta, Reunião Externa, Folga..."
                                 className="w-full bg-zinc-100 dark:bg-black/40 border border-zinc-200 dark:border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-secondary/50 font-medium text-zinc-900 dark:text-white"
                                 onKeyDown={(e) => e.key === 'Enter' && handleSaveEvent()}
                             />

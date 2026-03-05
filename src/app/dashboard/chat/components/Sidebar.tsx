@@ -114,10 +114,10 @@ export default function Sidebar({ rooms, selectedRoomId, onSelectRoom, onDMCreat
         <div className="w-full h-full flex flex-col p-4 bg-transparent isolate">
             {/* Header */}
             <div className="flex items-center justify-between mb-4 pb-3 border-b border-zinc-200 dark:border-white/10 shrink-0">
-                <h2 className="text-xl font-extrabold text-zinc-900 dark:text-white tracking-tight">ComunicaÃ§Ã£o</h2>
+                <h2 className="text-xl font-extrabold text-zinc-900 dark:text-white tracking-tight">Comunicação</h2>
             </div>
 
-            {/* Listas ScrollÃ¡veis */}
+            {/* Listas Scrolláveis */}
             <div className="flex-1 overflow-y-auto custom-scrollbar overflow-x-hidden scrollbar-hide flex flex-col gap-4 scroll-smooth pr-1">
 
                 {channels.length > 0 && (
@@ -164,7 +164,7 @@ export default function Sidebar({ rooms, selectedRoomId, onSelectRoom, onDMCreat
                                     </div>
                                 ) : filteredUsers.length === 0 ? (
                                     <div className="py-3 text-center">
-                                        <span className="text-xs text-zinc-400">Nenhum usuÃ¡rio encontrado.</span>
+                                        <span className="text-xs text-zinc-400">Nenhum usuário encontrado.</span>
                                     </div>
                                 ) : (
                                     filteredUsers.map((u) => (

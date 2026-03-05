@@ -64,8 +64,8 @@ export default function DashboardLayout({
     const navItems = [
         { name: 'Dashboard', icon: 'dashboard', href: '/dashboard' },
         { name: 'Adm', icon: 'admin_panel_settings', href: '/dashboard/admin' },
-        { name: 'CoordenaÃ§Ã£o', icon: 'assignment_ind', href: '/coord' },
-        { name: 'ComunicaÃ§Ã£o', icon: 'campaign', href: '/comunicacao' },
+        { name: 'Coordenação', icon: 'assignment_ind', href: '/coord' },
+        { name: 'Comunicação', icon: 'campaign', href: '/comunicacao' },
         { name: 'Pedagogia', icon: 'school', href: '/dashboard/pedagogia' },
     ]
 
@@ -95,10 +95,10 @@ export default function DashboardLayout({
 
                 {/* Barra Lateral Vertical â€” oculta no dashboard principal */}
                 <div className={`fixed left-0 top-0 h-full z-50 flex ${pathname === '/dashboard' ? 'hidden' : ''}`}>
-                    {/* Rail fino com Ã­cones */}
+                    {/* Rail fino com ícones */}
                     <div className={`h-full flex flex-col bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border-r border-zinc-200/50 dark:border-white/10 shadow-lg transition-all duration-300 ${isMenuOpen ? 'w-56' : 'w-14'}`}>
 
-                        {/* BotÃ£o de Expandir/Recolher */}
+                        {/* Botão de Expandir/Recolher */}
                         <button
                             onClick={() => setIsMenuOpen(!isMenuOpen)}
                             className="w-full flex items-center justify-center h-14 border-b border-zinc-100 dark:border-white/5 text-zinc-500 hover:text-secondary dark:hover:text-primary transition-colors shrink-0"
@@ -108,7 +108,7 @@ export default function DashboardLayout({
                             </span>
                         </button>
 
-                        {/* Ãcones dos MÃ³dulos */}
+                        {/* Ãcones dos Módulos */}
                         <nav className="flex-1 flex flex-col gap-1 py-3 px-2 overflow-y-auto custom-scrollbar no-scrollbar">
                             {navItems.map((item) => {
                                 const isActive = pathname === item.href || (pathname.startsWith(item.href) && item.href !== '/dashboard')
@@ -135,17 +135,17 @@ export default function DashboardLayout({
                             {/* Separador */}
                             <div className="h-px bg-zinc-200 dark:bg-white/10 my-2 mx-1"></div>
 
-                            {/* Links rÃ¡pidos */}
+                            {/* Links rápidos */}
                             <Link
                                 href="/dashboard/reunioes"
-                                title={!isMenuOpen ? 'ReuniÃµes' : undefined}
+                                title={!isMenuOpen ? 'Reuniões' : undefined}
                                 className={`flex items-center gap-3 rounded-xl transition-all duration-200 group/nav shrink-0 ${isMenuOpen ? 'px-3 py-2.5' : 'justify-center py-2.5'} ${pathname.startsWith('/dashboard/reunioes')
                                     ? 'bg-blue-50 dark:bg-primary/10 text-blue-600 dark:text-primary font-bold'
                                     : 'text-zinc-500 dark:text-zinc-400 hover:text-blue-600 dark:hover:text-primary hover:bg-zinc-100 dark:hover:bg-white/5'
                                     }`}
                             >
                                 <span className="material-symbols-outlined text-xl shrink-0 group-hover/nav:scale-110 transition-transform">videocam</span>
-                                {isMenuOpen && <span className="text-sm font-medium whitespace-nowrap">ReuniÃµes</span>}
+                                {isMenuOpen && <span className="text-sm font-medium whitespace-nowrap">Reuniões</span>}
                             </Link>
 
                             <Link
@@ -173,7 +173,7 @@ export default function DashboardLayout({
                             </Link>
                         </nav>
 
-                        {/* SeÃ§Ã£o de Perfil no Fundo */}
+                        {/* Seção de Perfil no Fundo */}
                         <div className="border-t border-zinc-100 dark:border-white/5 py-2 px-2 flex flex-col gap-1 shrink-0">
                             <Link
                                 href="/dashboard/area-pessoal"
@@ -185,11 +185,11 @@ export default function DashboardLayout({
                             </Link>
                             <Link
                                 href="/dashboard/configuracoes"
-                                title={!isMenuOpen ? 'ConfiguraÃ§Ãµes' : undefined}
+                                title={!isMenuOpen ? 'Configurações' : undefined}
                                 className={`flex items-center gap-3 rounded-xl transition-all duration-200 ${isMenuOpen ? 'px-3 py-2' : 'justify-center py-2'} text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-white/5`}
                             >
                                 <span className="material-symbols-outlined text-xl shrink-0">settings</span>
-                                {isMenuOpen && <span className="text-sm font-medium whitespace-nowrap">ConfiguraÃ§Ãµes</span>}
+                                {isMenuOpen && <span className="text-sm font-medium whitespace-nowrap">Configurações</span>}
                             </Link>
                             <button
                                 onClick={handleSignOut}

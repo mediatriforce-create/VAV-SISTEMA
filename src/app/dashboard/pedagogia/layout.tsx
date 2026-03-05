@@ -25,7 +25,7 @@ export default function PedagogiaLayout({ children }: { children: React.ReactNod
                         </div>
                         <div className="hidden sm:block">
                             <h1 className="text-lg font-extrabold text-zinc-900 dark:text-white tracking-tight leading-none">Pedagogia</h1>
-                            <p className="text-[10px] uppercase tracking-widest text-emerald-600 dark:text-emerald-400 font-bold">MÃ³dulo Educacional</p>
+                            <p className="text-[10px] uppercase tracking-widest text-emerald-600 dark:text-emerald-400 font-bold">Módulo Educacional</p>
                         </div>
                     </div>
 

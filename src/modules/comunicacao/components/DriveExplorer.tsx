@@ -56,7 +56,7 @@ interface ContextMenuState {
     fileId: string | null;
 }
 
-export default function DriveExplorer({ initialFolderId, initialFolderName = 'COMUNICAÃ‡ÃƒO', predefinedFolders }: DriveExplorerProps) {
+export default function DriveExplorer({ initialFolderId, initialFolderName = 'COMUNICAÇÃO', predefinedFolders }: DriveExplorerProps) {
     const [currentFolderId, setCurrentFolderId] = useState(initialFolderId);
     const [breadcrumbs, setBreadcrumbs] = useState<Breadcrumb[]>([{ id: initialFolderId, name: initialFolderName }]);
 
@@ -182,7 +182,7 @@ export default function DriveExplorer({ initialFolderId, initialFolderName = 'CO
         const res = await uploadGoogleDriveFile(formData, destFolderId);
 
         if (res.success) {
-            toast.success('Upload concluÃ­do!', { id: toastId });
+            toast.success('Upload concluído!', { id: toastId });
             loadFiles(currentFolderId);
             return true;
         } else {
@@ -251,12 +251,12 @@ export default function DriveExplorer({ initialFolderId, initialFolderName = 'CO
                 console.error("Cleanup of linked Supabase posts failed:", cleanupError);
             }
 
-            toast.success('ExcluÃ­do(s) com sucesso!', { id: toastId });
+            toast.success('Excluído(s) com sucesso!', { id: toastId });
             setSelectedIds(new Set());
             setIsSelectionMode(false);
             loadFiles(currentFolderId);
         } else {
-            toast.error(res.error || 'Erro ao excluir. O usuÃ¡rio pode nÃ£o ter permissÃµes completas sobre o arquivo pelo Google Drive API.', { id: toastId });
+            toast.error(res.error || 'Erro ao excluir. O usuário pode não ter permissões completas sobre o arquivo pelo Google Drive API.', { id: toastId });
         }
         setIsDeleting(false);
     };
@@ -336,7 +336,7 @@ export default function DriveExplorer({ initialFolderId, initialFolderName = 'CO
                             <button
                                 onClick={() => setIsSelectionMode(true)}
                                 className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-slate-600 bg-slate-100 border border-transparent rounded-lg hover:bg-slate-200 transition-colors shadow-sm"
-                                title="Selecionar VÃ¡rios"
+                                title="Selecionar Vários"
                             >
                                 <MousePointerSquareDashed size={16} />
                             </button>
@@ -386,8 +386,8 @@ export default function DriveExplorer({ initialFolderId, initialFolderName = 'CO
                             <div className="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center mb-4">
                                 <FolderOpen className="text-slate-300" size={48} />
                             </div>
-                            <p className="text-lg font-medium text-slate-600">Esta pasta estÃ¡ vazia</p>
-                            <p className="text-sm">Arraste arquivos para cÃ¡ ou use o botÃ£o de upload.</p>
+                            <p className="text-lg font-medium text-slate-600">Esta pasta está vazia</p>
+                            <p className="text-sm">Arraste arquivos para cá ou use o botão de upload.</p>
                         </motion.div>
                     ) : (
                         <motion.div
@@ -467,7 +467,7 @@ export default function DriveExplorer({ initialFolderId, initialFolderName = 'CO
                             }}
                         >
                             <CheckSquare size={16} className="text-slate-400" />
-                            Selecionar VÃ¡rios
+                            Selecionar Vários
                         </button>
 
                         <div className="h-px bg-slate-100 my-1 w-full" />

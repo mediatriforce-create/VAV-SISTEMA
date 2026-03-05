@@ -191,7 +191,7 @@ export default function ChatWindow({ room, onBack }: ChatWindowProps) {
             );
         }
 
-        // Card de arquivo genÃ©rico
+        // Card de arquivo genérico
         return (
             <a
                 href={fileMeta.web_view_link}
@@ -292,7 +292,7 @@ export default function ChatWindow({ room, onBack }: ChatWindowProps) {
                             <span className="material-symbols-outlined text-5xl text-zinc-400">forum</span>
                         </div>
                         <h4 className="font-bold text-zinc-700 dark:text-zinc-300">Sala Vazia</h4>
-                        <p className="text-sm text-zinc-500 max-w-xs mt-1">NinguÃ©m enviou mensagens aqui ainda. Seja o primeiro a quebrar o gelo!</p>
+                        <p className="text-sm text-zinc-500 max-w-xs mt-1">Ninguém enviou mensagens aqui ainda. Seja o primeiro a quebrar o gelo!</p>
                     </div>
                 ) : (
                     <AnimatePresence initial={false}>
@@ -339,7 +339,7 @@ export default function ChatWindow({ room, onBack }: ChatWindowProps) {
                                                 msg.content
                                             )}
 
-                                            {/* RenderizaÃ§Ã£o do arquivo */}
+                                            {/* Renderização do arquivo */}
                                             {fileMeta && renderFileAttachment(fileMeta, isMe)}
                                         </div>
                                     </div>
@@ -365,7 +365,7 @@ export default function ChatWindow({ room, onBack }: ChatWindowProps) {
                     onSubmit={handleSend}
                     className="flex items-center gap-2 bg-white dark:bg-black/40 rounded-2xl px-2 py-1.5 border border-zinc-200 dark:border-white/10 shadow-inner focus-within:border-secondary/50 dark:focus-within:border-primary/50 focus-within:ring-1 focus-within:ring-secondary/20 dark:focus-within:ring-primary/20 transition-all"
                 >
-                    {/* BotÃ£o de Anexar Arquivo */}
+                    {/* Botão de Anexar Arquivo */}
                     <input
                         ref={fileInputRef}
                         type="file"

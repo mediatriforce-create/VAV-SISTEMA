@@ -34,8 +34,8 @@ export default function TurmasPage() {
     // Modal nova turma
     const [showClassModal, setShowClassModal] = useState(false);
     const [className, setClassName] = useState('');
-    const [classYear, setClassYear] = useState('1Âº Ano');
-    const [classShift, setClassShift] = useState('ManhÃ£');
+    const [classYear, setClassYear] = useState('1º Ano');
+    const [classShift, setClassShift] = useState('Manhã');
     const [creatingClass, setCreatingClass] = useState(false);
 
     // Modal novo aluno
@@ -85,7 +85,7 @@ export default function TurmasPage() {
             .single();
 
         if (!error && data) setClasses(prev => [...prev, data as Class]);
-        setClassName(''); setClassYear('1Âº Ano'); setClassShift('ManhÃ£');
+        setClassName(''); setClassYear('1º Ano'); setClassShift('Manhã');
         setCreatingClass(false);
         setShowClassModal(false);
     };
@@ -238,7 +238,7 @@ export default function TurmasPage() {
                             <div className="p-6 flex flex-col gap-4">
                                 <div>
                                     <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1 block">Nome *</label>
-                                    <input value={className} onChange={e => setClassName(e.target.value)} placeholder="Ex: 1Âº Ano A"
+                                    <input value={className} onChange={e => setClassName(e.target.value)} placeholder="Ex: 1º Ano A"
                                         className="w-full px-4 py-3 bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 rounded-xl outline-none focus:border-emerald-500 text-sm" />
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
@@ -246,14 +246,14 @@ export default function TurmasPage() {
                                         <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1 block">Ano</label>
                                         <select value={classYear} onChange={e => setClassYear(e.target.value)}
                                             className="w-full px-4 py-3 bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 rounded-xl outline-none text-sm">
-                                            {['1Âº Ano', '2Âº Ano', '3Âº Ano', '4Âº Ano', '5Âº Ano'].map(y => <option key={y}>{y}</option>)}
+                                            {['1º Ano', '2º Ano', '3º Ano', '4º Ano', '5º Ano'].map(y => <option key={y}>{y}</option>)}
                                         </select>
                                     </div>
                                     <div>
                                         <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1 block">Turno</label>
                                         <select value={classShift} onChange={e => setClassShift(e.target.value)}
                                             className="w-full px-4 py-3 bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 rounded-xl outline-none text-sm">
-                                            {['ManhÃ£', 'Tarde', 'Integral'].map(s => <option key={s}>{s}</option>)}
+                                            {['Manhã', 'Tarde', 'Integral'].map(s => <option key={s}>{s}</option>)}
                                         </select>
                                     </div>
                                 </div>
@@ -295,12 +295,12 @@ export default function TurmasPage() {
                                         className="w-full px-4 py-3 bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 rounded-xl outline-none text-sm" />
                                 </div>
                                 <div>
-                                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1 block">Nome do responsÃ¡vel</label>
+                                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1 block">Nome do responsável</label>
                                     <input value={studentGuardian} onChange={e => setStudentGuardian(e.target.value)} placeholder="Nome"
                                         className="w-full px-4 py-3 bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 rounded-xl outline-none text-sm" />
                                 </div>
                                 <div>
-                                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1 block">Telefone do responsÃ¡vel</label>
+                                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1 block">Telefone do responsável</label>
                                     <input value={studentPhone} onChange={e => setStudentPhone(e.target.value)} placeholder="(xx) xxxxx-xxxx"
                                         className="w-full px-4 py-3 bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 rounded-xl outline-none text-sm" />
                                 </div>

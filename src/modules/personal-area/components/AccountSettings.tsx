@@ -14,12 +14,12 @@ export function AccountSettings() {
         e.preventDefault();
 
         if (password !== confirmPassword) {
-            setStatusParams({ type: 'error', msg: 'As senhas digitadas nÃ£o coincidem. Tente novamente.' });
+            setStatusParams({ type: 'error', msg: 'As senhas digitadas não coincidem. Tente novamente.' });
             return;
         }
 
         if (password.length < 6) {
-            setStatusParams({ type: 'error', msg: 'A nova senha precisa ter no mÃ­nimo 6 caracteres.' });
+            setStatusParams({ type: 'error', msg: 'A nova senha precisa ter no mínimo 6 caracteres.' });
             return;
         }
 
@@ -29,7 +29,7 @@ export function AccountSettings() {
         const res = await updateAccountCredentials({ password });
 
         if (res.success) {
-            setStatusParams({ type: 'success', msg: 'Credenciais de seguranÃ§a blindadas e atualizadas com sucesso!' });
+            setStatusParams({ type: 'success', msg: 'Credenciais de segurança blindadas e atualizadas com sucesso!' });
             setPassword('');
             setConfirmPassword('');
         } else {
@@ -46,7 +46,7 @@ export function AccountSettings() {
                     <span className="material-symbols-outlined text-2xl">shield_person</span>
                 </div>
                 <div>
-                    <h3 className="text-xl font-bold text-zinc-800 dark:text-zinc-100">SeguranÃ§a da Conta</h3>
+                    <h3 className="text-xl font-bold text-zinc-800 dark:text-zinc-100">Segurança da Conta</h3>
                     <p className="text-sm font-medium text-zinc-500">
                         Atualize suas chaves de acesso ao sistema VAV.
                     </p>
