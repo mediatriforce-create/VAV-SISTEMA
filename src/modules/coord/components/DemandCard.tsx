@@ -21,6 +21,7 @@ const STATUS_LABELS = {
     a_fazer: 'A Fazer',
     em_andamento: 'Em Andamento',
     revisao: 'Revisão',
+    aprovacao: 'Aguardando Aprovação',
     finalizado: 'Finalizado',
 };
 
