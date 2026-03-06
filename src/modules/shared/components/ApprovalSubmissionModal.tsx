@@ -4,6 +4,29 @@ import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { createClient } from '@/lib/supabase';
 
+const isImageFile = async (f: File): Promise<string | null> => {
+    if (f.type.startsWith('image/')) {
+        let ext = f.type.split('/')[1] || 'jpg';
+        if (ext === 'jpeg') ext = 'jpg';
+        return ext;
+    }
+
+    // Fallback: Check if it's a valid image by decoding
+    return new Promise((resolve) => {
+        const url = URL.createObjectURL(f);
+        const img = new Image();
+        img.onload = () => {
+            URL.revokeObjectURL(url);
+            resolve('jpg');
+        };
+        img.onerror = () => {
+            URL.revokeObjectURL(url);
+            resolve(null);
+        };
+        img.src = url;
+    });
+};
+
 interface ApprovalSubmissionModalProps {
     isOpen: boolean;
     onClose: () => void;
@@ -47,10 +70,9 @@ export default function ApprovalSubmissionModal({
                 const timestamp = Date.now();
                 let safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
 
-                // Force image extension if missing
-                if (file.type.startsWith('image/') && !/\.(jpg|jpeg|png|gif|webp|svg)$/i.test(safeName)) {
-                    let ext = file.type.split('/')[1] || 'jpg';
-                    if (ext === 'jpeg') ext = 'jpg';
+                // Force image extension
+                const ext = await isImageFile(file);
+                if (ext && !/\.(jpg|jpeg|png|gif|webp|svg)$/i.test(safeName)) {
                     safeName += `.${ext}`;
                 }
 
@@ -59,7 +81,7 @@ export default function ApprovalSubmissionModal({
                 const { data, error } = await supabase.storage
                     .from('temp_approvals')
                     .upload(filePath, file, {
-                        contentType: file.type || 'application/octet-stream',
+                        contentType: ext ? `image/${ext}` : (file.type || 'application/octet-stream'),
                         cacheControl: '3600',
                         upsert: false
                     });
