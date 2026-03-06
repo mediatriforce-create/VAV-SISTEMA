@@ -12,9 +12,10 @@ const PRIORITY_COLORS = {
     alta: 'bg-red-100/80 dark:bg-red-900/30 text-red-700 dark:text-red-400 border-red-200 dark:border-red-800/50 shadow-inner',
 };
 
-const SECTOR_LABELS = {
+const SECTOR_LABELS: Record<string, string> = {
     comunicacao: 'Comunicação',
     pedagogia: 'Pedagogia',
+    administracao: 'Administração',
 };
 
 const STATUS_LABELS = {

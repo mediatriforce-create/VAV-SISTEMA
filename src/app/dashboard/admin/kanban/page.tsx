@@ -129,7 +129,7 @@ export default function KanbanPage() {
                     assignee:assigned_to(full_name, avatar_url),
                     creator:created_by(full_name, avatar_url)
                 `)
-                .eq('sector', 'comunicacao')
+                .eq('sector', 'administracao') // << ADMIN SECTOR ONLY
                 .order('created_at', { ascending: false });
 
             if (data) setDemands(data);
@@ -199,32 +199,46 @@ export default function KanbanPage() {
 
     if (loading) {
         return (
-            <div className="h-full flex items-center justify-center">
+            <div className="h-full flex items-center justify-center p-8 bg-slate-50 min-h-[500px]">
                 <div className="w-8 h-8 border-3 border-blue-500 border-t-transparent rounded-full animate-spin" />
             </div>
         );
     }
 
     return (
-        <div className="h-full flex flex-col min-h-0">
-            {/* Kanban Board */}
-            <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-                <div className="flex-1 min-h-0 flex gap-5 overflow-x-auto custom-scrollbar pb-2 items-stretch">
-                    {COLUMNS.map(col => (
-                        <KanbanColumn key={col.id} col={col} demands={demands.filter(d => d.status === col.id)} />
-                    ))}
+        <div className="flex-1 w-full h-full min-h-0 bg-slate-50 p-4 md:p-6 overflow-hidden flex flex-col">
+            <div className="shrink-0 flex justify-between items-center mb-6">
+                <div>
+                    <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                        <span className="material-icons text-primary dark:text-blue-400">view_kanban</span>
+                        Kanban da Administração
+                    </h1>
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                        Acompanhe e mova as demandas administrativas.
+                    </p>
                 </div>
+            </div>
 
-                <DragOverlay>
-                    {activeCard ? (
-                        <div className="w-[300px] opacity-80 rotate-2 cursor-grabbing">
-                            <div className="bg-white dark:bg-zinc-800 rounded-xl border border-zinc-200 dark:border-zinc-700 p-4 shadow-xl">
-                                <h4 className="font-bold text-sm">{activeCard.title}</h4>
+            {/* Kanban Board */}
+            <div className="flex-1 min-h-0">
+                <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+                    <div className="h-full flex gap-5 overflow-x-auto custom-scrollbar pb-2 items-stretch">
+                        {COLUMNS.map(col => (
+                            <KanbanColumn key={col.id} col={col} demands={demands.filter(d => d.status === col.id)} />
+                        ))}
+                    </div>
+
+                    <DragOverlay>
+                        {activeCard ? (
+                            <div className="w-[300px] opacity-80 rotate-2 cursor-grabbing">
+                                <div className="bg-white dark:bg-zinc-800 rounded-xl border border-zinc-200 dark:border-zinc-700 p-4 shadow-xl">
+                                    <h4 className="font-bold text-sm">{activeCard.title}</h4>
+                                </div>
                             </div>
-                        </div>
-                    ) : null}
-                </DragOverlay>
-            </DndContext>
+                        ) : null}
+                    </DragOverlay>
+                </DndContext>
+            </div>
 
             {/* Approval Submission Modal */}
             <ApprovalSubmissionModal

@@ -1,4 +1,14 @@
-export type DemandSector = 'comunicacao' | 'pedagogia';
+export type DemandSector = 'comunicacao' | 'pedagogia' | 'administracao';
+
+export interface ApprovalSubmission {
+    id: string;
+    created_at: string;
+    demand_id: string | null;
+    ped_card_id: string | null;
+    submitted_by: string | null;
+    justification_text: string | null;
+    file_urls: string[];
+}
 export type DemandPriority = 'baixa' | 'media' | 'alta';
 export type DemandStatus = 'a_fazer' | 'em_andamento' | 'revisao' | 'aprovacao' | 'finalizado';
 

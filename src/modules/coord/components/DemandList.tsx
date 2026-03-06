@@ -48,6 +48,7 @@ export default function DemandList({ demands, onDemandClick }: DemandListProps) 
                         <option value="all">Todos Setores</option>
                         <option value="comunicacao">Comunicação</option>
                         <option value="pedagogia">Pedagogia</option>
+                        <option value="administracao">Administração</option>
                     </select>
 
                     <select

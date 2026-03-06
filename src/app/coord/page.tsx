@@ -69,6 +69,12 @@ export default async function CoordPage() {
         .eq('column_status', 'aprovacao')
         .order('created_at', { ascending: false });
 
+    // 4. Fetch approval submissions for pending items
+    const { data: approvalSubmissions } = await supabase
+        .from('approval_submissions')
+        .select('*')
+        .order('created_at', { ascending: false });
+
     // 4. Simple aggregation for "Active Demands" count per member
     const memberStats = teamMembers?.map((member: any) => {
         const activeCount = demands?.filter((d: any) =>
@@ -87,6 +93,7 @@ export default async function CoordPage() {
             initialDemands={demands || []}
             teamMembers={memberStats}
             pendingPedCards={pendingPedCards || []}
+            approvalSubmissions={approvalSubmissions || []}
         />
     );
 }

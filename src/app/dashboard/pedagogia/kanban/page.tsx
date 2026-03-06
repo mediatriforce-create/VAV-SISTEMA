@@ -8,6 +8,7 @@ import {
 } from '@dnd-kit/core';
 import { getKanbanCards, createKanbanCard, updateKanbanCardStatus, deleteKanbanCard, getMyClasses } from '@/actions/pedagogia';
 import type { PedKanbanCard, Class, KanbanColumnStatus } from '@/types/pedagogia';
+import ApprovalSubmissionModal from '@/modules/shared/components/ApprovalSubmissionModal';
 
 const COLUMNS: { id: KanbanColumnStatus; title: string; color: string; icon: string }[] = [
     { id: 'backlog', title: 'Backlog', color: 'from-slate-400 to-slate-500', icon: 'inbox' },
@@ -139,6 +140,8 @@ export default function PedagogiaKanbanPage() {
     const [formClassIds, setFormClassIds] = useState<string[]>([]);
     const [formColumn, setFormColumn] = useState<KanbanColumnStatus>('backlog');
     const [submitting, setSubmitting] = useState(false);
+    const [approvalModal, setApprovalModal] = useState<{ cardId: string; title: string } | null>(null);
+    const [pendingApproval, setPendingApproval] = useState<{ cardId: string; oldStatus: KanbanColumnStatus } | null>(null);
 
     const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }));
 
@@ -157,10 +160,36 @@ export default function PedagogiaKanbanPage() {
         if (over && active.id !== over.id) {
             const cardId = active.id as string;
             const newStatus = over.id as KanbanColumnStatus;
+            const card = active.data.current as PedKanbanCard;
+
+            // Intercept: if dropping on 'aprovacao', open submission modal
+            if (newStatus === 'aprovacao') {
+                setCards(prev => prev.map(c => c.id === cardId ? { ...c, column_status: newStatus } : c));
+                setPendingApproval({ cardId, oldStatus: card.column_status });
+                setApprovalModal({ cardId, title: card.title });
+                setActiveCard(null);
+                return;
+            }
+
             setCards(prev => prev.map(c => c.id === cardId ? { ...c, column_status: newStatus } : c));
             await updateKanbanCardStatus(cardId, newStatus);
         }
         setActiveCard(null);
+    };
+
+    const handleApprovalSubmit = async () => {
+        if (!pendingApproval) return;
+        await updateKanbanCardStatus(pendingApproval.cardId, 'aprovacao');
+        setApprovalModal(null);
+        setPendingApproval(null);
+    };
+
+    const handleApprovalCancel = () => {
+        if (pendingApproval) {
+            setCards(prev => prev.map(c => c.id === pendingApproval.cardId ? { ...c, column_status: pendingApproval.oldStatus } : c));
+        }
+        setApprovalModal(null);
+        setPendingApproval(null);
     };
 
     const handleCreate = async () => {
@@ -316,6 +345,15 @@ export default function PedagogiaKanbanPage() {
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            {/* Approval Submission Modal */}
+            <ApprovalSubmissionModal
+                isOpen={!!approvalModal}
+                onClose={handleApprovalCancel}
+                onSubmit={handleApprovalSubmit}
+                pedCardId={approvalModal?.cardId}
+                title={approvalModal?.title || ''}
+            />
         </div>
     );
 }

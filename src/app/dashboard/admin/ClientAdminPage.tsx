@@ -194,6 +194,14 @@ export function ClientAdminPage({
                 </div>
                 <div className="flex gap-3 flex-wrap">
                     <button
+                        onClick={() => router.push('/dashboard/admin/kanban')}
+                        className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white rounded-lg text-sm font-medium transition-colors shadow-sm shadow-violet-500/20"
+                    >
+                        <span className="material-icons">view_kanban</span>
+                        Acessar Kanban
+                    </button>
+
+                    <button
                         onClick={() => setIsImportModalOpen(true)}
                         className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm font-medium text-blue-600 dark:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors shadow-sm"
                     >
@@ -264,6 +272,6 @@ export function ClientAdminPage({
                 bankId={selectedBankId}
                 bankName={currentBankName}
             />
-        </div>
+        </div >
     )
 }
