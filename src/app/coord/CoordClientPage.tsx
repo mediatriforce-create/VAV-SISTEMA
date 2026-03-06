@@ -255,17 +255,29 @@ export default function CoordClientPage({ currentUser, initialDemands, teamMembe
                                                                         <Paperclip size={10} /> Anexos ({sub.file_urls.length})
                                                                     </span>
                                                                     <div className="flex flex-wrap gap-2">
-                                                                        {sub.file_urls.map((url, i) => (
-                                                                            <a key={i} href={url} target="_blank" rel="noopener noreferrer"
-                                                                                className="flex items-center gap-1.5 px-2 py-1 bg-white border border-zinc-200 rounded text-[10px] font-medium text-blue-600 hover:bg-blue-50 hover:border-blue-200 transition-colors"
-                                                                            >
-                                                                                <ImageIcon size={12} />
-                                                                                {/* Extract filename */}
-                                                                                <span className="truncate max-w-[100px]" title={url.split('/').pop()?.split('_').slice(1).join('_') || `Anexo ${i + 1}`}>
-                                                                                    {url.split('/').pop()?.split('_').slice(1).join('_') || `Anexo ${i + 1}`}
-                                                                                </span>
-                                                                            </a>
-                                                                        ))}
+                                                                        {sub.file_urls.map((url, i) => {
+                                                                            const isImg = /\.(jpg|jpeg|png|gif|webp)(\?.*)?$/i.test(url);
+                                                                            const fileName = url.split('/').pop()?.split('_').slice(1).join('_') || `Anexo ${i + 1}`;
+
+                                                                            if (isImg) {
+                                                                                return (
+                                                                                    <a key={i} href={url} target="_blank" rel="noopener noreferrer" className="block w-full mb-1 overflow-hidden rounded-lg border border-zinc-200 shadow-sm">
+                                                                                        <img src={url} alt={fileName} className="w-full h-auto object-cover max-h-32 hover:opacity-90 transition-opacity" />
+                                                                                    </a>
+                                                                                );
+                                                                            }
+
+                                                                            return (
+                                                                                <a key={i} href={url} target="_blank" rel="noopener noreferrer"
+                                                                                    className="flex items-center gap-1.5 px-2 py-1 bg-white border border-zinc-200 rounded text-[10px] font-medium text-blue-600 hover:bg-blue-50 hover:border-blue-200 transition-colors"
+                                                                                >
+                                                                                    <ImageIcon size={12} />
+                                                                                    <span className="truncate max-w-[100px]" title={fileName}>
+                                                                                        {fileName}
+                                                                                    </span>
+                                                                                </a>
+                                                                            );
+                                                                        })}
                                                                     </div>
                                                                 </div>
                                                             )}
@@ -333,17 +345,29 @@ export default function CoordClientPage({ currentUser, initialDemands, teamMembe
                                                                         <Paperclip size={10} /> Anexos ({sub.file_urls.length})
                                                                     </span>
                                                                     <div className="flex flex-wrap gap-2">
-                                                                        {sub.file_urls.map((url, i) => (
-                                                                            <a key={i} href={url} target="_blank" rel="noopener noreferrer"
-                                                                                className="flex items-center gap-1.5 px-2 py-1 bg-white border border-zinc-200 rounded text-[10px] font-medium text-blue-600 hover:bg-blue-50 hover:border-blue-200 transition-colors"
-                                                                            >
-                                                                                <ImageIcon size={12} />
-                                                                                {/* Extract filename */}
-                                                                                <span className="truncate max-w-[100px]" title={url.split('/').pop()?.split('_').slice(1).join('_') || `Anexo ${i + 1}`}>
-                                                                                    {url.split('/').pop()?.split('_').slice(1).join('_') || `Anexo ${i + 1}`}
-                                                                                </span>
-                                                                            </a>
-                                                                        ))}
+                                                                        {sub.file_urls.map((url, i) => {
+                                                                            const isImg = /\.(jpg|jpeg|png|gif|webp)(\?.*)?$/i.test(url);
+                                                                            const fileName = url.split('/').pop()?.split('_').slice(1).join('_') || `Anexo ${i + 1}`;
+
+                                                                            if (isImg) {
+                                                                                return (
+                                                                                    <a key={i} href={url} target="_blank" rel="noopener noreferrer" className="block w-full mb-1 overflow-hidden rounded-lg border border-zinc-200 shadow-sm">
+                                                                                        <img src={url} alt={fileName} className="w-full h-auto object-cover max-h-32 hover:opacity-90 transition-opacity" />
+                                                                                    </a>
+                                                                                );
+                                                                            }
+
+                                                                            return (
+                                                                                <a key={i} href={url} target="_blank" rel="noopener noreferrer"
+                                                                                    className="flex items-center gap-1.5 px-2 py-1 bg-white border border-zinc-200 rounded text-[10px] font-medium text-blue-600 hover:bg-blue-50 hover:border-blue-200 transition-colors"
+                                                                                >
+                                                                                    <ImageIcon size={12} />
+                                                                                    <span className="truncate max-w-[100px]" title={fileName}>
+                                                                                        {fileName}
+                                                                                    </span>
+                                                                                </a>
+                                                                            );
+                                                                        })}
                                                                     </div>
                                                                 </div>
                                                             )}
