@@ -18,13 +18,11 @@ export default function CoordClientPage({ currentUser, initialDemands, teamMembe
     const [showCreateForm, setShowCreateForm] = useState(false);
     const router = useRouter();
 
-    // "Evelin" Logic: Ideally check specific permission or exact role.
-    // Plan said: Role = 'Coord. Geral' (Evelin)
     const canCreate = currentUser.role === 'Coord. Geral';
 
     const handleRefresh = () => {
         setShowCreateForm(false);
-        router.refresh(); // Re-fetch server data
+        router.refresh();
     };
 
     return (
@@ -43,34 +41,25 @@ export default function CoordClientPage({ currentUser, initialDemands, teamMembe
 
                     {canCreate && (
                         <button
-                            onClick={() => setShowCreateForm(!showCreateForm)}
-                            className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${showCreateForm ? 'bg-slate-200 text-slate-700' : 'bg-primary text-white hover:bg-primary/90'}`}
+                            onClick={() => setShowCreateForm(true)}
+                            className="flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 transition-all"
                         >
                             <PlusCircle size={18} />
-                            {showCreateForm ? 'Cancelar' : 'Nova Demanda'}
+                            Nova Demanda
                         </button>
                     )}
                 </div>
 
                 <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-12 gap-8">
 
-                    {/* Left Column: Team & Create (Layout depends on state) */}
+                    {/* Left Column: Team */}
                     <div className="lg:col-span-3 flex flex-col gap-6 min-h-0">
-
-                        {/* Create Form Area */}
-                        {showCreateForm && (
-                            <div className="shrink-0 animate-in slide-in-from-top-4 fade-in duration-300">
-                                <CreateDemandForm onSuccess={handleRefresh} teamMembers={teamMembers} />
-                            </div>
-                        )}
-
-                        {/* Team List */}
                         <div className="flex-1 min-h-0 flex flex-col bg-white rounded-xl shadow-sm border border-slate-200 p-4">
                             <h3 className="shrink-0 font-semibold text-slate-700 mb-4 flex items-center gap-2">
                                 <Users size={18} />
                                 Equipe
                             </h3>
-                            <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar space-y-3 custom-scrollbar pr-2">
+                            <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar space-y-3 pr-2">
                                 {teamMembers.map(member => (
                                     <TeamMemberCard key={member.id} member={member} />
                                 ))}
@@ -88,7 +77,14 @@ export default function CoordClientPage({ currentUser, initialDemands, teamMembe
                 </div>
 
             </div>
+
+            {/* Modal de Nova Demanda */}
+            <CreateDemandForm
+                isOpen={showCreateForm}
+                onClose={() => setShowCreateForm(false)}
+                onSuccess={handleRefresh}
+                teamMembers={teamMembers}
+            />
         </div>
     );
 }
-
