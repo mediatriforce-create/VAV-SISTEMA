@@ -1,6 +1,6 @@
 export type DemandSector = 'comunicacao' | 'pedagogia';
 export type DemandPriority = 'baixa' | 'media' | 'alta';
-export type DemandStatus = 'a_fazer' | 'em_andamento' | 'revisao' | 'finalizado';
+export type DemandStatus = 'a_fazer' | 'em_andamento' | 'revisao' | 'aprovacao' | 'finalizado';
 
 export interface Demand {
     id: string;

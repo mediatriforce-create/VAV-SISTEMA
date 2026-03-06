@@ -59,6 +59,7 @@ export default function DemandList({ demands, onDemandClick }: DemandListProps) 
                         <option value="a_fazer">A Fazer</option>
                         <option value="em_andamento">Em Andamento</option>
                         <option value="revisao">Revisão</option>
+                        <option value="aprovacao">Esperando Aprovação</option>
                         <option value="finalizado">Finalizado</option>
                     </select>
                 </div>

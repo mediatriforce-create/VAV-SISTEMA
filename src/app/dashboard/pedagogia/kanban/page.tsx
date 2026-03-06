@@ -13,6 +13,7 @@ const COLUMNS: { id: KanbanColumnStatus; title: string; color: string; icon: str
     { id: 'backlog', title: 'Backlog', color: 'from-slate-400 to-slate-500', icon: 'inbox' },
     { id: 'planejado', title: 'Planejado', color: 'from-blue-400 to-blue-600', icon: 'event' },
     { id: 'andamento', title: 'Em Andamento', color: 'from-amber-400 to-orange-500', icon: 'pending' },
+    { id: 'aprovacao', title: 'Esperando Aprovação', color: 'from-purple-400 to-violet-600', icon: 'hourglass_top' },
     { id: 'concluido', title: 'Concluído', color: 'from-emerald-400 to-green-600', icon: 'check_circle' },
 ];
 
@@ -36,8 +37,8 @@ function KanbanCardItem({ card, onDelete }: { card: PedKanbanCard; onDelete: (id
             <motion.div
                 layout
                 className={`bg-white dark:bg-zinc-800 rounded-xl border p-4 shadow-sm hover:shadow-md transition-shadow cursor-grab active:cursor-grabbing group ${card.demand_id
-                        ? 'border-amber-300 dark:border-amber-600 ring-1 ring-amber-200/50 dark:ring-amber-600/30'
-                        : 'border-zinc-200 dark:border-zinc-700'
+                    ? 'border-amber-300 dark:border-amber-600 ring-1 ring-amber-200/50 dark:ring-amber-600/30'
+                    : 'border-zinc-200 dark:border-zinc-700'
                     }`}
             >
                 {/* Tag de Demanda da Coordenação */}
@@ -66,8 +67,8 @@ function KanbanCardItem({ card, onDelete }: { card: PedKanbanCard; onDelete: (id
                 <div className="flex items-center gap-2 flex-wrap">
                     {card.card_type && (
                         <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${card.demand_id
-                                ? 'bg-amber-100 dark:bg-amber-500/15 text-amber-600 dark:text-amber-400'
-                                : 'bg-zinc-100 dark:bg-zinc-700 text-zinc-500 dark:text-zinc-400'
+                            ? 'bg-amber-100 dark:bg-amber-500/15 text-amber-600 dark:text-amber-400'
+                            : 'bg-zinc-100 dark:bg-zinc-700 text-zinc-500 dark:text-zinc-400'
                             }`}>
                             {card.card_type}
                         </span>

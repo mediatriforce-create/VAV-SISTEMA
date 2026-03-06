@@ -17,7 +17,7 @@ export interface Class {
 
 // ---- KANBAN ----
 
-export type KanbanColumnStatus = 'backlog' | 'planejado' | 'andamento' | 'concluido';
+export type KanbanColumnStatus = 'backlog' | 'planejado' | 'andamento' | 'aprovacao' | 'concluido';
 
 export interface PedKanbanCard {
     id: string;

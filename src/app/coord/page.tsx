@@ -59,8 +59,17 @@ export default async function CoordPage() {
     `)
         .order('created_at', { ascending: false });
 
-    // 3. Simple aggregation for "Active Demands" count per member
-    // (We could do this in SQL or here. Doing here for simplicity vs creating a view)
+    // 3. Fetch Pedagogia Kanban cards waiting for approval
+    const { data: pendingPedCards } = await supabase
+        .from('ped_kanban_cards')
+        .select(`
+            id, title, description, card_type, due_date, demand_id, column_status,
+            creator:created_by(full_name)
+        `)
+        .eq('column_status', 'aprovacao')
+        .order('created_at', { ascending: false });
+
+    // 4. Simple aggregation for "Active Demands" count per member
     const memberStats = teamMembers?.map((member: any) => {
         const activeCount = demands?.filter((d: any) =>
             d.assigned_to === member.id && d.status !== 'finalizado'
@@ -77,6 +86,7 @@ export default async function CoordPage() {
             currentUser={profile}
             initialDemands={demands || []}
             teamMembers={memberStats}
+            pendingPedCards={pendingPedCards || []}
         />
     );
 }
