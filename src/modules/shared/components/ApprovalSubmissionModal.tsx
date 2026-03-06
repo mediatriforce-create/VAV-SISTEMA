@@ -45,12 +45,24 @@ export default function ApprovalSubmissionModal({
 
             for (const file of files) {
                 const timestamp = Date.now();
-                const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+                let safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+
+                // Force image extension if missing
+                if (file.type.startsWith('image/') && !/\.(jpg|jpeg|png|gif|webp|svg)$/i.test(safeName)) {
+                    let ext = file.type.split('/')[1] || 'jpg';
+                    if (ext === 'jpeg') ext = 'jpg';
+                    safeName += `.${ext}`;
+                }
+
                 const filePath = `${demandId || pedCardId}/${timestamp}_${safeName}`;
 
                 const { data, error } = await supabase.storage
                     .from('temp_approvals')
-                    .upload(filePath, file);
+                    .upload(filePath, file, {
+                        contentType: file.type || 'application/octet-stream',
+                        cacheControl: '3600',
+                        upsert: false
+                    });
 
                 if (error) {
                     console.error('Upload error:', error);
