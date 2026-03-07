@@ -19,7 +19,7 @@ export type Module =
   | 'configuracoes';
 
 export const PERMISSIONS: Record<Role, Module[]> = {
-  'Coordenadora ADM': ['administracao', 'coordenacao', 'comunicacao', 'pedagogia', 'chat', 'reunioes', 'calendario', 'configuracoes'],
+  'Coordenadora ADM': ['administracao', 'coordenacao', 'comunicacao', 'chat', 'reunioes', 'calendario', 'configuracoes'],
   'Coordenação de Pedagogia': ['pedagogia', 'coordenacao', 'comunicacao', 'chat', 'reunioes', 'calendario', 'configuracoes'],
   'Estagiário(a) de ADM': ['administracao', 'chat', 'reunioes', 'calendario', 'configuracoes'],
   'Estagiário(a) de Comunicação': ['comunicacao', 'chat', 'reunioes', 'calendario', 'configuracoes'],
