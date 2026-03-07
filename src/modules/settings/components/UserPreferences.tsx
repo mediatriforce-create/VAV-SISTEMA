@@ -96,7 +96,7 @@ export default function UserPreferences({ initialName = '' }: { initialName?: st
                         <button
                             type="submit"
                             disabled={isSavingName || name === initialName}
-                            className="h-[46px] px-6 rounded-xl font-bold text-sm bg-indigo-600 text-white shadow-md shadow-indigo-600/30 hover:bg-indigo-500 disabled:opacity-50 transition-all flex items-center gap-2"
+                            className="h-[46px] px-6 rounded-xl font-bold text-sm bg-indigo-600 dark:bg-amber-500 text-white dark:text-zinc-900 shadow-md shadow-indigo-600/30 dark:shadow-amber-500/20 hover:bg-indigo-500 dark:hover:bg-amber-400 disabled:opacity-50 transition-all flex items-center gap-2"
                         >
                             {isSavingName ? (
                                 <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>

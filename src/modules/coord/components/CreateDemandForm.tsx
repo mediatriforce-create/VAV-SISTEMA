@@ -80,10 +80,10 @@ export default function CreateDemandForm({ onSuccess, onClose, teamMembers, isOp
                         exit={{ scale: 0.95, opacity: 0, y: 20 }}
                         transition={{ type: 'spring', damping: 25, stiffness: 300 }}
                         onClick={e => e.stopPropagation()}
-                        className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-zinc-200 dark:border-zinc-800 w-full max-w-xl max-h-[90vh] flex flex-col overflow-hidden"
+                        className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-zinc-200 dark:border-white/10 w-full max-w-xl max-h-[90vh] flex flex-col overflow-hidden"
                     >
                         {/* Header */}
-                        <div className="shrink-0 flex items-center justify-between p-6 border-b border-zinc-100 dark:border-zinc-800">
+                        <div className="shrink-0 flex items-center justify-between p-6 border-b border-zinc-100 dark:border-white/10">
                             <div>
                                 <h3 className="text-xl font-extrabold text-zinc-900 dark:text-white flex items-center gap-2">
                                     <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center">
@@ -197,7 +197,7 @@ export default function CreateDemandForm({ onSuccess, onClose, teamMembers, isOp
                         </form>
 
                         {/* Footer */}
-                        <div className="shrink-0 p-6 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-end gap-3">
+                        <div className="shrink-0 p-6 border-t border-zinc-100 dark:border-white/10 flex items-center justify-end gap-3">
                             <button
                                 type="button"
                                 onClick={onClose}
@@ -210,7 +210,7 @@ export default function CreateDemandForm({ onSuccess, onClose, teamMembers, isOp
                                 whileTap={{ scale: 0.98 }}
                                 onClick={handleSubmit}
                                 disabled={loading || !formData.title.trim()}
-                                className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-bold px-6 py-2.5 rounded-xl text-sm shadow-lg shadow-blue-500/25 disabled:opacity-50 flex items-center gap-2"
+                                className="bg-gradient-to-r from-blue-500 to-indigo-600 dark:from-amber-500 dark:to-amber-500 dark:hover:from-amber-400 dark:hover:to-amber-400 text-white dark:text-zinc-900 font-bold px-6 py-2.5 rounded-xl text-sm shadow-lg shadow-blue-500/25 dark:shadow-amber-500/20 disabled:opacity-50 flex items-center gap-2"
                             >
                                 {loading ? <Loader2 className="animate-spin" size={16} /> : <span className="material-symbols-outlined text-lg">send</span>}
                                 {loading ? 'Criando...' : 'Criar Demanda'}

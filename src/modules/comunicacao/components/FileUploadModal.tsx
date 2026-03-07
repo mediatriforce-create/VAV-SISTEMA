@@ -68,7 +68,7 @@ export default function FileUploadModal({ isOpen, onClose, folderId, onSuccess }
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-            <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-2xl w-full max-w-sm flex flex-col max-h-[85vh]">
+            <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 rounded-xl shadow-2xl w-full max-w-sm flex flex-col max-h-[85vh]">
                 <div className="shrink-0 p-4 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center">
                     <h3 className="font-bold text-lg text-slate-800 dark:text-white">Upload de Arquivo</h3>
                     <button type="button" onClick={onClose} className="text-slate-400 hover:text-slate-600">
@@ -94,7 +94,7 @@ export default function FileUploadModal({ isOpen, onClose, folderId, onSuccess }
                     <button
                         type="submit"
                         disabled={loading || !file}
-                        className="w-full bg-primary text-white py-2 rounded-lg font-medium hover:bg-primary-dark transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                        className="w-full bg-primary dark:bg-amber-500 text-white dark:text-zinc-900 py-2 rounded-lg font-medium hover:bg-primary-dark transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
                     >
                         {loading ? <Loader2 className="animate-spin" size={20} /> : 'Enviar'}
                     </button>

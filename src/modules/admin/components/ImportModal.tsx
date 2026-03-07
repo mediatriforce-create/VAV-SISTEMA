@@ -72,7 +72,7 @@ export function ImportModal({ isOpen, onClose, bankId, bankName }: ImportModalPr
         <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
             <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div>
 
-            <div className="relative bg-white dark:bg-gray-800 w-full max-w-4xl rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 flex flex-col max-h-[90vh]">
+            <div className="relative bg-white dark:bg-zinc-900 w-full max-w-4xl rounded-xl shadow-2xl border border-gray-200 dark:border-white/10 flex flex-col max-h-[90vh]">
 
                 {/* Header */}
                 <div className="px-6 py-4 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-gray-800 rounded-t-xl shrink-0">
@@ -118,7 +118,7 @@ export function ImportModal({ isOpen, onClose, bankId, bankName }: ImportModalPr
                             <button
                                 onClick={handleParse}
                                 disabled={!file || loading}
-                                className="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors w-full max-w-md flex items-center justify-center gap-2"
+                                className="px-6 py-3 bg-blue-600 dark:bg-amber-500 text-white dark:text-zinc-900 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors w-full max-w-md flex items-center justify-center gap-2"
                             >
                                 {loading ? 'Processando...' : 'Ler Arquivo'}
                             </button>
@@ -177,7 +177,7 @@ export function ImportModal({ isOpen, onClose, bankId, bankName }: ImportModalPr
                                 <button
                                     onClick={handleConfirmImport}
                                     disabled={loading}
-                                    className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium disabled:opacity-50 flex items-center gap-2"
+                                    className="px-6 py-2 bg-green-600 dark:bg-amber-500 text-white dark:text-zinc-900 rounded-lg hover:bg-green-700 font-medium disabled:opacity-50 flex items-center gap-2"
                                 >
                                     {loading ? 'Salvando...' : 'Confirmar Importação'}
                                 </button>

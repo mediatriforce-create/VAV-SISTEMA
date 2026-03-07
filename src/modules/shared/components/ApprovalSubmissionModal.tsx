@@ -149,10 +149,10 @@ export default function ApprovalSubmissionModal({
                     <motion.div
                         initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }}
                         onClick={e => e.stopPropagation()}
-                        className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-zinc-200 dark:border-zinc-800 w-full max-w-lg max-h-[90vh] flex flex-col"
+                        className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-zinc-200 dark:border-white/10 w-full max-w-lg max-h-[90vh] flex flex-col"
                     >
                         {/* Header */}
-                        <div className="p-6 border-b border-zinc-100 dark:border-zinc-800">
+                        <div className="p-6 border-b border-zinc-100 dark:border-white/10">
                             <h3 className="text-lg font-extrabold text-zinc-900 dark:text-white flex items-center gap-2">
                                 <span className="material-symbols-outlined text-violet-500">upload_file</span>
                                 Enviar para Aprovação
@@ -174,7 +174,7 @@ export default function ApprovalSubmissionModal({
                                     onChange={e => setJustification(e.target.value)}
                                     rows={4}
                                     placeholder="Descreva o que está sendo entregue, o que foi feito, observações importantes..."
-                                    className="w-full p-4 bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 rounded-xl outline-none focus:border-violet-500 text-sm resize-none"
+                                    className="w-full p-4 bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-white/10 rounded-xl outline-none focus:border-violet-500 text-sm resize-none"
                                 />
                             </div>
 
@@ -185,7 +185,7 @@ export default function ApprovalSubmissionModal({
                                 </label>
                                 <div
                                     onClick={() => fileInputRef.current?.click()}
-                                    className="border-2 border-dashed border-zinc-300 dark:border-zinc-700 rounded-xl p-6 text-center cursor-pointer hover:border-violet-400 hover:bg-violet-50/30 dark:hover:bg-violet-900/10 transition-all"
+                                    className="border-2 border-dashed border-zinc-300 dark:border-white/10 rounded-xl p-6 text-center cursor-pointer hover:border-violet-400 hover:bg-violet-50/30 dark:hover:bg-violet-900/10 transition-all"
                                 >
                                     <span className="material-symbols-outlined text-3xl text-zinc-300 dark:text-zinc-600 mb-2">cloud_upload</span>
                                     <p className="text-xs text-zinc-400 font-medium">Clique para selecionar arquivos</p>
@@ -204,7 +204,7 @@ export default function ApprovalSubmissionModal({
                             {files.length > 0 && (
                                 <div className="space-y-2">
                                     {files.map((file, i) => (
-                                        <div key={i} className="flex items-center gap-3 bg-zinc-50 dark:bg-zinc-800/50 rounded-lg px-3 py-2 border border-zinc-200 dark:border-zinc-700">
+                                        <div key={i} className="flex items-center gap-3 bg-zinc-50 dark:bg-zinc-800/50 rounded-lg px-3 py-2 border border-zinc-200 dark:border-white/10">
                                             <span className="material-symbols-outlined text-sm text-zinc-400">
                                                 {file.type.startsWith('image/') ? 'image' : 'description'}
                                             </span>
@@ -223,11 +223,11 @@ export default function ApprovalSubmissionModal({
                         </div>
 
                         {/* Footer */}
-                        <div className="p-6 border-t border-zinc-100 dark:border-zinc-800 flex justify-end gap-3">
+                        <div className="p-6 border-t border-zinc-100 dark:border-white/10 flex justify-end gap-3">
                             <button
                                 onClick={handleClose}
                                 disabled={uploading}
-                                className="px-4 py-2 text-sm font-bold text-zinc-500 hover:text-zinc-900 transition-colors disabled:opacity-50"
+                                className="px-4 py-2 text-sm font-bold text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors disabled:opacity-50"
                             >
                                 Cancelar
                             </button>
@@ -235,7 +235,7 @@ export default function ApprovalSubmissionModal({
                                 whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
                                 onClick={handleSubmit}
                                 disabled={uploading || (!justification.trim() && files.length === 0)}
-                                className="bg-gradient-to-r from-violet-500 to-purple-600 text-white px-6 py-2 rounded-xl text-sm font-bold shadow-lg shadow-violet-500/25 disabled:opacity-50 flex items-center gap-2"
+                                className="bg-gradient-to-r from-violet-500 to-purple-600 dark:from-amber-500 dark:to-amber-500 dark:hover:from-amber-400 dark:hover:to-amber-400 text-white dark:text-zinc-900 px-6 py-2 rounded-xl text-sm font-bold shadow-lg shadow-violet-500/25 disabled:opacity-50 flex items-center gap-2"
                             >
                                 {uploading ? (
                                     <>

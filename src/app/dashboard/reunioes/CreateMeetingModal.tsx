@@ -69,7 +69,7 @@ export default function CreateMeetingModal({ isOpen, onClose, onSuccess }: Creat
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.95, y: 20 }}
                             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-                            className="bg-surface-base dark:bg-[#121214] border border-zinc-200 dark:border-white/10 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden pointer-events-auto flex flex-col max-h-[90vh]"
+                            className="bg-surface-base dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden pointer-events-auto flex flex-col max-h-[90vh]"
                         >
                             {/* Header */}
                             <div className="flex items-center justify-between p-6 border-b border-zinc-200 dark:border-white/10 shrink-0">
@@ -186,7 +186,7 @@ export default function CreateMeetingModal({ isOpen, onClose, onSuccess }: Creat
                                     type="submit"
                                     form="meeting-form"
                                     disabled={isPending}
-                                    className="px-8 py-3 rounded-lg font-bold bg-secondary hover:bg-secondary-dark text-white shadow-lg shadow-secondary/30 transition-all flex items-center justify-center min-w-[140px]"
+                                    className="px-8 py-3 rounded-lg font-bold bg-secondary dark:bg-amber-500 hover:bg-secondary-dark text-white dark:text-zinc-900 shadow-lg shadow-secondary/30 transition-all flex items-center justify-center min-w-[140px]"
                                 >
                                     {isPending ? (
                                         <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>

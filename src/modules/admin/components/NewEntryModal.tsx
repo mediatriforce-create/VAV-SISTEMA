@@ -112,10 +112,10 @@ export function NewEntryModal({ isOpen, onClose, bankId, currentUserName }: NewE
             ></div>
 
             {/* Modal Content */}
-            <div className="relative bg-white dark:bg-gray-800 w-full max-w-2xl rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 flex flex-col max-h-[90vh]">
+            <div className="relative bg-white dark:bg-zinc-900 w-full max-w-2xl rounded-xl shadow-2xl border border-gray-200 dark:border-white/10 flex flex-col max-h-[90vh]">
 
                 {/* Header */}
-                <div className="px-6 py-4 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-gray-800 rounded-t-xl shrink-0">
+                <div className="px-6 py-4 border-b border-gray-100 dark:border-white/10 flex justify-between items-center bg-gray-50 dark:bg-zinc-900 rounded-t-xl shrink-0">
                     <h2 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
                         <span className="material-symbols-outlined text-yellow-500">add_circle</span>
                         Novo Lançamento
@@ -248,7 +248,7 @@ export function NewEntryModal({ isOpen, onClose, bankId, currentUserName }: NewE
                 </div>
 
                 {/* Footer */}
-                <div className="px-6 py-4 bg-gray-50 dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700 rounded-b-xl flex justify-end gap-3 shrink-0">
+                <div className="px-6 py-4 bg-gray-50 dark:bg-zinc-900 border-t border-gray-100 dark:border-white/10 rounded-b-xl flex justify-end gap-3 shrink-0">
                     <button
                         type="button"
                         onClick={onClose}
@@ -261,7 +261,7 @@ export function NewEntryModal({ isOpen, onClose, bankId, currentUserName }: NewE
                         type="button"
                         onClick={handleSave}
                         disabled={loading}
-                        className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-900 font-medium disabled:opacity-50 flex items-center gap-2"
+                        className="px-4 py-2 bg-primary dark:bg-amber-500 text-white dark:text-zinc-900 rounded-lg hover:bg-blue-900 dark:hover:bg-amber-400 font-medium disabled:opacity-50 flex items-center gap-2"
                     >
                         {loading && <span className="animate-spin h-4 w-4 border-2 border-white rounded-full border-t-transparent"></span>}
                         Salvar Lançamento

@@ -61,7 +61,7 @@ export default function DriveUploadModal({ isOpen, onClose, currentFolderId, pre
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-            <div className="bg-white dark:bg-zinc-900 rounded-xl shadow-2xl border border-zinc-200 dark:border-zinc-800 w-full max-w-lg flex flex-col max-h-[85vh] animate-in fade-in zoom-in-95 duration-200">
+            <div className="bg-white dark:bg-zinc-900 rounded-xl shadow-2xl border border-zinc-200 dark:border-white/10 w-full max-w-lg flex flex-col max-h-[85vh] animate-in fade-in zoom-in-95 duration-200">
                 <div className="shrink-0 p-4 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center">
                     <h3 className="font-bold text-lg text-slate-800 dark:text-white flex items-center gap-2">
                         <Upload size={20} className="text-primary" />
@@ -151,7 +151,7 @@ export default function DriveUploadModal({ isOpen, onClose, currentFolderId, pre
                     <button
                         type="submit"
                         disabled={uploading || !file || !title}
-                        className="w-full bg-primary text-white py-3 rounded-lg font-bold hover:bg-primary-dark transition-all disabled:opacity-50 flex items-center justify-center gap-2 shadow-md hover:shadow-lg active:scale-[0.98]"
+                        className="w-full bg-primary dark:bg-amber-500 text-white dark:text-zinc-900 py-3 rounded-lg font-bold hover:bg-primary-dark transition-all disabled:opacity-50 flex items-center justify-center gap-2 shadow-md hover:shadow-lg active:scale-[0.98]"
                     >
                         {uploading ? <Loader2 className="animate-spin" size={20} /> : 'Fazer Upload e Organizar'}
                     </button>

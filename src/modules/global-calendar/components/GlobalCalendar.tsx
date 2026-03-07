@@ -258,7 +258,7 @@ export function GlobalCalendar({ userRole }: { userRole?: string }) {
                                 </div>
 
                                 <div className="mt-4 flex gap-3">
-                                    <button type="submit" disabled={isSaving} className="flex-1 font-black uppercase tracking-wider text-xs py-3.5 rounded-xl bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 disabled:opacity-50 transition-all hover:bg-indigo-500">
+                                    <button type="submit" disabled={isSaving} className="flex-1 font-black uppercase tracking-wider text-xs py-3.5 rounded-xl bg-indigo-600 dark:bg-amber-500 text-white dark:text-zinc-900 shadow-lg shadow-indigo-600/30 dark:shadow-amber-500/20 disabled:opacity-50 transition-all hover:bg-indigo-500 dark:hover:bg-amber-400">
                                         {isSaving ? 'Publicando...' : 'Publicar no Mural'}
                                     </button>
                                 </div>

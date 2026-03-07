@@ -121,7 +121,7 @@ export default function SmartUploadModal({ isOpen, onClose, onUploadSuccess }: S
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-            <div className="bg-white dark:bg-slate-800 rounded-xl shadow-2xl w-full max-w-lg flex flex-col max-h-[85vh]">
+            <div className="bg-white dark:bg-zinc-900 border border-transparent dark:border-white/10 rounded-xl shadow-2xl w-full max-w-lg flex flex-col max-h-[85vh]">
                 <div className="shrink-0 p-4 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center">
                     <h3 className="font-bold text-lg text-slate-800 dark:text-white">Upload Inteligente</h3>
                     <button type="button" onClick={onClose} className="text-slate-400 hover:text-slate-600">
@@ -208,7 +208,7 @@ export default function SmartUploadModal({ isOpen, onClose, onUploadSuccess }: S
                     <button
                         type="submit"
                         disabled={uploading || !file || !title}
-                        className="w-full bg-primary text-white py-3 rounded-lg font-bold hover:bg-primary-dark transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                        className="w-full bg-primary dark:bg-amber-500 text-white dark:text-zinc-900 py-3 rounded-lg font-bold hover:bg-primary-dark transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
                     >
                         {uploading ? <Loader2 className="animate-spin" size={20} /> : 'Publicar'}
                     </button>

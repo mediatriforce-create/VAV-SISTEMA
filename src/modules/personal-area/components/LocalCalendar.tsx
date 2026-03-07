@@ -223,7 +223,7 @@ export function LocalCalendar({ userRole }: { userRole?: string }) {
                                 <button
                                     onClick={handleSaveEvent}
                                     disabled={isSaving || !newEventTitle.trim()}
-                                    className="flex-1 font-bold py-2.5 rounded-xl bg-secondary text-white shadow-md shadow-secondary/30 disabled:opacity-50 transition-all hover:bg-[rgba(59,130,246,0.9)]"
+                                    className="flex-1 font-bold py-2.5 rounded-xl bg-secondary dark:bg-amber-500 text-white dark:text-zinc-900 shadow-md shadow-secondary/30 dark:shadow-amber-500/20 disabled:opacity-50 transition-all hover:bg-[rgba(59,130,246,0.9)] dark:hover:bg-amber-400"
                                 >
                                     {isSaving ? 'Salvando...' : 'Salvar'}
                                 </button>

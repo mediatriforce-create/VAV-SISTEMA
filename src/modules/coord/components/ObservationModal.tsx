@@ -63,10 +63,10 @@ export function ObservationModal({ isOpen, onClose, member }: ObservationModalPr
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.95, y: 10 }}
                             onClick={(e) => e.stopPropagation()}
-                            className="w-full max-w-md bg-white dark:bg-zinc-900 rounded-3xl overflow-hidden shadow-2xl border border-white/50 dark:border-zinc-800"
+                            className="w-full max-w-md bg-white dark:bg-zinc-900 rounded-3xl overflow-hidden shadow-2xl border border-white/50 dark:border-white/10"
                         >
                             {/* Header */}
-                            <div className="p-6 pb-4 border-b border-zinc-100 dark:border-zinc-800 flex justify-between items-center bg-zinc-50/50 dark:bg-zinc-900/50">
+                            <div className="p-6 pb-4 border-b border-zinc-100 dark:border-white/10 flex justify-between items-center bg-zinc-50/50 dark:bg-zinc-900/50">
                                 <div className="flex items-center gap-3">
                                     <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400">
                                         <PenLine size={20} />
@@ -93,7 +93,7 @@ export function ObservationModal({ isOpen, onClose, member }: ObservationModalPr
                                     value={content}
                                     onChange={(e) => setContent(e.target.value)}
                                     placeholder={`Escreva um feedback, diretriz ou aviso para ${member.full_name.split(' ')[0]}...`}
-                                    className="w-full h-32 px-4 py-3 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 focus:outline-none focus:ring-2 focus:ring-blue-500/50 resize-none text-sm text-zinc-800 dark:text-zinc-200 placeholder-zinc-400 custom-scrollbar"
+                                    className="w-full h-32 px-4 py-3 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500/50 resize-none text-sm text-zinc-800 dark:text-zinc-200 placeholder-zinc-400 custom-scrollbar"
                                 />
                                 <p className="text-xs text-zinc-500 dark:text-zinc-500 mt-2 font-medium">
                                     Esta mensagem aparecerá no Mural da Coordenação dentro da Área Pessoal deste membro.
@@ -101,7 +101,7 @@ export function ObservationModal({ isOpen, onClose, member }: ObservationModalPr
                             </div>
 
                             {/* Footer */}
-                            <div className="p-6 pt-4 bg-zinc-50 dark:bg-zinc-900 flex justify-end gap-3 border-t border-zinc-100 dark:border-zinc-800">
+                            <div className="p-6 pt-4 bg-zinc-50 dark:bg-zinc-900 flex justify-end gap-3 border-t border-zinc-100 dark:border-white/10">
                                 <button
                                     onClick={onClose}
                                     className="px-5 py-2.5 rounded-xl font-bold text-sm text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors"
@@ -111,7 +111,7 @@ export function ObservationModal({ isOpen, onClose, member }: ObservationModalPr
                                 <button
                                     onClick={handleSubmit}
                                     disabled={isSubmitting || !content.trim()}
-                                    className="flex items-center gap-2 px-6 py-2.5 rounded-xl font-bold text-sm bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="flex items-center gap-2 px-6 py-2.5 rounded-xl font-bold text-sm bg-blue-600 dark:bg-amber-500 hover:bg-blue-700 dark:hover:bg-amber-400 text-white dark:text-zinc-900 shadow-lg shadow-blue-500/20 dark:shadow-amber-500/20 hover:shadow-blue-500/40 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     {isSubmitting ? <Loader2 size={18} className="animate-spin" /> : <PenLine size={18} />}
                                     Enviar
