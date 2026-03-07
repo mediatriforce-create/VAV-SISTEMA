@@ -66,7 +66,7 @@ export default function SettingsClient({ profile, isAllowedTeamManagement, initi
 
                 {/* Content Area */}
                 <div className="lg:col-span-3">
-                    {activeTab === 'preferences' && <UserPreferences />}
+                    {activeTab === 'preferences' && <UserPreferences initialName={profile.full_name} />}
 
                     {activeTab === 'team' && isAllowedTeamManagement && (
                         <TeamManagement initialUsers={initialUsers} />

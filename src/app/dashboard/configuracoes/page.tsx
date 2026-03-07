@@ -18,7 +18,7 @@ export default async function SettingsPage() {
     if (!profile) redirect('/login');
 
     // Verificar se tem permissão de Admin para ver a aba da equipe
-    const isAllowedTeamManagement = ['Coordenadora ADM', 'Presidência', 'Direção'].includes(profile.role);
+    const isAllowedTeamManagement = ['Presidência', 'Direção'].includes(profile.role);
 
     // Busca os usuarios so se tiver permissao
     const usersResult = isAllowedTeamManagement ? await getUsers() : { success: false, data: [] };
