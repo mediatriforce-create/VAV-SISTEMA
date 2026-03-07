@@ -67,7 +67,6 @@ export default function DashboardLayout({
         { name: 'Coordenação', icon: 'assignment_ind', href: '/coord', module: 'coordenacao' },
         { name: 'Comunicação', icon: 'campaign', href: '/comunicacao', module: 'comunicacao' },
         { name: 'Pedagogia', icon: 'school', href: '/dashboard/pedagogia', module: 'pedagogia' },
-        { name: 'Calendário', icon: 'calendar_month', href: '/dashboard/calendario', module: 'calendario' },
     ]
 
     const navItems = navItemsRaw.filter(item => {
@@ -178,6 +177,24 @@ export default function DashboardLayout({
                                                 <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
                                             )}
                                         </span>
+                                    )}
+                                </Link>
+                            )}
+
+                            {hasPermission(profile.role as any, 'calendario' as any) && (
+                                <Link
+                                    href="/dashboard/calendario"
+                                    title={!isMenuOpen ? 'Calendário Geral' : undefined}
+                                    className={`relative flex items-center gap-3 rounded-xl transition-all duration-200 group/nav shrink-0 ${isMenuOpen ? 'px-3 py-2.5' : 'justify-center py-2.5'} ${pathname.startsWith('/dashboard/calendario')
+                                        ? 'bg-blue-50 dark:bg-primary/10 text-blue-600 dark:text-primary font-bold'
+                                        : 'text-zinc-500 dark:text-zinc-400 hover:text-blue-600 dark:hover:text-primary hover:bg-zinc-100 dark:hover:bg-white/5'
+                                        }`}
+                                >
+                                    <span className="material-symbols-outlined text-xl shrink-0 group-hover/nav:scale-110 transition-transform">
+                                        event_note
+                                    </span>
+                                    {isMenuOpen && (
+                                        <span className="text-sm font-medium whitespace-nowrap">Calendário</span>
                                     )}
                                 </Link>
                             )}

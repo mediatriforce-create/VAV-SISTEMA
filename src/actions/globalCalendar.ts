@@ -36,14 +36,13 @@ export async function getGlobalEvents(year: number, month: number): Promise<Glob
         // 1. Busca eventos globais criados manualmente
         const { data: globalData, error: globalError } = await supabase
             .from('global_calendar_events')
-            .select(`
-                *,
-                profiles:created_by (full_name)
-            `)
+            .select(`*`)
             .gte('event_date', startDate.split('T')[0])
             .lte('event_date', endDate.split('T')[0]);
 
-        if (globalError) throw globalError;
+        if (globalError) {
+            console.error("Global events query error: ", globalError);
+        }
 
         // 2. Busca reuniões da aba de Reuniões
         const { data: meetingsData, error: meetingsError } = await supabase
@@ -68,7 +67,7 @@ export async function getGlobalEvents(year: number, month: number): Promise<Glob
         // Formata os dados
         const formattedGlobal: GlobalEvent[] = (globalData || []).map((ev: any) => ({
             ...ev,
-            coordinator_name: ev.profiles?.full_name || 'Desconhecido'
+            coordinator_name: 'Líder VAV'
         }));
 
         const formattedMeetings: GlobalEvent[] = (meetingsData || []).map((m: any) => ({
