@@ -56,13 +56,14 @@ export async function getGlobalEvents(year: number, month: number): Promise<Glob
                 start_time,
                 meet_link,
                 created_by,
-                created_at,
-                profiles:created_by (full_name)
+                created_at
             `)
             .gte('date', startDate.split('T')[0])
             .lte('date', endDate.split('T')[0]);
 
-        if (meetingsError) throw meetingsError;
+        if (meetingsError) {
+            console.error("Meetings query error: ", meetingsError);
+        }
 
         // Formata os dados
         const formattedGlobal: GlobalEvent[] = (globalData || []).map((ev: any) => ({
@@ -79,7 +80,7 @@ export async function getGlobalEvents(year: number, month: number): Promise<Glob
             link_url: m.meet_link, // mantido para info modal mas UI lidará via aba
             created_by: m.created_by,
             created_at: m.created_at,
-            coordinator_name: m.profiles?.full_name || 'Desconhecido',
+            coordinator_name: 'Equipe VAV', // Fixed fallback
             is_meeting: true,
             start_time: m.start_time
         }));
