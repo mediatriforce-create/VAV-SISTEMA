@@ -67,6 +67,7 @@ export default function DashboardLayout({
         { name: 'Coordenação', icon: 'assignment_ind', href: '/coord', module: 'coordenacao' },
         { name: 'Comunicação', icon: 'campaign', href: '/comunicacao', module: 'comunicacao' },
         { name: 'Pedagogia', icon: 'school', href: '/dashboard/pedagogia', module: 'pedagogia' },
+        { name: 'Calendário', icon: 'calendar_month', href: '/dashboard/calendario', module: 'calendario' },
     ]
 
     const navItems = navItemsRaw.filter(item => {
