@@ -29,7 +29,7 @@ export default function PedagogiaLayout({ children }: { children: React.ReactNod
                         </div>
                     </div>
 
-                    <nav className="flex items-center gap-1 overflow-x-auto custom-scrollbar scrollbar-hide">
+                    <nav className="flex items-center gap-1 overflow-x-auto no-scrollbar">
                         {NAV_ITEMS.map((item) => {
                             const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
 
