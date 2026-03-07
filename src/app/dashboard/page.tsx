@@ -86,10 +86,6 @@ export default function DashboardPage() {
         getUser()
     }, [supabase])
 
-    const toggleTheme = () => {
-        document.documentElement.classList.toggle('dark')
-    }
-
     if (!profile) return (
         <div className="fixed inset-0 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-zinc-950 dark:to-zinc-900 flex items-center justify-center">
             <div className="w-10 h-10 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
@@ -122,13 +118,6 @@ export default function DashboardPage() {
                 </div>
 
                 <div className="flex items-center gap-2">
-                    <button
-                        onClick={toggleTheme}
-                        className="w-9 h-9 flex items-center justify-center rounded-xl bg-white/80 dark:bg-white/10 backdrop-blur-sm border border-slate-200/60 dark:border-white/10 text-slate-500 dark:text-slate-400 hover:text-blue-500 transition-all shadow-sm"
-                    >
-                        <span className="material-symbols-outlined text-lg dark:hidden">dark_mode</span>
-                        <span className="material-symbols-outlined text-lg hidden dark:inline">light_mode</span>
-                    </button>
                     {profile.avatar_url ? (
                         <img src={profile.avatar_url} alt="" className="w-9 h-9 rounded-xl border-2 border-blue-500/30 object-cover" />
                     ) : (

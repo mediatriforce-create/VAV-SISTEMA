@@ -124,6 +124,7 @@ export default function CreateDemandForm({ onSuccess, onClose, teamMembers, isOp
                                     >
                                         <option value="comunicacao">📢 Comunicação</option>
                                         <option value="pedagogia">🎓 Pedagogia</option>
+                                        <option value="administracao">💼 Administração</option>
                                     </select>
                                 </div>
                                 <div>
@@ -135,8 +136,8 @@ export default function CreateDemandForm({ onSuccess, onClose, teamMembers, isOp
                                                 type="button"
                                                 onClick={() => setFormData({ ...formData, priority: key })}
                                                 className={`flex-1 py-2.5 rounded-xl text-xs font-bold border transition-all ${formData.priority === key
-                                                        ? config.color + ' ring-2 ring-offset-1 ring-current/20'
-                                                        : 'bg-zinc-50 dark:bg-zinc-800 text-zinc-400 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100'
+                                                    ? config.color + ' ring-2 ring-offset-1 ring-current/20'
+                                                    : 'bg-zinc-50 dark:bg-zinc-800 text-zinc-400 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100'
                                                     }`}
                                             >
                                                 {config.label}

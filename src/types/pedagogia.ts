@@ -30,6 +30,8 @@ export interface PedKanbanCard {
     created_by: string | null;
     created_at: string;
     updated_at: string;
+    coordination_note?: string | null;
+    is_rejected?: boolean;
     // Joins
     classes?: Class[];
     creator?: { full_name: string };

@@ -7,8 +7,10 @@ import {
     PointerSensor, useSensor, useSensors, useDroppable, useDraggable
 } from '@dnd-kit/core';
 import { getKanbanCards, createKanbanCard, updateKanbanCardStatus, deleteKanbanCard, getMyClasses } from '@/actions/pedagogia';
+import { createClient } from '@/lib/supabase';
 import type { PedKanbanCard, Class, KanbanColumnStatus } from '@/types/pedagogia';
 import ApprovalSubmissionModal from '@/modules/shared/components/ApprovalSubmissionModal';
+import DemandDetailsModal from '@/modules/shared/components/DemandDetailsModal';
 
 const COLUMNS: { id: KanbanColumnStatus; title: string; color: string; icon: string }[] = [
     { id: 'backlog', title: 'Backlog', color: 'from-slate-400 to-slate-500', icon: 'inbox' },
@@ -21,7 +23,7 @@ const COLUMNS: { id: KanbanColumnStatus; title: string; color: string; icon: str
 const CARD_TYPES = ['Atividade de aula', 'Organização', 'Evento especial', 'Outro'];
 
 // ---- CARD COMPONENT (draggable) ----
-function KanbanCardItem({ card, onDelete }: { card: PedKanbanCard; onDelete: (id: string) => void }) {
+function KanbanCardItem({ card, onDelete, onClick }: { card: PedKanbanCard; onDelete: (id: string) => void; onClick: () => void }) {
     const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
         id: card.id,
         data: card,
@@ -33,13 +35,23 @@ function KanbanCardItem({ card, onDelete }: { card: PedKanbanCard; onDelete: (id
         position: 'relative' as const,
     } : undefined;
 
+    const isCardRejected = card.column_status === 'andamento' && card.is_rejected === true;
+
     return (
         <div ref={setNodeRef} style={style} {...listeners} {...attributes}>
             <motion.div
                 layout
-                className={`bg-white dark:bg-zinc-800 rounded-xl border p-4 shadow-sm hover:shadow-md transition-shadow cursor-grab active:cursor-grabbing group ${card.demand_id
-                    ? 'border-amber-300 dark:border-amber-600 ring-1 ring-amber-200/50 dark:ring-amber-600/30'
-                    : 'border-zinc-200 dark:border-zinc-700'
+                onClick={(e) => {
+                    // Prevenir drag
+                    e.stopPropagation();
+                    onClick();
+                }}
+                className={`rounded-xl border p-4 shadow-sm hover:shadow-md transition-shadow cursor-pointer active:cursor-grabbing group
+                    ${isCardRejected
+                        ? 'bg-red-50 dark:bg-red-500/10 border-red-300 dark:border-red-500/30'
+                        : card.demand_id
+                            ? 'bg-white dark:bg-zinc-800 border-amber-300 dark:border-amber-600 ring-1 ring-amber-200/50 dark:ring-amber-600/30'
+                            : 'bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700'
                     }`}
             >
                 {/* Tag de Demanda da Coordenação */}
@@ -51,16 +63,24 @@ function KanbanCardItem({ card, onDelete }: { card: PedKanbanCard; onDelete: (id
                         </span>
                     </div>
                 )}
-                <div className="flex items-start justify-between gap-2 mb-2">
-                    <h4 className="font-bold text-sm text-zinc-900 dark:text-white leading-snug">{card.title}</h4>
-                    {!card.demand_id && (
-                        <button
-                            onClick={(e) => { e.stopPropagation(); onDelete(card.id); }}
-                            className="opacity-0 group-hover:opacity-100 text-zinc-400 hover:text-red-500 transition-all shrink-0"
-                        >
-                            <span className="material-symbols-outlined text-base">close</span>
-                        </button>
+                <div className="flex flex-col gap-1 mb-2">
+                    {isCardRejected && (
+                        <span className="text-[10px] font-bold text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-500/20 px-2 py-0.5 rounded-full self-start mb-1 flex items-center gap-1">
+                            <span className="material-symbols-outlined text-[10px]">warning</span>
+                            Rejeitado - Ver motivo
+                        </span>
                     )}
+                    <div className="flex items-start justify-between gap-2">
+                        <h4 className={`font-bold text-sm leading-snug ${isCardRejected ? 'text-red-900 dark:text-red-100' : 'text-zinc-900 dark:text-white'}`}>{card.title}</h4>
+                        {!card.demand_id && (
+                            <button
+                                onClick={(e) => { e.stopPropagation(); onDelete(card.id); }}
+                                className="opacity-0 group-hover:opacity-100 text-zinc-400 hover:text-red-500 transition-all shrink-0"
+                            >
+                                <span className="material-symbols-outlined text-base">close</span>
+                            </button>
+                        )}
+                    </div>
                 </div>
                 {card.description && (
                     <p className="text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2 mb-2">{card.description}</p>
@@ -92,7 +112,7 @@ function KanbanCardItem({ card, onDelete }: { card: PedKanbanCard; onDelete: (id
 }
 
 // ---- COLUMN COMPONENT (droppable) ----
-function KanbanColumn({ col, cards, onDelete }: { col: typeof COLUMNS[0]; cards: PedKanbanCard[]; onDelete: (id: string) => void }) {
+function KanbanColumn({ col, cards, onDelete, onCardClick }: { col: typeof COLUMNS[0]; cards: PedKanbanCard[]; onDelete: (id: string) => void; onCardClick: (c: PedKanbanCard) => void }) {
     const { setNodeRef, isOver } = useDroppable({ id: col.id });
 
     return (
@@ -112,7 +132,7 @@ function KanbanColumn({ col, cards, onDelete }: { col: typeof COLUMNS[0]; cards:
                 className={`flex-1 bg-zinc-50 dark:bg-zinc-900/50 rounded-b-2xl border border-t-0 border-zinc-200 dark:border-zinc-800 p-3 space-y-3 overflow-y-auto custom-scrollbar transition-all ${isOver ? 'ring-2 ring-inset ring-emerald-400/30 bg-emerald-50/30 dark:bg-emerald-900/10' : ''}`}
             >
                 {cards.map(card => (
-                    <KanbanCardItem key={card.id} card={card} onDelete={onDelete} />
+                    <KanbanCardItem key={card.id} card={card} onDelete={onDelete} onClick={() => onCardClick(card)} />
                 ))}
                 {cards.length === 0 && (
                     <div className="h-24 flex items-center justify-center border-2 border-dashed border-zinc-200 dark:border-zinc-700 rounded-xl text-zinc-300 dark:text-zinc-600 text-xs">
@@ -142,15 +162,31 @@ export default function PedagogiaKanbanPage() {
     const [submitting, setSubmitting] = useState(false);
     const [approvalModal, setApprovalModal] = useState<{ cardId: string; title: string } | null>(null);
     const [pendingApproval, setPendingApproval] = useState<{ cardId: string; oldStatus: KanbanColumnStatus } | null>(null);
+    const [detailsModalData, setDetailsModalData] = useState<any>(null);
 
     const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }));
 
     useEffect(() => {
-        Promise.all([getKanbanCards(), getMyClasses()]).then(([k, c]) => {
-            if (k.success && k.data) setCards(k.data);
-            if (c.success && c.data) setClasses(c.data);
-            setLoading(false);
-        });
+        const fetchCards = () => {
+            Promise.all([getKanbanCards(), getMyClasses()]).then(([k, c]) => {
+                if (k.success && k.data) setCards(k.data);
+                if (c.success && c.data) setClasses(c.data);
+                setLoading(false);
+            });
+        };
+        fetchCards();
+
+        // Realtime Subscription
+        const supabase = createClient();
+        const channel = supabase.channel('realtime_ped_cards')
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'ped_kanban_cards' }, () => {
+                fetchCards();
+            })
+            .subscribe();
+
+        return () => {
+            supabase.removeChannel(channel);
+        };
     }, []);
 
     const handleDragStart = (e: DragStartEvent) => setActiveCard(e.active.data.current as PedKanbanCard);
@@ -252,9 +288,22 @@ export default function PedagogiaKanbanPage() {
 
             {/* Kanban Board */}
             <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-                <div className="flex-1 min-h-0 flex gap-5 overflow-x-auto custom-scrollbar pb-2 items-stretch">
+                <div className="h-full flex gap-5 overflow-x-auto custom-scrollbar pb-2 items-stretch">
                     {COLUMNS.map(col => (
-                        <KanbanColumn key={col.id} col={col} cards={cards.filter(c => c.column_status === col.id)} onDelete={handleDelete} />
+                        <KanbanColumn
+                            key={col.id}
+                            col={col}
+                            cards={cards.filter(c => c.column_status === col.id)}
+                            onDelete={handleDelete}
+                            onCardClick={(c) => setDetailsModalData({
+                                title: c.title,
+                                description: c.description,
+                                due_date: c.due_date,
+                                assigneeName: c.creator?.full_name,
+                                coordination_note: c.coordination_note,
+                                is_rejected: c.is_rejected
+                            })}
+                        />
                     ))}
                 </div>
 
@@ -353,6 +402,12 @@ export default function PedagogiaKanbanPage() {
                 onSubmit={handleApprovalSubmit}
                 pedCardId={approvalModal?.cardId}
                 title={approvalModal?.title || ''}
+            />
+
+            <DemandDetailsModal
+                isOpen={!!detailsModalData}
+                onClose={() => setDetailsModalData(null)}
+                data={detailsModalData}
             />
         </div>
     );

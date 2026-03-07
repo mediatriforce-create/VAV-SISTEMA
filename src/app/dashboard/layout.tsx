@@ -53,6 +53,10 @@ export default function DashboardLayout({
         router.refresh()
     }
 
+    const toggleTheme = () => {
+        document.documentElement.classList.toggle('dark')
+    }
+
     if (!profile) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-background-base">
@@ -191,6 +195,17 @@ export default function DashboardLayout({
                                 <span className="material-symbols-outlined text-xl shrink-0">settings</span>
                                 {isMenuOpen && <span className="text-sm font-medium whitespace-nowrap">Configurações</span>}
                             </Link>
+                            <button
+                                onClick={toggleTheme}
+                                title={!isMenuOpen ? 'Alternar Tema' : undefined}
+                                className={`flex items-center gap-3 rounded-xl transition-all duration-200 w-full ${isMenuOpen ? 'px-3 py-2' : 'justify-center py-2'} text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-white/5`}
+                            >
+                                <div className="relative w-5 h-5 shrink-0 flex items-center justify-center">
+                                    <span className="material-symbols-outlined text-xl absolute transition-opacity duration-300 dark:opacity-0">dark_mode</span>
+                                    <span className="material-symbols-outlined text-xl absolute transition-opacity duration-300 opacity-0 dark:opacity-100">light_mode</span>
+                                </div>
+                                {isMenuOpen && <span className="text-sm font-medium whitespace-nowrap">Alternar Tema</span>}
+                            </button>
                             <button
                                 onClick={handleSignOut}
                                 title={!isMenuOpen ? 'Sair' : undefined}

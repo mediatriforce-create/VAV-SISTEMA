@@ -25,6 +25,8 @@ export interface Demand {
     status: DemandStatus;
     order_index: number;
     is_archived: boolean;
+    coordination_note?: string | null;
+    is_rejected?: boolean;
 
     // Joins (optional, depending on query)
     assignee?: {

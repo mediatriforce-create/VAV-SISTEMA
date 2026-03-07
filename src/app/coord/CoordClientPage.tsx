@@ -5,6 +5,7 @@ import { Demand, ApprovalSubmission } from '@/types/demands';
 import DemandList from '../../modules/coord/components/DemandList';
 import TeamMemberCard from '../../modules/coord/components/TeamMemberCard';
 import CreateDemandForm from '../../modules/coord/components/CreateDemandForm';
+import ReviewModal from '../../modules/coord/components/ReviewModal';
 import { LayoutDashboard, Users, PlusCircle, Clock, CheckCircle2, ChevronDown, ChevronUp, Paperclip, FileText, ImageIcon, XCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase';
@@ -32,6 +33,16 @@ interface CoordClientPageProps {
 export default function CoordClientPage({ currentUser, initialDemands, teamMembers, pendingPedCards = [], approvalSubmissions = [] }: CoordClientPageProps) {
     const [showCreateForm, setShowCreateForm] = useState(false);
     const [showApproval, setShowApproval] = useState(true);
+
+    // Review Modal State
+    const [reviewModal, setReviewModal] = useState<{
+        isOpen: boolean;
+        action: 'approve' | 'reject';
+        type: 'demand' | 'pedcard';
+        id: string;
+        itemName: string;
+    } | null>(null);
+
     const router = useRouter();
     const supabase = createClient();
 
@@ -50,78 +61,64 @@ export default function CoordClientPage({ currentUser, initialDemands, teamMembe
         router.refresh();
     };
 
-    const handleApproveDemand = async (demandId: string) => {
-        // 1. Find and cleanup submission files
-        const submission = approvalSubmissions.find(s => s.demand_id === demandId);
-        if (submission) {
-            await cleanupSubmission(submission);
-        }
-
-        // 2. Update demand status
-        const { error } = await supabase
-            .from('demands')
-            .update({ status: 'finalizado' })
-            .eq('id', demandId);
-
-        if (error) {
-            alert('Erro ao aprovar demanda.');
-            return;
-        }
-        router.refresh();
+    // Open Modal Handlers
+    const openReviewModal = (action: 'approve' | 'reject', type: 'demand' | 'pedcard', id: string, itemName: string) => {
+        setReviewModal({ isOpen: true, action, type, id, itemName });
     };
 
-    const handleRejectDemand = async (demandId: string) => {
-        const submission = approvalSubmissions.find(s => s.demand_id === demandId);
-        if (submission) {
-            await cleanupSubmission(submission);
-        }
+    const confirmReview = async (note: string) => {
+        if (!reviewModal) return;
+        const { action, type, id } = reviewModal;
 
-        const { error } = await supabase
-            .from('demands')
-            .update({ status: 'em_andamento' })
-            .eq('id', demandId);
+        let error;
+
+        if (type === 'demand') {
+            const submission = approvalSubmissions.find(s => s.demand_id === id);
+            if (submission) await cleanupSubmission(submission);
+
+            if (action === 'approve') {
+                const { error: err } = await supabase.from('demands').update({
+                    status: 'finalizado',
+                    coordination_note: note || null,
+                    is_rejected: false
+                }).eq('id', id);
+                error = err;
+            } else {
+                const { error: err } = await supabase.from('demands').update({
+                    status: 'em_andamento',
+                    coordination_note: note || null,
+                    is_rejected: true
+                }).eq('id', id);
+                error = err;
+            }
+        } else {
+            const submission = approvalSubmissions.find(s => s.ped_card_id === id);
+            if (submission) await cleanupSubmission(submission);
+
+            if (action === 'approve') {
+                const { error: err } = await supabase.from('ped_kanban_cards').update({
+                    column_status: 'concluido',
+                    coordination_note: note || null,
+                    is_rejected: false
+                }).eq('id', id);
+                error = err;
+            } else {
+                const { error: err } = await supabase.from('ped_kanban_cards').update({
+                    column_status: 'andamento',
+                    coordination_note: note || null,
+                    is_rejected: true
+                }).eq('id', id);
+                error = err;
+            }
+        }
 
         if (error) {
-            alert('Erro ao rejeitar demanda.');
-            return;
+            console.error('Review Error:', error);
+            alert('Erro ao processar a requisição.');
+        } else {
+            setReviewModal(null);
+            router.refresh();
         }
-        router.refresh();
-    };
-
-    const handleApprovePedCard = async (cardId: string) => {
-        const submission = approvalSubmissions.find(s => s.ped_card_id === cardId);
-        if (submission) {
-            await cleanupSubmission(submission);
-        }
-
-        const { error } = await supabase
-            .from('ped_kanban_cards')
-            .update({ column_status: 'concluido' })
-            .eq('id', cardId);
-
-        if (error) {
-            alert('Erro ao aprovar card.');
-            return;
-        }
-        router.refresh();
-    };
-
-    const handleRejectPedCard = async (cardId: string) => {
-        const submission = approvalSubmissions.find(s => s.ped_card_id === cardId);
-        if (submission) {
-            await cleanupSubmission(submission);
-        }
-
-        const { error } = await supabase
-            .from('ped_kanban_cards')
-            .update({ column_status: 'andamento' })
-            .eq('id', cardId);
-
-        if (error) {
-            alert('Erro ao rejeitar card.');
-            return;
-        }
-        router.refresh();
     };
 
     // Cleanup: delete files from bucket + delete submission record
@@ -284,15 +281,15 @@ export default function CoordClientPage({ currentUser, initialDemands, teamMembe
                                                         </div>
                                                     )}
 
-                                                    <div className="flex items-center gap-2 mt-auto">
+                                                    <div className="flex gap-2">
                                                         <button
-                                                            onClick={() => handleRejectDemand(demand.id)}
+                                                            onClick={() => openReviewModal('reject', 'demand', demand.id, demand.title)}
                                                             className="flex-1 flex items-center justify-center gap-1.5 py-2 bg-red-50 hover:bg-red-100 text-red-600 border border-red-200/50 text-xs font-bold rounded-lg transition-colors shadow-sm"
                                                         >
                                                             <XCircle size={14} /> Rejeitar
                                                         </button>
                                                         <button
-                                                            onClick={() => handleApproveDemand(demand.id)}
+                                                            onClick={() => openReviewModal('approve', 'demand', demand.id, demand.title)}
                                                             className="flex-1 flex items-center justify-center gap-1.5 py-2 bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold rounded-lg transition-colors shadow-sm"
                                                         >
                                                             <CheckCircle2 size={14} /> Aprovar
@@ -374,15 +371,15 @@ export default function CoordClientPage({ currentUser, initialDemands, teamMembe
                                                         </div>
                                                     )}
 
-                                                    <div className="flex items-center gap-2 mt-auto">
+                                                    <div className="flex gap-2">
                                                         <button
-                                                            onClick={() => handleRejectPedCard(card.id)}
+                                                            onClick={() => openReviewModal('reject', 'pedcard', card.id, card.title)}
                                                             className="flex-1 flex items-center justify-center gap-1.5 py-2 bg-red-50 hover:bg-red-100 text-red-600 border border-red-200/50 text-xs font-bold rounded-lg transition-colors shadow-sm"
                                                         >
                                                             <XCircle size={14} /> Rejeitar
                                                         </button>
                                                         <button
-                                                            onClick={() => handleApprovePedCard(card.id)}
+                                                            onClick={() => openReviewModal('approve', 'pedcard', card.id, card.title)}
                                                             className="flex-1 flex items-center justify-center gap-1.5 py-2 bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold rounded-lg transition-colors shadow-sm"
                                                         >
                                                             <CheckCircle2 size={14} /> Aprovar
@@ -433,6 +430,17 @@ export default function CoordClientPage({ currentUser, initialDemands, teamMembe
                 onSuccess={handleRefresh}
                 teamMembers={teamMembers}
             />
+
+            {/* Modal de Revisão (Aprovar/Rejeitar) */}
+            {reviewModal && (
+                <ReviewModal
+                    isOpen={reviewModal.isOpen}
+                    onClose={() => setReviewModal(null)}
+                    onSubmit={confirmReview}
+                    action={reviewModal.action}
+                    itemName={reviewModal.itemName}
+                />
+            )}
         </div>
     );
 }

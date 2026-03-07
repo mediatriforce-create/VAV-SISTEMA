@@ -54,8 +54,7 @@ export default async function CoordPage() {
         .from('demands')
         .select(`
       *,
-      assignee:assigned_to(full_name, avatar_url),
-      creator:created_by(full_name, avatar_url)
+      assignee:assigned_to(full_name, avatar_url)
     `)
         .order('created_at', { ascending: false });
 
@@ -63,8 +62,7 @@ export default async function CoordPage() {
     const { data: pendingPedCards } = await supabase
         .from('ped_kanban_cards')
         .select(`
-            id, title, description, card_type, due_date, demand_id, column_status,
-            creator:created_by(full_name)
+            id, title, description, card_type, due_date, demand_id, column_status
         `)
         .eq('column_status', 'aprovacao')
         .order('created_at', { ascending: false });

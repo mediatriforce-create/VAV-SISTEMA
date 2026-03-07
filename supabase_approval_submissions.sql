@@ -31,14 +31,17 @@ CREATE TABLE IF NOT EXISTS public.approval_submissions (
 ALTER TABLE public.approval_submissions ENABLE ROW LEVEL SECURITY;
 
 -- Qualquer autenticado pode VER (coordenação precisa ver, responsável também)
+DROP POLICY IF EXISTS "approval_submissions_select" ON public.approval_submissions;
 CREATE POLICY "approval_submissions_select" ON public.approval_submissions
     FOR SELECT USING (auth.role() = 'authenticated');
 
 -- Qualquer autenticado pode INSERIR (responsável submete a entrega)
+DROP POLICY IF EXISTS "approval_submissions_insert" ON public.approval_submissions;
 CREATE POLICY "approval_submissions_insert" ON public.approval_submissions
     FOR INSERT WITH CHECK (auth.role() = 'authenticated');
 
 -- Apenas Coord. Geral pode DELETAR (expurgo após aprovação)
+DROP POLICY IF EXISTS "approval_submissions_delete" ON public.approval_submissions;
 CREATE POLICY "approval_submissions_delete" ON public.approval_submissions
     FOR DELETE USING (
         EXISTS (
@@ -50,23 +53,26 @@ CREATE POLICY "approval_submissions_delete" ON public.approval_submissions
 
 -- 4. Criar o bucket de storage para arquivos temporários
 INSERT INTO storage.buckets (id, name, public)
-VALUES ('temp_approvals', 'temp_approvals', false)
-ON CONFLICT (id) DO NOTHING;
+VALUES ('temp_approvals', 'temp_approvals', true)
+ON CONFLICT (id) DO UPDATE SET public = true;
 
 -- 5. Políticas de storage para o bucket temp_approvals
 -- Qualquer autenticado pode fazer UPLOAD
+DROP POLICY IF EXISTS "temp_approvals_upload" ON storage.objects;
 CREATE POLICY "temp_approvals_upload" ON storage.objects
     FOR INSERT WITH CHECK (
         bucket_id = 'temp_approvals' AND auth.role() = 'authenticated'
     );
 
 -- Qualquer autenticado pode VER (coordenação precisa ver os anexos)
+DROP POLICY IF EXISTS "temp_approvals_select" ON storage.objects;
 CREATE POLICY "temp_approvals_select" ON storage.objects
     FOR SELECT USING (
         bucket_id = 'temp_approvals' AND auth.role() = 'authenticated'
     );
 
 -- Apenas Coord. Geral pode DELETAR (expurgo)
+DROP POLICY IF EXISTS "temp_approvals_delete" ON storage.objects;
 CREATE POLICY "temp_approvals_delete" ON storage.objects
     FOR DELETE USING (
         bucket_id = 'temp_approvals'
