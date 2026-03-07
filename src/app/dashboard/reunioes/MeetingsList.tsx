@@ -11,14 +11,17 @@ import toast from 'react-hot-toast';
 
 interface MeetingsListProps {
     initialMeetings: Meeting[];
+    userRole?: string;
 }
 
-export default function MeetingsList({ initialMeetings }: MeetingsListProps) {
+export default function MeetingsList({ initialMeetings, userRole }: MeetingsListProps) {
     const [meetings, setMeetings] = useState<Meeting[]>(initialMeetings);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentTime, setCurrentTime] = useState(new Date());
     const [contextMenu, setContextMenu] = useState<{ x: number, y: number, meeting: Meeting } | null>(null);
     const [isDeleting, setIsDeleting] = useState(false);
+
+    const isRestricted = ['Estagiário(a) de ADM', 'Estagiário(a) de Comunicação', 'Educador(a) Escolar'].includes(userRole || '');
 
     useEffect(() => {
         const timer = setInterval(() => setCurrentTime(new Date()), 60000);
@@ -33,7 +36,7 @@ export default function MeetingsList({ initialMeetings }: MeetingsListProps) {
     const getMeetingStatus = (date: string, startTime: string, endTime: string) => {
         try {
             const startDateTime = parse(`${date} ${startTime.slice(0, 5)}`, 'yyyy-MM-dd HH:mm', new Date());
-            let endDateTime = parse(`${date} ${endTime.slice(0, 5)}`, 'yyyy-MM-dd HH:mm', new Date());
+            const endDateTime = parse(`${date} ${endTime.slice(0, 5)}`, 'yyyy-MM-dd HH:mm', new Date());
             if (endTime < startTime) endDateTime.setDate(endDateTime.getDate() + 1);
             const openWindowTime = subMinutes(startDateTime, 10);
             if (isBefore(currentTime, openWindowTime)) return 'WAITING';
@@ -71,13 +74,15 @@ export default function MeetingsList({ initialMeetings }: MeetingsListProps) {
                     </p>
                 </div>
 
-                <button
-                    onClick={() => setIsModalOpen(true)}
-                    className="shrink-0 flex items-center gap-2 px-5 py-2.5 rounded-xl bg-secondary hover:bg-secondary-dark text-white font-bold transition-colors text-sm"
-                >
-                    <span className="material-symbols-outlined text-lg">add</span>
-                    Nova Reunião
-                </button>
+                {!isRestricted && (
+                    <button
+                        onClick={() => setIsModalOpen(true)}
+                        className="shrink-0 flex items-center gap-2 px-5 py-2.5 rounded-xl bg-secondary hover:bg-secondary-dark text-white font-bold transition-colors text-sm"
+                    >
+                        <span className="material-symbols-outlined text-lg">add</span>
+                        Nova Reunião
+                    </button>
+                )}
             </div>
 
             {/* Conteúdo */}
@@ -100,21 +105,23 @@ export default function MeetingsList({ initialMeetings }: MeetingsListProps) {
                                 {/* Conteúdo do Card */}
                                 <div className="p-5 flex-1 flex flex-col">
                                     {/* Botão 3 pontinhos */}
-                                    <button
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            const rect = e.currentTarget.getBoundingClientRect();
-                                            setContextMenu({
-                                                x: rect.left,
-                                                y: rect.bottom + 4,
-                                                meeting
-                                            });
-                                        }}
-                                        className="absolute top-3 right-3 p-1.5 text-zinc-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition-colors opacity-0 group-hover:opacity-100"
-                                        title="Opções"
-                                    >
-                                        <span className="material-symbols-outlined text-lg">more_vert</span>
-                                    </button>
+                                    {!isRestricted && (
+                                        <button
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                const rect = e.currentTarget.getBoundingClientRect();
+                                                setContextMenu({
+                                                    x: rect.left,
+                                                    y: rect.bottom + 4,
+                                                    meeting
+                                                });
+                                            }}
+                                            className="absolute top-3 right-3 p-1.5 text-zinc-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition-colors opacity-0 group-hover:opacity-100"
+                                            title="Opções"
+                                        >
+                                            <span className="material-symbols-outlined text-lg">more_vert</span>
+                                        </button>
+                                    )}
 
                                     {/* Data + Ícone */}
                                     <div className="flex items-center gap-3 mb-3">

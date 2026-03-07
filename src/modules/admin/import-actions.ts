@@ -188,7 +188,7 @@ function parseBB(lines: string[]): ParsedTransaction[] {
     const pushCurrentTx = () => {
         if (!currentTx) return
 
-        let desc = (currentTx.description || '').trim()
+        const desc = (currentTx.description || '').trim()
         const lowerDesc = desc.toLowerCase()
 
         // 1. FILTER GARBAGE
@@ -539,7 +539,7 @@ function parseCSV(text: string): ParsedTransaction[] {
         const amountKey = keys['valor'] || keys['amount'] || keys['value'] || keys['vl'] || keys['valor (r$)']
 
         if (dateKey && amountKey) {
-            let dateStr = row[dateKey]
+            const dateStr = row[dateKey]
             let isoDate = dateStr
             // Handle different date formats if needed
             if (dateStr && dateStr.includes('/')) {
@@ -547,7 +547,7 @@ function parseCSV(text: string): ParsedTransaction[] {
                 if (parts[2]?.length === 4) isoDate = `${parts[2]}-${parts[1]}-${parts[0]}`
             }
 
-            let amountStr = String(row[amountKey]).replace('R$', '').trim()
+            const amountStr = String(row[amountKey]).replace('R$', '').trim()
             let amount = 0
 
             if (amountStr.includes(',') && !amountStr.includes('.')) {

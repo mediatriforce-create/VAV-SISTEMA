@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase'
 import { useRouter, usePathname } from 'next/navigation'
 import Link from 'next/link'
-import { PERMISSIONS } from '@/lib/permissions'
+import { PERMISSIONS, hasPermission } from '@/lib/permissions'
 import { motion, AnimatePresence, Variants } from 'framer-motion'
 import { useUnreadChat } from '@/hooks/useUnreadChat'
 
@@ -61,13 +61,18 @@ export default function DashboardLayout({
         )
     }
 
-    const navItems = [
+    const navItemsRaw = [
         { name: 'Dashboard', icon: 'dashboard', href: '/dashboard' },
-        { name: 'Adm', icon: 'admin_panel_settings', href: '/dashboard/admin' },
-        { name: 'Coordenação', icon: 'assignment_ind', href: '/coord' },
-        { name: 'Comunicação', icon: 'campaign', href: '/comunicacao' },
-        { name: 'Pedagogia', icon: 'school', href: '/dashboard/pedagogia' },
+        { name: 'Adm', icon: 'admin_panel_settings', href: '/dashboard/admin', module: 'administracao' },
+        { name: 'Coordenação', icon: 'assignment_ind', href: '/coord', module: 'coordenacao' },
+        { name: 'Comunicação', icon: 'campaign', href: '/comunicacao', module: 'comunicacao' },
+        { name: 'Pedagogia', icon: 'school', href: '/dashboard/pedagogia', module: 'pedagogia' },
     ]
+
+    const navItems = navItemsRaw.filter(item => {
+        if (!item.module) return true;
+        return hasPermission(profile.role as any, item.module as any);
+    });
 
     const containerVariants: Variants = {
         hidden: { opacity: 0 },
@@ -136,41 +141,45 @@ export default function DashboardLayout({
                             <div className="h-px bg-zinc-200 dark:bg-white/10 my-2 mx-1"></div>
 
                             {/* Links rápidos */}
-                            <Link
-                                href="/dashboard/reunioes"
-                                title={!isMenuOpen ? 'Reuniões' : undefined}
-                                className={`flex items-center gap-3 rounded-xl transition-all duration-200 group/nav shrink-0 ${isMenuOpen ? 'px-3 py-2.5' : 'justify-center py-2.5'} ${pathname.startsWith('/dashboard/reunioes')
-                                    ? 'bg-blue-50 dark:bg-primary/10 text-blue-600 dark:text-primary font-bold'
-                                    : 'text-zinc-500 dark:text-zinc-400 hover:text-blue-600 dark:hover:text-primary hover:bg-zinc-100 dark:hover:bg-white/5'
-                                    }`}
-                            >
-                                <span className="material-symbols-outlined text-xl shrink-0 group-hover/nav:scale-110 transition-transform">videocam</span>
-                                {isMenuOpen && <span className="text-sm font-medium whitespace-nowrap">Reuniões</span>}
-                            </Link>
+                            {hasPermission(profile.role as any, 'reunioes' as any) && (
+                                <Link
+                                    href="/dashboard/reunioes"
+                                    title={!isMenuOpen ? 'Reuniões' : undefined}
+                                    className={`flex items-center gap-3 rounded-xl transition-all duration-200 group/nav shrink-0 ${isMenuOpen ? 'px-3 py-2.5' : 'justify-center py-2.5'} ${pathname.startsWith('/dashboard/reunioes')
+                                        ? 'bg-blue-50 dark:bg-primary/10 text-blue-600 dark:text-primary font-bold'
+                                        : 'text-zinc-500 dark:text-zinc-400 hover:text-blue-600 dark:hover:text-primary hover:bg-zinc-100 dark:hover:bg-white/5'
+                                        }`}
+                                >
+                                    <span className="material-symbols-outlined text-xl shrink-0 group-hover/nav:scale-110 transition-transform">videocam</span>
+                                    {isMenuOpen && <span className="text-sm font-medium whitespace-nowrap">Reuniões</span>}
+                                </Link>
+                            )}
 
-                            <Link
-                                href="/dashboard/chat"
-                                title={!isMenuOpen ? 'Chat' : undefined}
-                                className={`relative flex items-center gap-3 rounded-xl transition-all duration-200 group/nav shrink-0 ${isMenuOpen ? 'px-3 py-2.5' : 'justify-center py-2.5'} ${pathname.startsWith('/dashboard/chat')
-                                    ? 'bg-blue-50 dark:bg-primary/10 text-blue-600 dark:text-primary font-bold'
-                                    : 'text-zinc-500 dark:text-zinc-400 hover:text-blue-600 dark:hover:text-primary hover:bg-zinc-100 dark:hover:bg-white/5'
-                                    }`}
-                            >
-                                <span className="material-symbols-outlined text-xl shrink-0 group-hover/nav:scale-110 transition-transform relative">
-                                    forum
-                                    {hasUnreadChat && !pathname.startsWith('/dashboard/chat') && (
-                                        <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse border border-white dark:border-zinc-900 shadow-sm"></span>
-                                    )}
-                                </span>
-                                {isMenuOpen && (
-                                    <span className="text-sm font-medium whitespace-nowrap flex items-center gap-2">
-                                        Chat
+                            {hasPermission(profile.role as any, 'chat' as any) && (
+                                <Link
+                                    href="/dashboard/chat"
+                                    title={!isMenuOpen ? 'Chat' : undefined}
+                                    className={`relative flex items-center gap-3 rounded-xl transition-all duration-200 group/nav shrink-0 ${isMenuOpen ? 'px-3 py-2.5' : 'justify-center py-2.5'} ${pathname.startsWith('/dashboard/chat')
+                                        ? 'bg-blue-50 dark:bg-primary/10 text-blue-600 dark:text-primary font-bold'
+                                        : 'text-zinc-500 dark:text-zinc-400 hover:text-blue-600 dark:hover:text-primary hover:bg-zinc-100 dark:hover:bg-white/5'
+                                        }`}
+                                >
+                                    <span className="material-symbols-outlined text-xl shrink-0 group-hover/nav:scale-110 transition-transform relative">
+                                        forum
                                         {hasUnreadChat && !pathname.startsWith('/dashboard/chat') && (
-                                            <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+                                            <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse border border-white dark:border-zinc-900 shadow-sm"></span>
                                         )}
                                     </span>
-                                )}
-                            </Link>
+                                    {isMenuOpen && (
+                                        <span className="text-sm font-medium whitespace-nowrap flex items-center gap-2">
+                                            Chat
+                                            {hasUnreadChat && !pathname.startsWith('/dashboard/chat') && (
+                                                <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+                                            )}
+                                        </span>
+                                    )}
+                                </Link>
+                            )}
                         </nav>
 
                         {/* Seção de Perfil no Fundo */}

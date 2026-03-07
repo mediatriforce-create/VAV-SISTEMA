@@ -1,21 +1,15 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { createClient } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-
-interface WhitelistItem {
-    id: string
-    full_name: string
-    role: string
-    is_claimed: boolean
-}
+import toast from 'react-hot-toast'
 
 export default function SignupPage() {
-    const [availableUsers, setAvailableUsers] = useState<WhitelistItem[]>([])
-    const [selectedUser, setSelectedUser] = useState<string>('')
+    const [fullName, setFullName] = useState('')
+    const [selectedRole, setSelectedRole] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
@@ -23,34 +17,31 @@ export default function SignupPage() {
     const router = useRouter()
     const supabase = createClient()
 
-    useEffect(() => {
-        async function fetchWhitelist() {
-            const { data, error } = await supabase
-                .from('whitelist')
-                .select('*')
-                .eq('is_claimed', false)
-
-            if (data) {
-                setAvailableUsers(data)
-            }
-        }
-        fetchWhitelist()
-    }, [])
+    const roles = [
+        "Coord. Geral",
+        "Administração",
+        "Comunicação",
+        "Pedagogia",
+        "Estagiário(a) de ADM",
+        "Estagiário(a) de Comunicação",
+        "Educador(a) Escolar",
+        "Direção",
+        "Presidente"
+    ]
 
     const handleSignup = async (e: React.FormEvent) => {
         e.preventDefault()
         setLoading(true)
         setError(null)
 
-        if (!selectedUser) {
-            setError('Por favor, selecione seu nome na lista.')
+        if (!fullName.trim() || !selectedRole) {
+            setError('Por favor, preencha todos os campos.')
             setLoading(false)
             return
         }
 
-        const userItem = availableUsers.find(u => u.id === selectedUser)
-        if (!userItem) {
-            setError('Usuário inválido.')
+        if (password.length < 8) {
+            setError('A senha deve ter no mínimo 8 caracteres.')
             setLoading(false)
             return
         }
@@ -61,8 +52,8 @@ export default function SignupPage() {
             password,
             options: {
                 data: {
-                    full_name: userItem.full_name,
-                    role: userItem.role,
+                    full_name: fullName.trim(),
+                    role: selectedRole,
                 },
             },
         })
@@ -80,28 +71,18 @@ export default function SignupPage() {
                 .insert({
                     id: authData.user.id,
                     email: email,
-                    full_name: userItem.full_name,
-                    role: userItem.role,
+                    full_name: fullName.trim(),
+                    role: selectedRole,
                 })
 
             if (profileError) {
                 console.error('Profile creation error:', profileError)
-                setError('Erro ao criar perfil. Contate o suporte.')
+                setError('Erro ao criar perfil. Verifique com a coordenação.')
                 setLoading(false)
                 return
             }
 
-            // 3. Mark whitelist item as claimed and link user_id
-            const { error: whitelistError } = await supabase
-                .from('whitelist')
-                .update({ is_claimed: true, user_id: authData.user.id })
-                .eq('id', selectedUser)
-
-            if (whitelistError) {
-                console.error('Whitelist update error:', whitelistError)
-                // Non-critical error for the user, but bad for system consistency
-            }
-
+            toast.success('Conta criada com sucesso!')
             router.push('/dashboard')
             router.refresh()
         }
@@ -132,12 +113,12 @@ export default function SignupPage() {
                             Criar Nova Conta
                         </h1>
                         <p className="text-gray-500 dark:text-gray-400 text-sm mt-2">
-                            Junte-se à Central Viva a Vida
+                            Cadastre-se na Central Viva a Vida
                         </p>
                     </div>
 
                     <div className="px-8 pb-10">
-                        <form onSubmit={handleSignup} className="space-y-5">
+                        <form onSubmit={handleSignup} className="space-y-4">
                             {error && (
                                 <motion.div
                                     initial={{ opacity: 0, height: 0 }}
@@ -151,20 +132,33 @@ export default function SignupPage() {
                             <div>
                                 <div className="relative group">
                                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                        <span className="material-icons text-gray-400 group-focus-within:text-primary transition-colors">person</span>
+                                    </div>
+                                    <input
+                                        type="text"
+                                        required
+                                        value={fullName}
+                                        onChange={(e) => setFullName(e.target.value)}
+                                        placeholder="Seu Nome Completo"
+                                        className="block w-full pl-12 pr-4 py-3.5 border-0 rounded-xl bg-gray-50/50 dark:bg-gray-900/50 text-gray-900 dark:text-white placeholder-gray-400 ring-1 ring-inset ring-gray-200 dark:ring-gray-700 focus:ring-2 focus:ring-inset focus:ring-primary transition-all sm:text-sm"
+                                    />
+                                </div>
+                            </div>
+
+                            <div>
+                                <div className="relative group">
+                                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                         <span className="material-icons text-gray-400 group-focus-within:text-primary transition-colors">badge</span>
                                     </div>
                                     <select
-                                        id="name"
                                         required
-                                        value={selectedUser}
-                                        onChange={(e) => setSelectedUser(e.target.value)}
+                                        value={selectedRole}
+                                        onChange={(e) => setSelectedRole(e.target.value)}
                                         className="block w-full pl-12 pr-10 py-3.5 border-0 rounded-xl bg-gray-50/50 dark:bg-gray-900/50 text-gray-900 dark:text-white ring-1 ring-inset ring-gray-200 dark:ring-gray-700 focus:ring-2 focus:ring-inset focus:ring-primary transition-all appearance-none sm:text-sm"
                                     >
-                                        <option value="" disabled>Selecione seu nome na lista...</option>
-                                        {availableUsers.map((user) => (
-                                            <option key={user.id} value={user.id}>
-                                                {user.full_name} ({user.role})
-                                            </option>
+                                        <option value="" disabled>Selecione seu Cargo/Papel...</option>
+                                        {roles.map((role) => (
+                                            <option key={role} value={role}>{role}</option>
                                         ))}
                                     </select>
                                     <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
@@ -173,67 +167,47 @@ export default function SignupPage() {
                                 </div>
                             </div>
 
-                            <motion.div
-                                animate={selectedUser ? { opacity: 1, height: 'auto' } : { opacity: 0.5, height: 'auto' }}
-                                className="space-y-4"
-                            >
-                                <div>
-                                    <div className="relative group">
-                                        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                            <span className="material-icons text-gray-400">work</span>
-                                        </div>
-                                        <input
-                                            type="text"
-                                            disabled
-                                            value={availableUsers.find(u => u.id === selectedUser)?.role || ''}
-                                            placeholder="Cargo (Automático)"
-                                            className="block w-full pl-12 pr-4 py-3.5 border-0 rounded-xl bg-gray-100/50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 cursor-not-allowed ring-1 ring-inset ring-gray-200 dark:ring-gray-700 sm:text-sm"
-                                        />
+                            <div>
+                                <div className="relative group">
+                                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                        <span className="material-icons text-gray-400 group-focus-within:text-primary transition-colors">mail</span>
                                     </div>
+                                    <input
+                                        id="email"
+                                        type="email"
+                                        required
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        placeholder="E-mail corporativo (seu@vivaavida.org)"
+                                        className="block w-full pl-12 pr-4 py-3.5 border-0 rounded-xl bg-gray-50/50 dark:bg-gray-900/50 text-gray-900 dark:text-white placeholder-gray-400 ring-1 ring-inset ring-gray-200 dark:ring-gray-700 focus:ring-2 focus:ring-inset focus:ring-primary transition-all sm:text-sm"
+                                    />
                                 </div>
+                            </div>
 
-                                <div>
-                                    <div className="relative group">
-                                        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                            <span className="material-icons text-gray-400 group-focus-within:text-primary transition-colors">mail</span>
-                                        </div>
-                                        <input
-                                            id="email"
-                                            type="email"
-                                            required
-                                            value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
-                                            placeholder="E-mail corporativo (seu@vivaavida.org)"
-                                            className="block w-full pl-12 pr-4 py-3.5 border-0 rounded-xl bg-gray-50/50 dark:bg-gray-900/50 text-gray-900 dark:text-white placeholder-gray-400 ring-1 ring-inset ring-gray-200 dark:ring-gray-700 focus:ring-2 focus:ring-inset focus:ring-primary transition-all sm:text-sm"
-                                        />
+                            <div>
+                                <div className="relative group">
+                                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                        <span className="material-icons text-gray-400 group-focus-within:text-primary transition-colors">lock</span>
                                     </div>
+                                    <input
+                                        id="password"
+                                        type="password"
+                                        required
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        placeholder="Defina uma senha"
+                                        className="block w-full pl-12 pr-4 py-3.5 border-0 rounded-xl bg-gray-50/50 dark:bg-gray-900/50 text-gray-900 dark:text-white placeholder-gray-400 ring-1 ring-inset ring-gray-200 dark:ring-gray-700 focus:ring-2 focus:ring-inset focus:ring-primary transition-all sm:text-sm"
+                                    />
                                 </div>
-
-                                <div>
-                                    <div className="relative group">
-                                        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                            <span className="material-icons text-gray-400 group-focus-within:text-primary transition-colors">lock</span>
-                                        </div>
-                                        <input
-                                            id="password"
-                                            type="password"
-                                            required
-                                            value={password}
-                                            onChange={(e) => setPassword(e.target.value)}
-                                            placeholder="Defina uma senha"
-                                            className="block w-full pl-12 pr-4 py-3.5 border-0 rounded-xl bg-gray-50/50 dark:bg-gray-900/50 text-gray-900 dark:text-white placeholder-gray-400 ring-1 ring-inset ring-gray-200 dark:ring-gray-700 focus:ring-2 focus:ring-inset focus:ring-primary transition-all sm:text-sm"
-                                        />
-                                    </div>
-                                    <p className="text-xs text-gray-500 mt-2 ml-2">Mínimo de 8 caracteres</p>
-                                </div>
-                            </motion.div>
+                                <p className="text-xs text-gray-500 mt-2 ml-2">Mínimo de 8 caracteres</p>
+                            </div>
 
                             <div className="pt-4 space-y-4">
                                 <motion.button
                                     whileHover={{ scale: 1.01 }}
                                     whileTap={{ scale: 0.98 }}
                                     type="submit"
-                                    disabled={loading || !selectedUser}
+                                    disabled={loading || !selectedRole || !fullName.trim()}
                                     className="w-full flex justify-center py-3.5 px-4 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all disabled:opacity-50"
                                 >
                                     {loading ? 'Criando Conta...' : 'Finalizar Cadastro'}
@@ -253,3 +227,4 @@ export default function SignupPage() {
         </div>
     )
 }
+

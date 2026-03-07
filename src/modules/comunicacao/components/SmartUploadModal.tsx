@@ -51,7 +51,7 @@ export default function SmartUploadModal({ isOpen, onClose, onUploadSuccess }: S
 
             // Determine path based on type/year for organization (optional, but good practice)
             // Determine path based on type
-            let pathPrefix = `${selectedType}s/`; // posts/, reels/, stories/
+            const pathPrefix = `${selectedType}s/`; // posts/, reels/, stories/
 
             const filePath = `${pathPrefix}${fileName}`;
 

@@ -1,12 +1,13 @@
 export type Role =
   | 'Coord. Geral'
-  | 'Presidente'
-  | 'Dir. Financeiro'
-  | 'Estágio ADM'
+  | 'Administração'
   | 'Comunicação'
-  | 'Coord. Pedagógica'
-  | 'Educadora'
-  | 'Estágio Pedagógico';
+  | 'Pedagogia'
+  | 'Estagiário(a) de ADM'
+  | 'Estagiário(a) de Comunicação'
+  | 'Educador(a) Escolar'
+  | 'Direção'
+  | 'Presidente';
 
 export type Module =
   | 'administracao'
@@ -19,14 +20,15 @@ export type Module =
   | 'configuracoes';
 
 export const PERMISSIONS: Record<Role, Module[]> = {
-  'Coord. Geral': ['administracao', 'coordenacao', 'comunicacao', 'pedagogia', 'reunioes', 'calendario', 'chat', 'configuracoes'],
-  'Presidente': ['administracao', 'coordenacao', 'comunicacao', 'pedagogia', 'reunioes', 'calendario', 'chat', 'configuracoes'], // View only (UI handles create restriction)
-  'Dir. Financeiro': ['administracao', 'coordenacao', 'comunicacao', 'pedagogia', 'reunioes', 'calendario', 'chat', 'configuracoes'], // View only
-  'Estágio ADM': ['administracao', 'chat', 'configuracoes'],
-  'Comunicação': ['comunicacao', 'chat', 'configuracoes'],
-  'Coord. Pedagógica': ['pedagogia', 'reunioes', 'calendario', 'chat', 'configuracoes'],
-  'Educadora': ['pedagogia', 'chat', 'configuracoes'],
-  'Estágio Pedagógico': ['pedagogia', 'chat', 'configuracoes'],
+  'Coord. Geral': ['administracao', 'coordenacao', 'pedagogia', 'chat', 'reunioes', 'calendario', 'configuracoes'],
+  'Administração': ['administracao', 'coordenacao', 'comunicacao', 'chat', 'reunioes', 'calendario', 'configuracoes'],
+  'Comunicação': ['comunicacao', 'chat', 'reunioes', 'calendario', 'configuracoes'],
+  'Pedagogia': ['coordenacao', 'comunicacao', 'pedagogia', 'chat', 'reunioes', 'calendario', 'configuracoes'],
+  'Estagiário(a) de ADM': ['administracao', 'chat', 'reunioes', 'calendario', 'configuracoes'],
+  'Estagiário(a) de Comunicação': ['comunicacao', 'chat', 'reunioes', 'calendario', 'configuracoes'],
+  'Educador(a) Escolar': ['pedagogia', 'chat', 'reunioes', 'calendario', 'configuracoes'],
+  'Direção': ['administracao', 'coordenacao', 'comunicacao', 'pedagogia', 'chat', 'reunioes', 'calendario', 'configuracoes'],
+  'Presidente': ['administracao', 'coordenacao', 'comunicacao', 'pedagogia', 'chat', 'reunioes', 'calendario', 'configuracoes'],
 };
 
 export function hasPermission(role: Role, module: Module): boolean {

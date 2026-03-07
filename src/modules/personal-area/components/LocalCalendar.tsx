@@ -6,10 +6,12 @@ import { CalendarEvent } from '../types/v2';
 import { createPersonalEvent, getUserEvents, deletePersonalEvent } from '../actions/calendar';
 import { BorealSkeleton } from '@/components/ui/BorealSkeleton';
 
-export function LocalCalendar() {
+export function LocalCalendar({ userRole }: { userRole?: string }) {
     const [events, setEvents] = useState<CalendarEvent[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [currentDate, setCurrentDate] = useState(new Date());
+
+    const isRestricted = ['Estagiário(a) de ADM', 'Estagiário(a) de Comunicação', 'Educador(a) Escolar'].includes(userRole || '');
 
     // Modal de Novo Evento UI State
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -78,6 +80,7 @@ export function LocalCalendar() {
 
     // Actions Visão
     const handleDayClick = (dateObj: Date) => {
+        if (isRestricted) return; // Read-only state
         // Normalizado pra string YYYY-MM-DD local sem Timezone Shifts bizarros
         const localDate = new Date(dateObj.getTime() - (dateObj.getTimezoneOffset() * 60000)).toISOString().split('T')[0];
         setSelectedDateStr(localDate);

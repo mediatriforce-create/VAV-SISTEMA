@@ -1,14 +1,28 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { LocalCalendar } from '@/modules/personal-area/components/LocalCalendar';
 import { AccountSettings } from '@/modules/personal-area/components/AccountSettings';
 import { CoordinationNotes } from '@/modules/personal-area/components/CoordinationNotes';
+import { createClient } from '@/lib/supabase';
 // Guardando o Vault pro futuro. Retirado temporariamente conforme escopo V2.
 
 export default function PersonalAreaPageV2() {
     const [activeTab, setActiveTab] = useState<'perfil' | 'calendario'>('calendario');
+    const [userRole, setUserRole] = useState('');
+    const supabase = createClient();
+
+    useEffect(() => {
+        async function fetchRole() {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+                const { data } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+                if (data) setUserRole(data.role);
+            }
+        }
+        fetchRole();
+    }, [supabase]);
 
     return (
         <div className="w-full max-w-7xl mx-auto flex flex-col gap-4 md:gap-6 p-4 md:p-6 animate-in fade-in zoom-in-95 duration-500">
@@ -61,7 +75,7 @@ export default function PersonalAreaPageV2() {
                         >
                             {/* Main Actor: Central Calendar Local */}
                             <div className="xl:col-span-2 flex flex-col">
-                                <LocalCalendar />
+                                <LocalCalendar userRole={userRole} />
                             </div>
 
                             {/* Secondary Actor: Feedbacks Pessoais (ReadOnly) */}
