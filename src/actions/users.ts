@@ -27,7 +27,7 @@ export async function getUsers(): Promise<{ success: boolean; data?: UserProfile
             .eq('id', user.id)
             .single()
 
-        const allowedRoles = ['Coord. Geral', 'Presidente', 'Dir. Financeiro', 'Administrador']
+        const allowedRoles = ['Coordenadora ADM', 'Presidência', 'Direção']
         if (!callerProfile || !allowedRoles.includes(callerProfile.role)) {
             throw new Error('Permissão negada para gerenciar equipe.')
         }
@@ -62,7 +62,7 @@ export async function updateUserRole(userId: string, newRole: Role): Promise<{ s
             .eq('id', user.id)
             .single()
 
-        const allowedRoles = ['Coord. Geral', 'Presidente', 'Dir. Financeiro', 'Administrador']
+        const allowedRoles = ['Coordenadora ADM', 'Presidência', 'Direção']
         if (!callerProfile || !allowedRoles.includes(callerProfile.role)) {
             throw new Error('Permissão negada para alterar cargos.')
         }

@@ -40,7 +40,7 @@ async function checkPermission() {
 
     if (!profile) return false
 
-    const allowedRoles = ['Coord. Geral', 'Presidente', 'Dir. Financeiro', 'Estágio ADM']
+    const allowedRoles = ['Coordenadora ADM', 'Presidência', 'Direção', 'Estagiário(a) de ADM']
     return allowedRoles.includes(profile.role)
 }
 

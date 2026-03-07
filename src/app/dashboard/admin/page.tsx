@@ -27,7 +27,7 @@ export default async function AdminPage({
         .eq('id', user.id)
         .single()
 
-    const allowedRoles = ['Coord. Geral', 'Presidente', 'Dir. Financeiro', 'Estágio ADM']
+    const allowedRoles = ['Coordenadora ADM', 'Presidência', 'Direção', 'Estagiário(a) de ADM']
     if (!profile || !allowedRoles.includes(profile.role)) {
         return (
             <div className="flex flex-col items-center justify-center h-full text-center">

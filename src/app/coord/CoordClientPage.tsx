@@ -48,7 +48,7 @@ export default function CoordClientPage({ currentUser, initialDemands, teamMembe
     const router = useRouter();
     const supabase = createClient();
 
-    const canCreate = currentUser.role === 'Coord. Geral';
+    const canCreate = ['Coordenadora ADM', 'Coordenação de Pedagogia', 'Presidência', 'Direção'].includes(currentUser.role);
 
     // Demandas da tabela demands com status 'aprovacao'
     const pendingDemands = useMemo(() =>

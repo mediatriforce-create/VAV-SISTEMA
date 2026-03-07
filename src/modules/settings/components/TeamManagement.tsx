@@ -8,15 +8,14 @@ import { Role } from '@/lib/permissions';
 
 // Array of all available roles for the dropdown
 const ALL_ROLES: Role[] = [
-    'Coord. Geral',
-    'Administração',
-    'Comunicação',
-    'Pedagogia',
+    'Coordenadora ADM',
+    'Coordenação de Pedagogia',
     'Estagiário(a) de ADM',
     'Estagiário(a) de Comunicação',
-    'Educador(a) Escolar',
+    'Estagiário(a) de Pedagogia',
+    'Educador',
     'Direção',
-    'Presidente'
+    'Presidência'
 ];
 
 export default function TeamManagement({ initialUsers }: { initialUsers: UserProfile[] }) {
