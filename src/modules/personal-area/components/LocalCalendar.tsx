@@ -11,7 +11,7 @@ export function LocalCalendar({ userRole }: { userRole?: string }) {
     const [isLoading, setIsLoading] = useState(true);
     const [currentDate, setCurrentDate] = useState(new Date());
 
-    const isRestricted = ['Estagiário(a) de ADM', 'Estagiário(a) de Comunicação', 'Educador(a) Escolar'].includes(userRole || '');
+    const isRestricted = ['Estagiário(a) de ADM', 'Estagiário(a) de Comunicação', 'Estagiário(a) de Pedagogia', 'Educador'].includes(userRole || '');
 
     // Modal de Novo Evento UI State
     const [isModalOpen, setIsModalOpen] = useState(false);

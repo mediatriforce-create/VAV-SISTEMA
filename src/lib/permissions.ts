@@ -1,13 +1,12 @@
 export type Role =
-  | 'Coord. Geral'
-  | 'Administração'
-  | 'Comunicação'
-  | 'Pedagogia'
+  | 'Coordenadora ADM'
+  | 'Coordenação de Pedagogia'
   | 'Estagiário(a) de ADM'
   | 'Estagiário(a) de Comunicação'
-  | 'Educador(a) Escolar'
+  | 'Estagiário(a) de Pedagogia'
+  | 'Educador'
   | 'Direção'
-  | 'Presidente';
+  | 'Presidência';
 
 export type Module =
   | 'administracao'
@@ -20,15 +19,14 @@ export type Module =
   | 'configuracoes';
 
 export const PERMISSIONS: Record<Role, Module[]> = {
-  'Coord. Geral': ['administracao', 'coordenacao', 'pedagogia', 'chat', 'reunioes', 'calendario', 'configuracoes'],
-  'Administração': ['administracao', 'coordenacao', 'comunicacao', 'chat', 'reunioes', 'calendario', 'configuracoes'],
-  'Comunicação': ['comunicacao', 'chat', 'reunioes', 'calendario', 'configuracoes'],
-  'Pedagogia': ['coordenacao', 'comunicacao', 'pedagogia', 'chat', 'reunioes', 'calendario', 'configuracoes'],
+  'Coordenadora ADM': ['administracao', 'coordenacao', 'comunicacao', 'pedagogia', 'chat', 'reunioes', 'calendario', 'configuracoes'],
+  'Coordenação de Pedagogia': ['pedagogia', 'coordenacao', 'comunicacao', 'chat', 'reunioes', 'calendario', 'configuracoes'],
   'Estagiário(a) de ADM': ['administracao', 'chat', 'reunioes', 'calendario', 'configuracoes'],
   'Estagiário(a) de Comunicação': ['comunicacao', 'chat', 'reunioes', 'calendario', 'configuracoes'],
-  'Educador(a) Escolar': ['pedagogia', 'chat', 'reunioes', 'calendario', 'configuracoes'],
+  'Estagiário(a) de Pedagogia': ['pedagogia', 'chat', 'reunioes', 'calendario', 'configuracoes'],
+  'Educador': ['pedagogia', 'chat', 'reunioes', 'calendario', 'configuracoes'],
   'Direção': ['administracao', 'coordenacao', 'comunicacao', 'pedagogia', 'chat', 'reunioes', 'calendario', 'configuracoes'],
-  'Presidente': ['administracao', 'coordenacao', 'comunicacao', 'pedagogia', 'chat', 'reunioes', 'calendario', 'configuracoes'],
+  'Presidência': ['administracao', 'coordenacao', 'comunicacao', 'pedagogia', 'chat', 'reunioes', 'calendario', 'configuracoes'],
 };
 
 export function hasPermission(role: Role, module: Module): boolean {

@@ -21,7 +21,7 @@ export default function MeetingsList({ initialMeetings, userRole }: MeetingsList
     const [contextMenu, setContextMenu] = useState<{ x: number, y: number, meeting: Meeting } | null>(null);
     const [isDeleting, setIsDeleting] = useState(false);
 
-    const isRestricted = ['Estagiário(a) de ADM', 'Estagiário(a) de Comunicação', 'Educador(a) Escolar'].includes(userRole || '');
+    const isRestricted = ['Estagiário(a) de ADM', 'Estagiário(a) de Comunicação', 'Estagiário(a) de Pedagogia', 'Educador'].includes(userRole || '');
 
     useEffect(() => {
         const timer = setInterval(() => setCurrentTime(new Date()), 60000);

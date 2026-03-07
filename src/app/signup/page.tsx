@@ -18,15 +18,14 @@ export default function SignupPage() {
     const supabase = createClient()
 
     const roles = [
-        "Coord. Geral",
-        "Administração",
-        "Comunicação",
-        "Pedagogia",
+        "Coordenadora ADM",
+        "Coordenação de Pedagogia",
         "Estagiário(a) de ADM",
         "Estagiário(a) de Comunicação",
-        "Educador(a) Escolar",
+        "Estagiário(a) de Pedagogia",
+        "Educador",
         "Direção",
-        "Presidente"
+        "Presidência"
     ]
 
     const handleSignup = async (e: React.FormEvent) => {
