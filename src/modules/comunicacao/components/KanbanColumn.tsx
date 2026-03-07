@@ -17,12 +17,12 @@ export default function KanbanColumn({ id, title, demands, color }: KanbanColumn
     });
 
     return (
-        <div className="flex flex-col h-full bg-slate-50 rounded-xl border border-slate-200 min-w-[280px] w-full max-w-sm">
+        <div className="flex flex-col h-full bg-slate-50 dark:bg-black/40 rounded-xl border border-slate-200 dark:border-white/10 min-w-[280px] w-full max-w-sm backdrop-blur-md">
             {/* Header */}
-            <div className={`p-4 border-b border-slate-200 rounded-t-xl ${color} bg-opacity-20`}>
+            <div className={`p-4 border-b border-slate-200 dark:border-white/10 rounded-t-xl ${color} bg-opacity-20 dark:bg-opacity-10`}>
                 <div className="flex justify-between items-center">
-                    <h3 className="font-bold text-slate-700">{title}</h3>
-                    <span className="text-xs font-semibold bg-white bg-opacity-60 px-2 py-1 rounded-full text-slate-600">
+                    <h3 className="font-bold text-slate-700 dark:text-slate-200">{title}</h3>
+                    <span className="text-xs font-semibold bg-white dark:bg-zinc-900 bg-opacity-60 dark:bg-opacity-60 px-2 py-1 rounded-full text-slate-600 dark:text-zinc-300">
                         {demands.length}
                     </span>
                 </div>
@@ -38,7 +38,7 @@ export default function KanbanColumn({ id, title, demands, color }: KanbanColumn
                     <KanbanCard key={demand.id} demand={demand} />
                 ))}
                 {demands.length === 0 && (
-                    <div className="h-full flex items-center justify-center text-slate-300 text-sm border-2 border-dashed border-slate-200 rounded-lg">
+                    <div className="h-full flex items-center justify-center text-slate-300 dark:text-zinc-600 text-sm border-2 border-dashed border-slate-200 dark:border-white/10 rounded-lg">
                         Solte aqui
                     </div>
                 )}

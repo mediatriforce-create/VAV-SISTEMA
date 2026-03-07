@@ -38,7 +38,7 @@ export default function GalleryClientPage({ initialPosts }: GalleryClientPagePro
     return (
         <div className="space-y-3 md:space-y-4 w-full max-w-6xl mx-auto pb-4">
             {/* Header */}
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 bg-white/50 dark:bg-gray-800/50 backdrop-blur-md p-4 rounded-2xl border border-slate-200/50 dark:border-gray-700/50 shadow-sm">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 bg-white/50 dark:bg-zinc-900/50 backdrop-blur-md p-4 rounded-2xl border border-slate-200/50 dark:border-white/10 shadow-sm">
                 <div className="flex-shrink-0">
                     <h2 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Galeria Viva a Vida</h2>
                     <p className="text-slate-500 dark:text-gray-400 text-xs md:text-sm mt-0.5 font-medium">Acervo oficial de mídias e registros.</p>
@@ -46,7 +46,7 @@ export default function GalleryClientPage({ initialPosts }: GalleryClientPagePro
 
                 <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
                     {/* Tabs Movidas para dentro do Header */}
-                    <div className="flex justify-center gap-1 md:gap-2 p-1 bg-slate-100/50 dark:bg-gray-900/50 backdrop-blur-md rounded-xl border border-slate-200/50 dark:border-gray-700/50 w-full md:w-auto overflow-x-auto no-scrollbar">
+                    <div className="flex justify-center gap-1 md:gap-2 p-1 bg-slate-100/50 dark:bg-zinc-950/50 backdrop-blur-md rounded-xl border border-slate-200/50 dark:border-white/5 w-full md:w-auto overflow-x-auto no-scrollbar">
                         {[
                             { id: 'feed', icon: Grid, label: 'PUBLICAÇÕES' },
                             { id: 'reels', icon: Clapperboard, label: 'REELS' },
@@ -63,7 +63,7 @@ export default function GalleryClientPage({ initialPosts }: GalleryClientPagePro
                                     {isActive && (
                                         <motion.div
                                             layoutId="galleryTab"
-                                            className="absolute inset-0 bg-white dark:bg-gray-700 rounded-lg shadow-sm border border-slate-200/50 dark:border-gray-600/50"
+                                            className="absolute inset-0 bg-white dark:bg-zinc-800 rounded-lg shadow-sm border border-slate-200/50 dark:border-white/5"
                                             initial={false}
                                             transition={{ type: "spring", stiffness: 300, damping: 30 }}
                                         />

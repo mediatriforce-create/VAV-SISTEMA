@@ -27,7 +27,7 @@ export default async function CoordPage() {
     if (!allowedModules?.includes('coordenacao')) {
         return (
             <div className="flex h-screen items-center justify-center bg-slate-50">
-                <div className="text-center p-8 bg-white rounded-2xl shadow-sm border border-slate-200 max-w-md">
+                <div className="text-center p-8 bg-white dark:bg-zinc-900 rounded-2xl shadow-sm border border-slate-200 dark:border-white/10 max-w-md">
                     <h2 className="text-xl font-bold text-slate-800 mb-2">Acesso Negado</h2>
                     <p className="text-slate-500">
                         Você não tem permissão para acessar o módulo de Coordenação.

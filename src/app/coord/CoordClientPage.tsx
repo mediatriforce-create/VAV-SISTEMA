@@ -181,7 +181,7 @@ export default function CoordClientPage({ currentUser, initialDemands, teamMembe
 
                 {/* === SEÇÃO: ESPERANDO APROVAÇÃO === */}
                 {totalPending > 0 && (
-                    <div className="shrink-0 flex flex-col bg-white dark:bg-zinc-900 rounded-2xl shadow-sm border border-violet-200 dark:border-zinc-800 min-h-0 max-h-[45vh]">
+                    <div className="shrink-0 flex flex-col bg-white dark:bg-zinc-900 rounded-2xl shadow-sm border border-violet-200 dark:border-white/10 min-h-0 max-h-[45vh]">
                         <button
                             onClick={() => setShowApproval(!showApproval)}
                             className="w-full shrink-0 flex items-center justify-between p-4 hover:bg-violet-50/50 dark:hover:bg-zinc-800 transition-colors rounded-t-2xl"
@@ -238,7 +238,7 @@ export default function CoordClientPage({ currentUser, initialDemands, teamMembe
 
                                                     {/* Submission Data */}
                                                     {sub && (
-                                                        <div className="bg-white/60 dark:bg-zinc-900/50 rounded-lg p-3 border border-violet-100 dark:border-zinc-700 flex flex-col gap-2">
+                                                        <div className="bg-white/60 dark:bg-zinc-900/50 rounded-lg p-3 border border-violet-100 dark:border-white/5 flex flex-col gap-2">
                                                             {sub.justification_text && (
                                                                 <div>
                                                                     <span className="text-[10px] font-bold text-violet-500 uppercase flex items-center gap-1 mb-1">
@@ -269,7 +269,7 @@ export default function CoordClientPage({ currentUser, initialDemands, teamMembe
 
                                                                             return (
                                                                                 <a key={i} href={url} target="_blank" rel="noopener noreferrer"
-                                                                                    className="flex items-center gap-1.5 px-2 py-1 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded text-[10px] font-medium text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 dark:hover:border-blue-700 transition-colors"
+                                                                                    className="flex items-center gap-1.5 px-2 py-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 rounded text-[10px] font-medium text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 dark:hover:border-blue-700 transition-colors"
                                                                                 >
                                                                                     <ImageIcon size={12} />
                                                                                     <span className="truncate max-w-[100px]" title={fileName}>
@@ -328,7 +328,7 @@ export default function CoordClientPage({ currentUser, initialDemands, teamMembe
 
                                                     {/* Submission Data */}
                                                     {sub && (
-                                                        <div className="bg-white/60 dark:bg-zinc-900/50 rounded-lg p-3 border border-violet-100 dark:border-zinc-700 flex flex-col gap-2">
+                                                        <div className="bg-white/60 dark:bg-zinc-900/50 rounded-lg p-3 border border-violet-100 dark:border-white/5 flex flex-col gap-2">
                                                             {sub.justification_text && (
                                                                 <div>
                                                                     <span className="text-[10px] font-bold text-violet-500 uppercase flex items-center gap-1 mb-1">
@@ -359,7 +359,7 @@ export default function CoordClientPage({ currentUser, initialDemands, teamMembe
 
                                                                             return (
                                                                                 <a key={i} href={url} target="_blank" rel="noopener noreferrer"
-                                                                                    className="flex items-center gap-1.5 px-2 py-1 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded text-[10px] font-medium text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 dark:hover:border-blue-700 transition-colors"
+                                                                                    className="flex items-center gap-1.5 px-2 py-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 rounded text-[10px] font-medium text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 dark:hover:border-blue-700 transition-colors"
                                                                                 >
                                                                                     <ImageIcon size={12} />
                                                                                     <span className="truncate max-w-[100px]" title={fileName}>
@@ -402,7 +402,7 @@ export default function CoordClientPage({ currentUser, initialDemands, teamMembe
 
                     {/* Left Column: Team */}
                     <div className="lg:col-span-3 flex flex-col gap-6 min-h-0">
-                        <div className="flex-1 min-h-0 flex flex-col bg-white dark:bg-zinc-900 rounded-xl shadow-sm border border-slate-200 dark:border-zinc-800 p-4">
+                        <div className="flex-1 min-h-0 flex flex-col bg-white dark:bg-zinc-900 rounded-xl shadow-sm border border-slate-200 dark:border-white/10 p-4">
                             <h3 className="shrink-0 font-semibold text-slate-700 dark:text-zinc-100 mb-4 flex items-center gap-2">
                                 <Users size={18} />
                                 Equipe

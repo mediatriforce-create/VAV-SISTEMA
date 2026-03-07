@@ -278,9 +278,9 @@ export default function DriveExplorer({ initialFolderId, initialFolderName = 'CO
     };
 
     return (
-        <div className="flex flex-col h-full bg-slate-50 relative" onContextMenu={(e) => { e.preventDefault(); }}>
+        <div className="flex flex-col h-full bg-slate-50 dark:bg-black relative" onContextMenu={(e) => { e.preventDefault(); }}>
             {/* Header & Breadcrumbs */}
-            <div className="bg-white border-b border-slate-200 px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="bg-white dark:bg-zinc-950 border-b border-slate-200 dark:border-white/10 px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
 
                 <div className="flex items-center gap-2 overflow-x-auto custom-scrollbar text-sm font-medium text-slate-600 no-scrollbar">
                     {breadcrumbs.length > 1 && (
@@ -343,7 +343,7 @@ export default function DriveExplorer({ initialFolderId, initialFolderName = 'CO
                             <button
                                 onClick={handleCreateFolder}
                                 disabled={isCreatingFolder || isUploading}
-                                className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 hover:text-slate-900 transition-colors shadow-sm disabled:opacity-50"
+                                className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-slate-700 dark:text-zinc-200 bg-white dark:bg-zinc-900 border border-slate-300 dark:border-white/10 rounded-lg hover:bg-slate-50 hover:text-slate-900 dark:hover:bg-zinc-800 transition-colors shadow-sm disabled:opacity-50"
                             >
                                 {isCreatingFolder ? <Loader2 size={16} className="animate-spin" /> : <FolderPlus size={16} />}
                                 Nova Pasta
@@ -408,7 +408,7 @@ export default function DriveExplorer({ initialFolderId, initialFolderName = 'CO
                                         whileHover={{ y: -4, boxShadow: "0px 10px 20px rgba(0,0,0,0.05)" }}
                                         onClick={(e) => handleFileClick(file, e as any)}
                                         onContextMenu={(e) => handleContextMenu(e as any, file)}
-                                        className={`group relative flex flex-col items-center p-4 bg-white rounded-xl border ${isSelected ? 'border-primary bg-primary/5 ring-2 ring-primary/20' : 'border-slate-200 hover:border-primary/30'} cursor-pointer transition-all duration-200`}
+                                        className={`group relative flex flex-col items-center p-4 bg-white dark:bg-zinc-900/50 rounded-xl border ${isSelected ? 'border-primary dark:border-amber-500 bg-primary/5 dark:bg-amber-500/10 ring-2 ring-primary/20 dark:ring-amber-500/20' : 'border-slate-200 dark:border-white/10 hover:border-primary/30 dark:hover:border-amber-500/30'} cursor-pointer transition-all duration-200`}
                                     >
                                         {/* Selection Checkbox */}
                                         {(isSelectionMode || isSelected) && (
@@ -422,7 +422,7 @@ export default function DriveExplorer({ initialFolderId, initialFolderName = 'CO
                                         </div>
 
                                         <div className="w-full text-center">
-                                            <p className="text-sm font-medium text-slate-700 truncate px-1" title={file.name}>
+                                            <p className="text-sm font-medium text-slate-700 dark:text-slate-300 truncate px-1" title={file.name}>
                                                 {file.name}
                                             </p>
                                         </div>
@@ -456,7 +456,7 @@ export default function DriveExplorer({ initialFolderId, initialFolderName = 'CO
                         exit={{ opacity: 0, scale: 0.95 }}
                         transition={{ duration: 0.1 }}
                         style={{ top: contextMenu.y, left: contextMenu.x }}
-                        className="fixed z-50 min-w-[160px] bg-white rounded-lg shadow-xl border border-slate-200 py-1 overflow-hidden"
+                        className="fixed z-50 min-w-[160px] bg-white dark:bg-zinc-900 rounded-lg shadow-xl border border-slate-200 dark:border-white/10 py-1 overflow-hidden"
                         onClick={(e) => e.stopPropagation()}
                     >
                         <button
