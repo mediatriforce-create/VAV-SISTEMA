@@ -69,7 +69,7 @@ export function DocumentPreviewModal({ document, onClose }: DocumentPreviewModal
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 30 }}
                         transition={{ duration: 0.25, type: 'spring', damping: 25, stiffness: 300 }}
-                        className="relative w-full max-w-5xl h-[90vh] bg-white dark:bg-zinc-900 shadow-2xl rounded-3xl overflow-hidden flex flex-col border border-zinc-200 dark:border-white/10 ring-1 ring-black/5"
+                        className="relative w-full max-w-5xl h-[90vh] bg-white dark:bg-zinc-950 shadow-2xl rounded-3xl overflow-hidden flex flex-col border border-zinc-200 dark:border-zinc-800 ring-1 ring-black/5"
                     >
                         {/* Interactive Header */}
                         <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-200 dark:border-white/10 shrink-0 bg-zinc-50/50 dark:bg-black/20 backdrop-blur-md z-10">
@@ -126,7 +126,7 @@ export function DocumentPreviewModal({ document, onClose }: DocumentPreviewModal
                                 isImage ? (
                                     <img src={signedUrl} alt={document.title} className="max-w-full max-h-full object-contain rounded-xl shadow-lg border border-zinc-200 dark:border-white/5 bg-white dark:bg-black/50" />
                                 ) : (
-                                    <iframe src={`${signedUrl}#toolbar=0&navpanes=0`} className="w-full h-full rounded-xl shadow-lg bg-white dark:bg-zinc-800 border-0" title={document.title} />
+                                    <iframe src={`${signedUrl}#toolbar=0&navpanes=0`} className="w-full h-full rounded-xl shadow-lg bg-zinc-50 dark:bg-zinc-900 border-0" title={document.title} />
                                 )
                             ) : null}
                         </div>

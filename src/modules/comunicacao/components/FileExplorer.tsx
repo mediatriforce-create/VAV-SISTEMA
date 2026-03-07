@@ -95,9 +95,9 @@ export default function FileExplorer() {
     };
 
     return (
-        <div className="bg-white/70 dark:bg-slate-800/70 backdrop-blur-xl rounded-2xl shadow-sm border border-slate-200/60 dark:border-slate-700/60 min-h-[500px] flex flex-col overflow-hidden">
+        <div className="bg-white/70 dark:bg-zinc-900/70 backdrop-blur-xl rounded-2xl shadow-sm border border-slate-200/60 dark:border-zinc-800/60 min-h-[500px] flex flex-col overflow-hidden">
             {/* Toolbar */}
-            <div className="p-4 border-b border-slate-200/60 dark:border-slate-700/60 flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center bg-slate-50/50 dark:bg-slate-800/50">
+            <div className="p-4 border-b border-slate-100 dark:border-zinc-800/50 flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center bg-white/50 dark:bg-zinc-900/50">
                 {/* Breadcrumbs */}
                 <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 overflow-x-auto no-scrollbar w-full sm:w-auto pb-2 sm:pb-0">
                     <AnimatePresence>
@@ -127,7 +127,7 @@ export default function FileExplorer() {
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                         onClick={() => setIsFolderModalOpen(true)}
-                        className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-slate-700 dark:text-gray-200 bg-white dark:bg-gray-700 border border-slate-200/60 dark:border-gray-600 rounded-xl shadow-sm hover:shadow-md hover:border-slate-300 dark:hover:border-gray-500 transition-all"
+                        className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-slate-700 dark:text-gray-200 bg-white dark:bg-zinc-800 border border-slate-200/60 dark:border-zinc-700 rounded-xl shadow-sm hover:shadow-md hover:border-slate-300 dark:hover:border-zinc-600 transition-all"
                     >
                         <FolderPlus size={18} className="text-amber-500" />
                         Nova Pasta
@@ -181,7 +181,7 @@ export default function FileExplorer() {
                                         visible: { opacity: 1, scale: 1 }
                                     }}
                                     key={folder.id}
-                                    className="group flex flex-col items-center p-5 bg-white border dark:bg-gray-800 dark:border-gray-700/50 rounded-2xl hover:bg-slate-50/80 hover:scale-[1.03] hover:shadow-lg dark:hover:bg-gray-700 cursor-pointer border-slate-100 transition-all relative"
+                                    className="group flex flex-col items-center p-5 bg-white border dark:bg-zinc-800 dark:border-zinc-700/50 rounded-2xl hover:bg-slate-50/80 hover:scale-[1.03] hover:shadow-lg dark:hover:bg-zinc-700 cursor-pointer border-slate-100 transition-all relative"
                                     onClick={() => handleNavigate(folder)}
                                 >
                                     <Folder size={56} className="text-amber-400 mb-3 fill-amber-400/20 drop-shadow-sm group-hover:scale-110 transition-transform duration-300" strokeWidth={1.5} />
@@ -205,7 +205,7 @@ export default function FileExplorer() {
                                         visible: { opacity: 1, scale: 1 }
                                     }}
                                     key={file.id}
-                                    className="group flex flex-col items-center justify-between p-5 bg-white border dark:bg-gray-800 dark:border-gray-700/50 rounded-2xl hover:bg-slate-50/80 hover:shadow-lg dark:hover:bg-gray-700 border-slate-100 transition-all relative"
+                                    className="group flex flex-col items-center justify-between p-5 bg-white border dark:bg-zinc-800 dark:border-zinc-700/50 rounded-2xl hover:bg-slate-50/80 hover:shadow-lg dark:hover:bg-zinc-700 border-slate-100 transition-all relative"
                                 >
                                     <div className="relative mb-3 flex-1 flex items-center justify-center w-full">
                                         <FileText size={48} className="text-slate-400/80 dark:text-gray-500" strokeWidth={1} />

@@ -6,6 +6,7 @@ import DemandList from '../../modules/coord/components/DemandList';
 import TeamMemberCard from '../../modules/coord/components/TeamMemberCard';
 import CreateDemandForm from '../../modules/coord/components/CreateDemandForm';
 import ReviewModal from '../../modules/coord/components/ReviewModal';
+import { ObservationModal } from '../../modules/coord/components/ObservationModal';
 import { LayoutDashboard, Users, PlusCircle, Clock, CheckCircle2, ChevronDown, ChevronUp, Paperclip, FileText, ImageIcon, XCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase';
@@ -33,6 +34,7 @@ interface CoordClientPageProps {
 export default function CoordClientPage({ currentUser, initialDemands, teamMembers, pendingPedCards = [], approvalSubmissions = [] }: CoordClientPageProps) {
     const [showCreateForm, setShowCreateForm] = useState(false);
     const [showApproval, setShowApproval] = useState(true);
+    const [memberForNote, setMemberForNote] = useState<any>(null);
 
     // Review Modal State
     const [reviewModal, setReviewModal] = useState<{
@@ -152,19 +154,20 @@ export default function CoordClientPage({ currentUser, initialDemands, teamMembe
     };
 
     return (
-        <div className="flex-1 w-full h-full min-h-0 bg-slate-50 p-4 md:p-6 overflow-y-auto custom-scrollbar">
-            <div className="max-w-7xl mx-auto flex flex-col gap-6">
+        <div className="flex-1 w-full h-full min-h-0 bg-slate-50 dark:bg-zinc-950 p-4 md:p-6 overflow-hidden flex flex-col">
+            <div className="max-w-7xl mx-auto w-full flex flex-col gap-6 flex-1 min-h-0">
 
                 {/* Header */}
-                <div className="shrink-0 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div className="shrink-0 flex justify-between items-center mb-6">
                     <div>
-                        <h1 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
-                            <LayoutDashboard className="text-primary" />
+                        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                            <LayoutDashboard className="text-primary dark:text-blue-400" />
                             Coordenação & Demandas
                         </h1>
-                        <p className="text-slate-500 mt-1">Gerencie tarefas e distribua demandas para a equipe.</p>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                            Gerencie tarefas e distribua demandas para a equipe.
+                        </p>
                     </div>
-
                     {canCreate && (
                         <button
                             onClick={() => setShowCreateForm(true)}
@@ -178,18 +181,18 @@ export default function CoordClientPage({ currentUser, initialDemands, teamMembe
 
                 {/* === SEÇÃO: ESPERANDO APROVAÇÃO === */}
                 {totalPending > 0 && (
-                    <div className="bg-white rounded-2xl shadow-sm border border-violet-200 overflow-hidden">
+                    <div className="shrink-0 flex flex-col bg-white dark:bg-zinc-900 rounded-2xl shadow-sm border border-violet-200 dark:border-zinc-800 min-h-0 max-h-[45vh]">
                         <button
                             onClick={() => setShowApproval(!showApproval)}
-                            className="w-full flex items-center justify-between p-4 hover:bg-violet-50/50 transition-colors"
+                            className="w-full shrink-0 flex items-center justify-between p-4 hover:bg-violet-50/50 dark:hover:bg-zinc-800 transition-colors rounded-t-2xl"
                         >
                             <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-md shadow-violet-500/30">
                                     <Clock size={20} className="text-white" />
                                 </div>
                                 <div className="text-left">
-                                    <h3 className="text-sm font-extrabold text-zinc-900">Esperando Aprovação</h3>
-                                    <p className="text-xs text-zinc-500">{totalPending} {totalPending === 1 ? 'item aguardando' : 'itens aguardando'} seu aval</p>
+                                    <h3 className="text-sm font-extrabold text-zinc-900 dark:text-zinc-100">Esperando Aprovação</h3>
+                                    <p className="text-xs text-zinc-500 dark:text-zinc-400">{totalPending} {totalPending === 1 ? 'item aguardando' : 'itens aguardando'} seu aval</p>
                                 </div>
                                 <span className="ml-2 bg-violet-500 text-white text-xs font-black px-2.5 py-1 rounded-full">
                                     {totalPending}
@@ -205,26 +208,26 @@ export default function CoordClientPage({ currentUser, initialDemands, teamMembe
                                     animate={{ height: 'auto', opacity: 1 }}
                                     exit={{ height: 0, opacity: 0 }}
                                     transition={{ duration: 0.2 }}
-                                    className="overflow-hidden"
+                                    className="overflow-y-auto custom-scrollbar min-h-0"
                                 >
                                     <div className="p-4 pt-0 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
                                         {/* Demandas (Comunicação) aguardando aprovação */}
                                         {pendingDemands.map((demand: Demand) => {
                                             const sub = getSubmission(demand.id);
                                             return (
-                                                <div key={demand.id} className="bg-violet-50/60 border border-violet-200/80 rounded-xl p-4 flex flex-col gap-3">
+                                                <div key={demand.id} className="bg-violet-50/60 dark:bg-zinc-800/50 border border-violet-200/80 dark:border-zinc-700 rounded-xl p-4 flex flex-col gap-3">
                                                     <div className="flex items-start justify-between gap-2">
                                                         <div className="flex-1 min-w-0">
-                                                            <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">
+                                                            <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600 bg-blue-50 dark:bg-blue-900/20 dark:text-blue-400 px-2 py-0.5 rounded-full">
                                                                 📢 {demand.sector === 'administracao' ? 'Administração' : 'Comunicação'}
                                                             </span>
-                                                            <h4 className="font-bold text-sm text-zinc-900 mt-1.5 truncate">{demand.title}</h4>
+                                                            <h4 className="font-bold text-sm text-zinc-900 dark:text-zinc-100 mt-1.5 truncate">{demand.title}</h4>
                                                             {demand.description && (
-                                                                <p className="text-xs text-zinc-500 mt-1 line-clamp-2">{demand.description}</p>
+                                                                <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 line-clamp-2">{demand.description}</p>
                                                             )}
                                                         </div>
                                                     </div>
-                                                    <div className="flex items-center gap-2 text-xs text-zinc-400">
+                                                    <div className="flex items-center gap-2 text-xs text-zinc-400 dark:text-zinc-500">
                                                         {demand.assignee?.full_name && (
                                                             <span className="font-medium">{demand.assignee.full_name}</span>
                                                         )}
@@ -235,13 +238,13 @@ export default function CoordClientPage({ currentUser, initialDemands, teamMembe
 
                                                     {/* Submission Data */}
                                                     {sub && (
-                                                        <div className="bg-white/60 rounded-lg p-3 border border-violet-100 flex flex-col gap-2">
+                                                        <div className="bg-white/60 dark:bg-zinc-900/50 rounded-lg p-3 border border-violet-100 dark:border-zinc-700 flex flex-col gap-2">
                                                             {sub.justification_text && (
                                                                 <div>
                                                                     <span className="text-[10px] font-bold text-violet-500 uppercase flex items-center gap-1 mb-1">
                                                                         <FileText size={10} /> Justificativa
                                                                     </span>
-                                                                    <p className="text-xs text-zinc-700 leading-relaxed bg-zinc-50/50 p-2 rounded-md border border-zinc-100">
+                                                                    <p className="text-xs text-zinc-700 dark:text-zinc-300 leading-relaxed bg-zinc-50/50 dark:bg-zinc-800/50 p-2 rounded-md border border-zinc-100 dark:border-zinc-700">
                                                                         {sub.justification_text}
                                                                     </p>
                                                                 </div>
@@ -258,7 +261,7 @@ export default function CoordClientPage({ currentUser, initialDemands, teamMembe
 
                                                                             if (isImg) {
                                                                                 return (
-                                                                                    <a key={i} href={url} target="_blank" rel="noopener noreferrer" className="block w-full mb-1 overflow-hidden rounded-lg border border-zinc-200 shadow-sm">
+                                                                                    <a key={i} href={url} target="_blank" rel="noopener noreferrer" className="block w-full mb-1 overflow-hidden rounded-lg border border-zinc-200 dark:border-zinc-700 shadow-sm">
                                                                                         <img src={url} alt={fileName} className="w-full h-auto object-cover max-h-32 hover:opacity-90 transition-opacity" />
                                                                                     </a>
                                                                                 );
@@ -266,7 +269,7 @@ export default function CoordClientPage({ currentUser, initialDemands, teamMembe
 
                                                                             return (
                                                                                 <a key={i} href={url} target="_blank" rel="noopener noreferrer"
-                                                                                    className="flex items-center gap-1.5 px-2 py-1 bg-white border border-zinc-200 rounded text-[10px] font-medium text-blue-600 hover:bg-blue-50 hover:border-blue-200 transition-colors"
+                                                                                    className="flex items-center gap-1.5 px-2 py-1 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded text-[10px] font-medium text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 dark:hover:border-blue-700 transition-colors"
                                                                                 >
                                                                                     <ImageIcon size={12} />
                                                                                     <span className="truncate max-w-[100px]" title={fileName}>
@@ -284,7 +287,7 @@ export default function CoordClientPage({ currentUser, initialDemands, teamMembe
                                                     <div className="flex gap-2">
                                                         <button
                                                             onClick={() => openReviewModal('reject', 'demand', demand.id, demand.title)}
-                                                            className="flex-1 flex items-center justify-center gap-1.5 py-2 bg-red-50 hover:bg-red-100 text-red-600 border border-red-200/50 text-xs font-bold rounded-lg transition-colors shadow-sm"
+                                                            className="flex-1 flex items-center justify-center gap-1.5 py-2 bg-red-50 hover:bg-red-100 dark:bg-red-500/10 dark:hover:bg-red-500/20 text-red-600 dark:text-red-400 border border-red-200/50 dark:border-red-500/20 text-xs font-bold rounded-lg transition-colors shadow-sm"
                                                         >
                                                             <XCircle size={14} /> Rejeitar
                                                         </button>
@@ -303,19 +306,19 @@ export default function CoordClientPage({ currentUser, initialDemands, teamMembe
                                         {pendingPedCards.map(card => {
                                             const sub = getSubmission(undefined, card.id);
                                             return (
-                                                <div key={card.id} className="bg-violet-50/60 border border-violet-200/80 rounded-xl p-4 flex flex-col gap-3">
+                                                <div key={card.id} className="bg-violet-50/60 dark:bg-zinc-800/50 border border-violet-200/80 dark:border-zinc-700 rounded-xl p-4 flex flex-col gap-3">
                                                     <div className="flex items-start justify-between gap-2">
                                                         <div className="flex-1 min-w-0">
-                                                            <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
+                                                            <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 dark:bg-emerald-900/20 dark:text-emerald-400 px-2 py-0.5 rounded-full">
                                                                 🎓 Pedagogia
                                                             </span>
-                                                            <h4 className="font-bold text-sm text-zinc-900 mt-1.5 truncate">{card.title}</h4>
+                                                            <h4 className="font-bold text-sm text-zinc-900 dark:text-zinc-100 mt-1.5 truncate">{card.title}</h4>
                                                             {card.description && (
-                                                                <p className="text-xs text-zinc-500 mt-1 line-clamp-2">{card.description}</p>
+                                                                <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 line-clamp-2">{card.description}</p>
                                                             )}
                                                         </div>
                                                     </div>
-                                                    <div className="flex items-center gap-2 text-xs text-zinc-400">
+                                                    <div className="flex items-center gap-2 text-xs text-zinc-400 dark:text-zinc-500">
                                                         {card.card_type && <span className="font-medium">{card.card_type}</span>}
                                                         {card.due_date && (
                                                             <span>• {new Date(card.due_date + 'T12:00:00').toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' })}</span>
@@ -325,13 +328,13 @@ export default function CoordClientPage({ currentUser, initialDemands, teamMembe
 
                                                     {/* Submission Data */}
                                                     {sub && (
-                                                        <div className="bg-white/60 rounded-lg p-3 border border-violet-100 flex flex-col gap-2">
+                                                        <div className="bg-white/60 dark:bg-zinc-900/50 rounded-lg p-3 border border-violet-100 dark:border-zinc-700 flex flex-col gap-2">
                                                             {sub.justification_text && (
                                                                 <div>
                                                                     <span className="text-[10px] font-bold text-violet-500 uppercase flex items-center gap-1 mb-1">
                                                                         <FileText size={10} /> Justificativa
                                                                     </span>
-                                                                    <p className="text-xs text-zinc-700 leading-relaxed bg-zinc-50/50 p-2 rounded-md border border-zinc-100">
+                                                                    <p className="text-xs text-zinc-700 dark:text-zinc-300 leading-relaxed bg-zinc-50/50 dark:bg-zinc-800/50 p-2 rounded-md border border-zinc-100 dark:border-zinc-700">
                                                                         {sub.justification_text}
                                                                     </p>
                                                                 </div>
@@ -348,7 +351,7 @@ export default function CoordClientPage({ currentUser, initialDemands, teamMembe
 
                                                                             if (isImg) {
                                                                                 return (
-                                                                                    <a key={i} href={url} target="_blank" rel="noopener noreferrer" className="block w-full mb-1 overflow-hidden rounded-lg border border-zinc-200 shadow-sm">
+                                                                                    <a key={i} href={url} target="_blank" rel="noopener noreferrer" className="block w-full mb-1 overflow-hidden rounded-lg border border-zinc-200 dark:border-zinc-700 shadow-sm">
                                                                                         <img src={url} alt={fileName} className="w-full h-auto object-cover max-h-32 hover:opacity-90 transition-opacity" />
                                                                                     </a>
                                                                                 );
@@ -356,7 +359,7 @@ export default function CoordClientPage({ currentUser, initialDemands, teamMembe
 
                                                                             return (
                                                                                 <a key={i} href={url} target="_blank" rel="noopener noreferrer"
-                                                                                    className="flex items-center gap-1.5 px-2 py-1 bg-white border border-zinc-200 rounded text-[10px] font-medium text-blue-600 hover:bg-blue-50 hover:border-blue-200 transition-colors"
+                                                                                    className="flex items-center gap-1.5 px-2 py-1 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded text-[10px] font-medium text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 dark:hover:border-blue-700 transition-colors"
                                                                                 >
                                                                                     <ImageIcon size={12} />
                                                                                     <span className="truncate max-w-[100px]" title={fileName}>
@@ -374,7 +377,7 @@ export default function CoordClientPage({ currentUser, initialDemands, teamMembe
                                                     <div className="flex gap-2">
                                                         <button
                                                             onClick={() => openReviewModal('reject', 'pedcard', card.id, card.title)}
-                                                            className="flex-1 flex items-center justify-center gap-1.5 py-2 bg-red-50 hover:bg-red-100 text-red-600 border border-red-200/50 text-xs font-bold rounded-lg transition-colors shadow-sm"
+                                                            className="flex-1 flex items-center justify-center gap-1.5 py-2 bg-red-50 hover:bg-red-100 dark:bg-red-500/10 dark:hover:bg-red-500/20 text-red-600 dark:text-red-400 border border-red-200/50 dark:border-red-500/20 text-xs font-bold rounded-lg transition-colors shadow-sm"
                                                         >
                                                             <XCircle size={14} /> Rejeitar
                                                         </button>
@@ -399,14 +402,14 @@ export default function CoordClientPage({ currentUser, initialDemands, teamMembe
 
                     {/* Left Column: Team */}
                     <div className="lg:col-span-3 flex flex-col gap-6 min-h-0">
-                        <div className="flex-1 min-h-0 flex flex-col bg-white rounded-xl shadow-sm border border-slate-200 p-4">
-                            <h3 className="shrink-0 font-semibold text-slate-700 mb-4 flex items-center gap-2">
+                        <div className="flex-1 min-h-0 flex flex-col bg-white dark:bg-zinc-900 rounded-xl shadow-sm border border-slate-200 dark:border-zinc-800 p-4">
+                            <h3 className="shrink-0 font-semibold text-slate-700 dark:text-zinc-100 mb-4 flex items-center gap-2">
                                 <Users size={18} />
                                 Equipe
                             </h3>
                             <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar space-y-3 pr-2">
                                 {teamMembers.map(member => (
-                                    <TeamMemberCard key={member.id} member={member} />
+                                    <TeamMemberCard key={member.id} member={member} onClick={() => setMemberForNote(member)} />
                                 ))}
                             </div>
                         </div>
@@ -441,6 +444,13 @@ export default function CoordClientPage({ currentUser, initialDemands, teamMembe
                     itemName={reviewModal.itemName}
                 />
             )}
+
+            {/* Modal de Observação */}
+            <ObservationModal
+                isOpen={!!memberForNote}
+                onClose={() => setMemberForNote(null)}
+                member={memberForNote}
+            />
         </div>
     );
 }

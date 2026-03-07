@@ -61,7 +61,7 @@ export default function DriveUploadModal({ isOpen, onClose, currentFolderId, pre
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-            <div className="bg-white dark:bg-slate-800 rounded-xl shadow-2xl w-full max-w-lg flex flex-col max-h-[85vh] animate-in fade-in zoom-in-95 duration-200">
+            <div className="bg-white dark:bg-zinc-900 rounded-xl shadow-2xl border border-zinc-200 dark:border-zinc-800 w-full max-w-lg flex flex-col max-h-[85vh] animate-in fade-in zoom-in-95 duration-200">
                 <div className="shrink-0 p-4 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center">
                     <h3 className="font-bold text-lg text-slate-800 dark:text-white flex items-center gap-2">
                         <Upload size={20} className="text-primary" />
@@ -86,7 +86,7 @@ export default function DriveUploadModal({ isOpen, onClose, currentFolderId, pre
                                         onClick={() => setCategoryId(cat.id)}
                                         className={`px-3 py-1.5 rounded-lg border text-sm font-medium transition-colors ${isSelected
                                             ? 'bg-primary text-white border-primary'
-                                            : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300 hover:bg-slate-50'
+                                            : 'bg-white dark:bg-zinc-900 text-slate-600 dark:text-zinc-300 border-slate-200 dark:border-zinc-700 hover:border-slate-300 dark:hover:border-zinc-600 hover:bg-slate-50 dark:hover:bg-white/5'
                                             }`}
                                     >
                                         {cat.id === 'MANUAL' ? <FolderPlus size={14} className="inline mr-1 -mt-0.5" /> : null}

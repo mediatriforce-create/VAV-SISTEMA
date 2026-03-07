@@ -103,7 +103,7 @@ export function LocalCalendar() {
     };
 
     return (
-        <div className="w-full h-full flex-1 flex flex-col min-h-0 overflow-hidden bg-white/70 dark:bg-zinc-900/60 backdrop-blur-xl rounded-3xl border border-white/20 dark:border-white/10 shadow-lg shadow-black/5">
+        <div className="w-full h-full flex-1 flex flex-col min-h-0 overflow-hidden bg-white/70 dark:bg-zinc-900/60 backdrop-blur-xl rounded-3xl border border-zinc-200/60 dark:border-white/10 shadow-lg shadow-black/5">
             {/* Header Control */}
             <div className="p-5 sm:px-6 flex items-center justify-between border-b border-zinc-200 dark:border-white/10 shrink-0">
                 <div className="flex items-center gap-4">
@@ -138,7 +138,7 @@ export function LocalCalendar() {
             <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar grid grid-cols-7 auto-rows-fr bg-zinc-100 dark:bg-black/40 gap-[1px] custom-scrollbar">
                 {isLoading ? (
                     // Loading State
-                    <div className="col-span-7 row-span-6 bg-white dark:bg-zinc-900 flex justify-center py-20">
+                    <div className="col-span-7 row-span-6 bg-white dark:bg-zinc-950 flex justify-center py-20">
                         <div className="w-10 h-10 border-4 border-zinc-200 dark:border-zinc-800 border-t-secondary dark:border-t-primary rounded-full animate-spin"></div>
                     </div>
                 ) : (
@@ -151,7 +151,7 @@ export function LocalCalendar() {
                             <div
                                 key={idx}
                                 onClick={() => cell.type === 'current' && handleDayClick(cell.date)}
-                                className={`bg-white dark:bg-zinc-900 p-1 sm:p-2 min-h-[80px] sm:min-h-[100px] flex flex-col gap-1 transition-colors
+                                className={`bg-white dark:bg-zinc-950 p-1 sm:p-2 min-h-[80px] sm:min-h-[100px] flex flex-col gap-1 transition-colors
                                     ${cell.type !== 'current' ? 'opacity-40 pointer-events-none' : 'cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800/80'}
                                 `}
                             >

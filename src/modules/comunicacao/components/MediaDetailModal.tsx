@@ -118,7 +118,7 @@ export default function MediaDetailModal({ post, onClose, onDelete, isDriveOrigi
             />
 
             {/* Modal Content */}
-            <div className="relative w-full max-w-6xl h-[85vh] bg-white dark:bg-slate-900 rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row animate-in fade-in zoom-in-95 duration-300">
+            <div className="relative w-full max-w-6xl h-[85vh] bg-white dark:bg-zinc-950 rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row animate-in fade-in zoom-in-95 duration-300">
 
                 {/* Close Button (Mobile) */}
                 <button
@@ -149,7 +149,7 @@ export default function MediaDetailModal({ post, onClose, onDelete, isDriveOrigi
                 </div>
 
                 {/* Details Section */}
-                <div className="w-full md:w-1/3 h-1/2 md:h-full bg-white dark:bg-slate-800 border-l border-slate-200 dark:border-slate-700 flex flex-col min-h-0">
+                <div className="w-full md:w-1/3 h-1/2 md:h-full bg-slate-50 dark:bg-zinc-900 border-l border-slate-200 dark:border-zinc-800 flex flex-col min-h-0">
 
                     {/* Header */}
                     <div className="shrink-0 p-6 border-b border-slate-100 dark:border-slate-700 flex justify-between items-start">

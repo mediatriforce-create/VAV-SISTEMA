@@ -40,3 +40,34 @@ export async function getUserNotes(): Promise<StandardResponse<CoordinationNote[
         return { success: false, message: e.message };
     }
 }
+
+export async function createCoordinationNote({
+    targetUserId,
+    content
+}: {
+    targetUserId: string;
+    content: string;
+}): Promise<StandardResponse<CoordinationNote>> {
+    try {
+        const supabase = await createClient();
+        const { data: { user } } = await supabase.auth.getUser();
+
+        if (!user) throw new Error('Acesso negado.');
+
+        const { data, error } = await supabase
+            .from('coordination_notes')
+            .insert({
+                target_user_id: targetUserId,
+                author_id: user.id,
+                content
+            })
+            .select()
+            .single();
+
+        if (error) throw error;
+
+        return { success: true, data };
+    } catch (e: any) {
+        return { success: false, message: e.message };
+    }
+}

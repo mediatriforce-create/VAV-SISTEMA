@@ -30,7 +30,7 @@ export default function DemandCard({ demand, onClick }: DemandCardProps) {
     return (
         <div
             onClick={() => onClick?.(demand)}
-            className="group bg-white/80 dark:bg-gray-800/80 backdrop-blur-md p-5 rounded-2xl shadow-sm hover:shadow-xl border border-slate-200/60 dark:border-gray-700/60 hover:border-primary/30 dark:hover:border-blue-500/30 transition-all duration-300 hover:-translate-y-1 cursor-pointer flex flex-col gap-4 relative overflow-hidden"
+            className="group bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md p-5 rounded-2xl shadow-sm hover:shadow-xl border border-slate-200/60 dark:border-zinc-800/60 hover:border-primary/30 dark:hover:border-blue-500/30 transition-all duration-300 hover:-translate-y-1 cursor-pointer flex flex-col gap-4 relative overflow-hidden"
         >
             <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
 
@@ -38,20 +38,20 @@ export default function DemandCard({ demand, onClick }: DemandCardProps) {
                 <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full border uppercase tracking-widest ${PRIORITY_COLORS[demand.priority]}`}>
                     {demand.priority}
                 </span>
-                <span className="text-[10px] text-slate-600 dark:text-gray-300 font-bold uppercase tracking-wider bg-slate-100/80 dark:bg-gray-700/80 border border-slate-200/50 dark:border-gray-600/50 px-2.5 py-1 rounded-lg shadow-sm">
+                <span className="text-[10px] text-slate-600 dark:text-zinc-300 font-bold uppercase tracking-wider bg-slate-100/80 dark:bg-zinc-800/80 border border-slate-200/50 dark:border-zinc-700/50 px-2.5 py-1 rounded-lg shadow-sm">
                     {STATUS_LABELS[demand.status]}
                 </span>
             </div>
 
             <div className="flex-1">
-                <h3 className="font-bold text-slate-800 dark:text-gray-100 line-clamp-2 leading-snug group-hover:text-primary dark:group-hover:text-blue-400 transition-colors">{demand.title}</h3>
-                <p className="text-xs text-slate-500 dark:text-gray-400 mt-2 flex items-center gap-1.5 font-medium">
-                    <span className="w-1.5 h-1.5 rounded-full bg-slate-400 dark:bg-gray-500"></span>
+                <h3 className="font-bold text-slate-800 dark:text-zinc-100 line-clamp-2 leading-snug group-hover:text-primary dark:group-hover:text-blue-400 transition-colors">{demand.title}</h3>
+                <p className="text-xs text-slate-500 dark:text-zinc-400 mt-2 flex items-center gap-1.5 font-medium">
+                    <span className="w-1.5 h-1.5 rounded-full bg-slate-400 dark:bg-zinc-500"></span>
                     {SECTOR_LABELS[demand.sector]}
                 </p>
             </div>
 
-            <div className="mt-auto pt-4 border-t border-slate-100/80 dark:border-gray-700/80 flex items-center justify-between text-xs text-slate-500 dark:text-gray-400 font-medium">
+            <div className="mt-auto pt-4 border-t border-slate-100/80 dark:border-zinc-800/80 flex items-center justify-between text-xs text-slate-500 dark:text-zinc-400 font-medium">
                 <div className="flex items-center gap-2">
                     {demand.assignee?.avatar_url ? (
                         <div className="relative">

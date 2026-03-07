@@ -27,23 +27,23 @@ export default function DemandList({ demands, onDemandClick }: DemandListProps) 
     return (
         <div className="flex flex-col gap-6 w-full h-full min-h-0">
             {/* Filters Bar */}
-            <div className="shrink-0 flex flex-col md:flex-row gap-4 justify-between bg-white/60 dark:bg-gray-800/60 backdrop-blur-xl p-4 rounded-2xl shadow-sm border border-slate-200/50 dark:border-gray-700/50">
+            <div className="shrink-0 flex flex-col md:flex-row gap-4 justify-between bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl p-4 rounded-2xl shadow-sm border border-slate-200/50 dark:border-zinc-800/50">
                 <div className="relative flex-1">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-gray-500" size={18} />
                     <input
                         type="text"
                         placeholder="Buscar demandas..."
-                        className="w-full pl-10 pr-4 py-2.5 bg-white/80 dark:bg-gray-900/50 border border-slate-200/60 dark:border-gray-600/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all text-sm text-slate-700 dark:text-gray-200 shadow-inner"
+                        className="w-full pl-10 pr-4 py-2.5 bg-white/80 dark:bg-zinc-950/50 border border-slate-200/60 dark:border-zinc-800/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all text-sm text-slate-700 dark:text-gray-200 shadow-inner"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
                 </div>
 
-                <div className="flex gap-3">
+                <div className="flex gap-2">
                     <select
                         value={filterSector}
-                        onChange={(e) => setFilterSector(e.target.value as any)}
-                        className="px-4 py-2.5 bg-white/80 dark:bg-gray-900/50 border border-slate-200/60 dark:border-gray-600/50 rounded-xl text-sm font-medium text-slate-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/40 shadow-inner cursor-pointer"
+                        onChange={(e) => setFilterSector(e.target.value as DemandSector | 'all')}
+                        className="bg-white/80 dark:bg-zinc-900/80 border border-slate-200/60 dark:border-zinc-800/60 rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary/40 text-slate-700 dark:text-gray-300 font-medium shadow-sm cursor-pointer"
                     >
                         <option value="all">Todos Setores</option>
                         <option value="comunicacao">Comunicação</option>
@@ -53,8 +53,8 @@ export default function DemandList({ demands, onDemandClick }: DemandListProps) 
 
                     <select
                         value={filterStatus}
-                        onChange={(e) => setFilterStatus(e.target.value as any)}
-                        className="px-4 py-2.5 bg-white/80 dark:bg-gray-900/50 border border-slate-200/60 dark:border-gray-600/50 rounded-xl text-sm font-medium text-slate-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/40 shadow-inner cursor-pointer"
+                        onChange={(e) => setFilterStatus(e.target.value as DemandStatus | 'all')}
+                        className="bg-white/80 dark:bg-zinc-900/80 border border-slate-200/60 dark:border-zinc-800/60 rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary/40 text-slate-700 dark:text-gray-300 font-medium shadow-sm cursor-pointer"
                     >
                         <option value="all">Todos Status</option>
                         <option value="a_fazer">A Fazer</option>

@@ -10,6 +10,7 @@ import { createClient } from '@/lib/supabase';
 import type { Demand, DemandStatus, DemandPriority } from '@/types/demands';
 import ApprovalSubmissionModal from '@/modules/shared/components/ApprovalSubmissionModal';
 import DemandDetailsModal from '@/modules/shared/components/DemandDetailsModal';
+import Link from 'next/link';
 
 const COLUMNS: { id: DemandStatus; title: string; color: string; icon: string }[] = [
     { id: 'a_fazer', title: 'A Fazer', color: 'from-slate-400 to-slate-500', icon: 'inbox' },
@@ -230,21 +231,30 @@ export default function KanbanPage() {
 
     if (loading) {
         return (
-            <div className="h-full flex items-center justify-center p-8 bg-slate-50 min-h-[500px]">
+            <div className="h-full flex items-center justify-center p-8 bg-slate-50 dark:bg-zinc-950 min-h-[500px]">
                 <div className="w-8 h-8 border-3 border-blue-500 border-t-transparent rounded-full animate-spin" />
             </div>
         );
     }
 
     return (
-        <div className="flex-1 w-full h-full min-h-0 bg-slate-50 p-4 md:p-6 overflow-hidden flex flex-col">
+        <div className="flex-1 w-full h-full min-h-0 bg-slate-50 dark:bg-zinc-950 p-4 md:p-6 overflow-hidden flex flex-col">
             <div className="shrink-0 flex justify-between items-center mb-6">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                        <span className="material-icons text-primary dark:text-blue-400">view_kanban</span>
-                        Kanban da Administração
-                    </h1>
-                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                    <div className="flex items-center gap-3 mb-2">
+                        <Link
+                            href="/dashboard/admin"
+                            className="w-8 h-8 flex items-center justify-center rounded-lg bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-500 dark:text-zinc-400 hover:text-blue-600 dark:hover:text-blue-400 shadow-sm transition-colors"
+                            title="Voltar para Administração"
+                        >
+                            <span className="material-symbols-outlined text-[18px]">arrow_back</span>
+                        </Link>
+                        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                            <span className="material-icons text-primary dark:text-blue-400">view_kanban</span>
+                            Kanban da Administração
+                        </h1>
+                    </div>
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 ml-11">
                         Acompanhe e mova as demandas administrativas.
                     </p>
                 </div>

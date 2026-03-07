@@ -46,7 +46,7 @@ export default function FolderModal({ isOpen, onClose, parentId, onSuccess }: Fo
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-            <div className="bg-white dark:bg-slate-800 rounded-xl shadow-2xl w-full max-w-sm flex flex-col max-h-[85vh]">
+            <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-2xl w-full max-w-sm flex flex-col max-h-[85vh]">
                 <div className="shrink-0 p-4 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center">
                     <h3 className="font-bold text-lg text-slate-800 dark:text-white">Nova Pasta</h3>
                     <button type="button" onClick={onClose} className="text-slate-400 hover:text-slate-600">
