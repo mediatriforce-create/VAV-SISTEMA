@@ -197,15 +197,15 @@ export function GlobalCalendar({ userRole }: { userRole?: string }) {
                                         <div
                                             key={ev.id}
                                             onClick={(e) => handleEventClick(e, ev)}
-                                            className="w-full text-left bg-gradient-to-r from-indigo-50 to-blue-50 dark:from-indigo-900/40 dark:to-blue-900/20 border border-indigo-100 dark:border-indigo-800/50 hover:border-indigo-300 dark:hover:border-indigo-500/50 p-2 rounded-lg cursor-pointer transition-all hover:shadow-md hover:-translate-y-px group/card"
+                                            className={`w-full text-left bg-gradient-to-r ${ev.is_meeting ? 'from-purple-50 to-fuchsia-50 dark:from-purple-900/40 dark:to-fuchsia-900/20 border-purple-100 dark:border-purple-800/50 hover:border-purple-300 dark:hover:border-purple-500/50' : 'from-indigo-50 to-blue-50 dark:from-indigo-900/40 dark:to-blue-900/20 border-indigo-100 dark:border-indigo-800/50 hover:border-indigo-300 dark:hover:border-indigo-500/50'} border p-2 rounded-lg cursor-pointer transition-all hover:shadow-md hover:-translate-y-px group/card`}
                                         >
-                                            <h4 className="text-[11px] font-bold text-indigo-900 dark:text-indigo-100 truncate flex items-center gap-1.5">
-                                                {ev.image_url ? <span className="material-symbols-outlined text-[12px] text-indigo-500">image</span> : <span className="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>}
+                                            <h4 className={`text-[11px] font-bold ${ev.is_meeting ? 'text-purple-900 dark:text-purple-100' : 'text-indigo-900 dark:text-indigo-100'} truncate flex items-center gap-1.5`}>
+                                                {ev.is_meeting ? <span className="material-symbols-outlined text-[12px] text-purple-500">groups</span> : (ev.image_url ? <span className="material-symbols-outlined text-[12px] text-indigo-500">image</span> : <span className="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>)}
                                                 <span className="truncate">{ev.title}</span>
                                             </h4>
-                                            {ev.link_url && (
-                                                <div className="text-[9px] font-bold text-indigo-500 dark:text-indigo-400 mt-1 uppercase tracking-wider flex items-center gap-1">
-                                                    <span className="material-symbols-outlined text-[10px]">link</span> Possui Link
+                                            {ev.is_meeting && (
+                                                <div className="text-[9px] font-bold text-purple-500 dark:text-purple-400 mt-1 uppercase tracking-wider flex items-center gap-1">
+                                                    <span className="material-symbols-outlined text-[10px]">videocam</span> Reunião {ev.start_time ? `às ${ev.start_time.substring(0, 5)}` : ''}
                                                 </div>
                                             )}
                                         </div>
@@ -250,14 +250,10 @@ export function GlobalCalendar({ userRole }: { userRole?: string }) {
                                     <textarea name="description" rows={3} placeholder="Detalhes do evento, horários alternativos, pauta..." className="w-full bg-zinc-50 dark:bg-black/40 border border-zinc-200 dark:border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium text-zinc-800 dark:text-zinc-200 resize-none"></textarea>
                                 </div>
 
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div className="grid grid-cols-1 gap-4">
                                     <div>
-                                        <label className="block text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mb-1.5 ml-1">URL da Imagem (Banner)</label>
-                                        <input name="image_url" type="url" placeholder="https://..." className="w-full bg-zinc-50 dark:bg-black/40 border border-zinc-200 dark:border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium text-zinc-900 dark:text-white" />
-                                    </div>
-                                    <div>
-                                        <label className="block text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mb-1.5 ml-1">Link de Acesso (Call)</label>
-                                        <input name="link_url" type="url" placeholder="Zoom, Meet, etc..." className="w-full bg-zinc-50 dark:bg-black/40 border border-zinc-200 dark:border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium text-zinc-900 dark:text-white" />
+                                        <label className="block text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mb-1.5 ml-1">Imagem Principal (Opcional)</label>
+                                        <input name="image_file" type="file" accept="image/*" className="w-full bg-zinc-50 dark:bg-black/40 border border-zinc-200 dark:border-white/10 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium text-zinc-900 dark:text-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 dark:file:bg-indigo-900/30 dark:file:text-indigo-300" />
                                     </div>
                                 </div>
 
@@ -295,7 +291,7 @@ export function GlobalCalendar({ userRole }: { userRole?: string }) {
                                     </h3>
                                 </div>
                             ) : (
-                                <div className="w-full bg-gradient-to-br from-indigo-500 to-purple-600 p-8 relative shrink-0">
+                                <div className={`w-full bg-gradient-to-br ${selectedEvent.is_meeting ? 'from-purple-500 to-fuchsia-600' : 'from-indigo-500 to-purple-600'} p-8 relative shrink-0`}>
                                     <button onClick={() => setIsViewModalOpen(false)} className="absolute top-4 right-4 text-white hover:text-red-300 transition-colors bg-white/20 backdrop-blur-md w-8 h-8 flex items-center justify-center rounded-full">
                                         <span className="material-symbols-outlined text-sm font-bold">close</span>
                                     </button>
@@ -330,27 +326,28 @@ export function GlobalCalendar({ userRole }: { userRole?: string }) {
 
                             {/* Actions Footer */}
                             <div className="p-6 bg-zinc-50 dark:bg-zinc-950 border-t border-zinc-200 dark:border-white/5 flex gap-3 shrink-0">
-                                {selectedEvent.link_url && (
-                                    <a
-                                        href={selectedEvent.link_url}
-                                        target="_blank"
-                                        rel="noreferrer"
-                                        className="flex-1 flex items-center justify-center gap-2 font-black uppercase tracking-wider text-xs py-3.5 rounded-xl bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 transition-all hover:bg-indigo-500"
+                                {selectedEvent.is_meeting && (
+                                    <button
+                                        onClick={() => {
+                                            setIsViewModalOpen(false);
+                                            window.location.href = '/dashboard/reunioes';
+                                        }}
+                                        className="flex-1 flex items-center justify-center gap-2 font-black uppercase tracking-wider text-xs py-3.5 rounded-xl bg-purple-600 text-white shadow-lg shadow-purple-600/30 transition-all hover:bg-purple-500"
                                     >
-                                        <span className="material-symbols-outlined text-[16px]">open_in_new</span>
-                                        Acessar Link
-                                    </a>
+                                        <span className="material-symbols-outlined text-[16px]">videocam</span>
+                                        Ir para Reuniões
+                                    </button>
                                 )}
 
-                                {isLeadership && (
+                                {isLeadership && !selectedEvent.is_meeting && (
                                     <button
                                         onClick={() => handleDelete(selectedEvent.id)}
                                         disabled={isSaving}
-                                        className={`${selectedEvent.link_url ? 'w-12' : 'flex-1'} flex items-center justify-center gap-2 font-black uppercase tracking-wider text-xs py-3.5 rounded-xl bg-white dark:bg-zinc-800 text-red-500 border border-red-200 dark:border-red-900/50 hover:bg-red-50 dark:hover:bg-red-950 transition-colors`}
+                                        className="flex-1 flex items-center justify-center gap-2 font-black uppercase tracking-wider text-xs py-3.5 rounded-xl bg-white dark:bg-zinc-800 text-red-500 border border-red-200 dark:border-red-900/50 hover:bg-red-50 dark:hover:bg-red-950 transition-colors"
                                         title="Apagar Evento"
                                     >
                                         <span className="material-symbols-outlined text-[18px]">delete</span>
-                                        {!selectedEvent.link_url && "Apagar do Mural"}
+                                        Apagar do Mural
                                     </button>
                                 )}
                             </div>
