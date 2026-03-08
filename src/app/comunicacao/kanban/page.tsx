@@ -242,7 +242,7 @@ export default function KanbanPage() {
             <div className="shrink-0 flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
                     <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/30">
-                        <span className="material-symbols-outlined text-white text-2xl">kanban</span>
+                        <span className="material-symbols-outlined text-white text-2xl">view_kanban</span>
                     </div>
                     <div>
                         <h2 className="text-2xl font-extrabold text-zinc-900 dark:text-white">Quadro de Demandas</h2>

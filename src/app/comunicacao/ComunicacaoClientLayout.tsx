@@ -22,10 +22,15 @@ export function ComunicacaoClientLayout({
         <DashboardLayout>
             <div className="w-full h-full flex-1 min-h-0 flex flex-col max-w-7xl mx-auto gap-6 sm:px-0">
                 {/* Header Module */}
-                <div className="shrink-0 flex flex-col md:flex-row justify-between items-end gap-4 border-b border-slate-200 dark:border-white/10 pb-4">
-                    <div>
-                        <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-100">Comunicação</h1>
-                        <p className="text-slate-500 dark:text-slate-400">Gestão de demandas, artes e arquivos.</p>
+                <div className="shrink-0 flex flex-col md:flex-row justify-between items-end md:items-center gap-4 border-b border-slate-200 dark:border-white/10 pb-4">
+                    <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
+                            <span className="material-symbols-outlined text-white text-xl">campaign</span>
+                        </div>
+                        <div>
+                            <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-0.5">Comunicação</h1>
+                            <p className="text-sm text-slate-500 dark:text-slate-400">Gestão de demandas, artes e arquivos.</p>
+                        </div>
                     </div>
 
                     {/* Navigation Tabs and Drive Action */}
