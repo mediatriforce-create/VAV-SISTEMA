@@ -1,9 +1,8 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { hasPermission } from '@/lib/permissions'
-import { PedagogiaClientLayout } from './PedagogiaClientLayout'
 
-export default async function PedagogiaServerLayout({ children }: { children: React.ReactNode }) {
+export default async function AdminLayout({ children }: { children: React.ReactNode }) {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
 
@@ -17,9 +16,9 @@ export default async function PedagogiaServerLayout({ children }: { children: Re
         .eq('id', user.id)
         .single()
 
-    if (!profile || !hasPermission(profile.role as any, 'pedagogia')) {
+    if (!profile || !hasPermission(profile.role as any, 'administracao')) {
         redirect('/dashboard') // Route guard: kick out unauthorized users
     }
 
-    return <PedagogiaClientLayout>{children}</PedagogiaClientLayout>
+    return <>{children}</>
 }
