@@ -27,13 +27,13 @@ export default function DemandList({ demands, onDemandClick }: DemandListProps) 
     return (
         <div className="flex flex-col gap-6 w-full h-full min-h-0">
             {/* Filters Bar */}
-            <div className="shrink-0 flex flex-col md:flex-row gap-4 justify-between bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl p-4 rounded-2xl shadow-sm border border-slate-200/50 dark:border-zinc-800/50">
+            <div className="shrink-0 flex flex-col md:flex-row gap-4 justify-between bg-white/70 dark:bg-zinc-900/60 backdrop-blur-xl p-4 rounded-3xl shadow-lg shadow-black/5 border border-white/20 dark:border-white/10">
                 <div className="relative flex-1">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-gray-500" size={18} />
                     <input
                         type="text"
                         placeholder="Buscar demandas..."
-                        className="w-full pl-10 pr-4 py-2.5 bg-white/80 dark:bg-zinc-950/50 border border-slate-200/60 dark:border-zinc-800/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all text-sm text-slate-700 dark:text-gray-200 shadow-inner"
+                        className="w-full pl-10 pr-4 py-2.5 bg-white/40 dark:bg-zinc-900/40 backdrop-blur-md border border-white/20 dark:border-white/10 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all text-sm text-slate-700 dark:text-gray-200 shadow-inner"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
@@ -43,7 +43,7 @@ export default function DemandList({ demands, onDemandClick }: DemandListProps) 
                     <select
                         value={filterSector}
                         onChange={(e) => setFilterSector(e.target.value as DemandSector | 'all')}
-                        className="bg-white/80 dark:bg-zinc-900/80 border border-slate-200/60 dark:border-zinc-800/60 rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary/40 text-slate-700 dark:text-gray-300 font-medium shadow-sm cursor-pointer"
+                        className="bg-white/40 dark:bg-zinc-900/40 backdrop-blur-md border border-white/20 dark:border-white/10 rounded-2xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary/40 text-slate-700 dark:text-gray-300 font-medium shadow-inner cursor-pointer"
                     >
                         <option value="all">Todos Setores</option>
                         <option value="comunicacao">Comunicação</option>
@@ -54,7 +54,7 @@ export default function DemandList({ demands, onDemandClick }: DemandListProps) 
                     <select
                         value={filterStatus}
                         onChange={(e) => setFilterStatus(e.target.value as DemandStatus | 'all')}
-                        className="bg-white/80 dark:bg-zinc-900/80 border border-slate-200/60 dark:border-zinc-800/60 rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary/40 text-slate-700 dark:text-gray-300 font-medium shadow-sm cursor-pointer"
+                        className="bg-white/40 dark:bg-zinc-900/40 backdrop-blur-md border border-white/20 dark:border-white/10 rounded-2xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary/40 text-slate-700 dark:text-gray-300 font-medium shadow-inner cursor-pointer"
                     >
                         <option value="all">Todos Status</option>
                         <option value="a_fazer">A Fazer</option>
@@ -99,7 +99,7 @@ export default function DemandList({ demands, onDemandClick }: DemandListProps) 
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -10 }}
-                            className="flex flex-col items-center justify-center h-full text-slate-400 dark:text-gray-500 bg-white/40 dark:bg-gray-800/40 rounded-2xl border border-dashed border-slate-300 dark:border-gray-700"
+                            className="flex flex-col items-center justify-center h-full text-slate-400 dark:text-gray-500 bg-white/40 dark:bg-zinc-900/40 backdrop-blur-md rounded-3xl border border-dashed border-white/30 dark:border-white/10 shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)]"
                         >
                             <Filter size={56} className="mb-4 opacity-30 text-slate-300 dark:text-gray-600" />
                             <p className="text-xl font-bold text-slate-600 dark:text-gray-400">Nenhuma demanda encontrada</p>

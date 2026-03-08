@@ -10,7 +10,7 @@ interface BankTabsProps {
 
 export function BankTabs({ banks, selectedBankId }: BankTabsProps) {
     return (
-        <div className="flex space-x-3 bg-white/50 dark:bg-gray-800/50 backdrop-blur-md p-1.5 rounded-2xl mb-8 overflow-x-auto custom-scrollbar border border-slate-200/50 dark:border-gray-700/50 shadow-sm max-w-full no-scrollbar">
+        <div className="flex space-x-3 bg-white/70 dark:bg-zinc-900/60 backdrop-blur-xl p-1.5 rounded-3xl mb-8 overflow-x-auto custom-scrollbar border border-white/20 dark:border-white/10 shadow-lg shadow-black/5 max-w-full no-scrollbar">
             {banks.map((bank) => (
                 <Link
                     key={bank.id}

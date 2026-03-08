@@ -181,10 +181,10 @@ export default function CoordClientPage({ currentUser, initialDemands, teamMembe
 
                 {/* === SEÇÃO: ESPERANDO APROVAÇÃO === */}
                 {totalPending > 0 && (
-                    <div className="shrink-0 flex flex-col bg-white dark:bg-zinc-900 rounded-2xl shadow-sm border border-violet-200 dark:border-white/10 min-h-0 max-h-[45vh]">
+                    <div className="shrink-0 flex flex-col bg-white/70 dark:bg-zinc-900/60 backdrop-blur-xl rounded-3xl shadow-lg shadow-black/5 border border-white/20 dark:border-white/10 min-h-0 max-h-[45vh]">
                         <button
                             onClick={() => setShowApproval(!showApproval)}
-                            className="w-full shrink-0 flex items-center justify-between p-4 hover:bg-violet-50/50 dark:hover:bg-zinc-800 transition-colors rounded-t-2xl"
+                            className="w-full shrink-0 flex items-center justify-between p-4 hover:bg-violet-500/10 dark:hover:bg-zinc-800/50 transition-colors rounded-t-3xl"
                         >
                             <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-md shadow-violet-500/30">
@@ -215,7 +215,7 @@ export default function CoordClientPage({ currentUser, initialDemands, teamMembe
                                         {pendingDemands.map((demand: Demand) => {
                                             const sub = getSubmission(demand.id);
                                             return (
-                                                <div key={demand.id} className="bg-violet-50/60 dark:bg-zinc-800/50 border border-violet-200/80 dark:border-zinc-700 rounded-xl p-4 flex flex-col gap-3">
+                                                <div key={demand.id} className="bg-white/40 dark:bg-zinc-900/40 backdrop-blur-md border border-white/30 dark:border-white/10 rounded-2xl p-4 flex flex-col gap-3 shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)]">
                                                     <div className="flex items-start justify-between gap-2">
                                                         <div className="flex-1 min-w-0">
                                                             <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600 bg-blue-50 dark:bg-blue-900/20 dark:text-blue-400 px-2 py-0.5 rounded-full">
@@ -306,7 +306,7 @@ export default function CoordClientPage({ currentUser, initialDemands, teamMembe
                                         {pendingPedCards.map(card => {
                                             const sub = getSubmission(undefined, card.id);
                                             return (
-                                                <div key={card.id} className="bg-violet-50/60 dark:bg-zinc-800/50 border border-violet-200/80 dark:border-zinc-700 rounded-xl p-4 flex flex-col gap-3">
+                                                <div key={card.id} className="bg-white/40 dark:bg-zinc-900/40 backdrop-blur-md border border-white/30 dark:border-white/10 rounded-2xl p-4 flex flex-col gap-3 shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)]">
                                                     <div className="flex items-start justify-between gap-2">
                                                         <div className="flex-1 min-w-0">
                                                             <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 dark:bg-emerald-900/20 dark:text-emerald-400 px-2 py-0.5 rounded-full">
@@ -402,7 +402,7 @@ export default function CoordClientPage({ currentUser, initialDemands, teamMembe
 
                     {/* Left Column: Team */}
                     <div className="lg:col-span-3 flex flex-col gap-6 min-h-0">
-                        <div className="flex-1 min-h-0 flex flex-col bg-white dark:bg-zinc-900 rounded-xl shadow-sm border border-slate-200 dark:border-white/10 p-4">
+                        <div className="flex-1 min-h-0 flex flex-col bg-white/70 dark:bg-zinc-900/60 backdrop-blur-xl rounded-3xl shadow-lg shadow-black/5 border border-white/20 dark:border-white/10 p-5">
                             <h3 className="shrink-0 font-semibold text-slate-700 dark:text-zinc-100 mb-4 flex items-center gap-2">
                                 <Users size={18} />
                                 Equipe

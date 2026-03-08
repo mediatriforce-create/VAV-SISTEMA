@@ -13,7 +13,7 @@ export function AdminStats({ totalInput, totalOutput, balance }: AdminStatsProps
             <motion.div
                 whileHover={{ y: -5, scale: 1.01 }}
                 whileTap={{ scale: 0.98 }}
-                className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg p-6 rounded-2xl shadow-sm border border-slate-200/50 dark:border-gray-700/50 flex flex-col justify-between h-32 relative overflow-hidden group"
+                className="bg-white/70 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-lg shadow-black/5 border border-white/20 dark:border-white/10 flex flex-col justify-between h-32 relative overflow-hidden group"
             >
                 <div className="relative z-10">
                     <p className="text-sm font-semibold text-slate-500 dark:text-gray-400 mb-1 tracking-wide">TOTAL ENTRADAS</p>
@@ -32,7 +32,7 @@ export function AdminStats({ totalInput, totalOutput, balance }: AdminStatsProps
             <motion.div
                 whileHover={{ y: -5, scale: 1.01 }}
                 whileTap={{ scale: 0.98 }}
-                className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg p-6 rounded-2xl shadow-sm border border-slate-200/50 dark:border-gray-700/50 flex flex-col justify-between h-32 relative overflow-hidden group"
+                className="bg-white/70 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-lg shadow-black/5 border border-white/20 dark:border-white/10 flex flex-col justify-between h-32 relative overflow-hidden group"
             >
                 <div className="relative z-10">
                     <p className="text-sm font-semibold text-slate-500 dark:text-gray-400 mb-1 tracking-wide">TOTAL SAÍDAS</p>
@@ -51,7 +51,7 @@ export function AdminStats({ totalInput, totalOutput, balance }: AdminStatsProps
             <motion.div
                 whileHover={{ y: -5, scale: 1.01 }}
                 whileTap={{ scale: 0.98 }}
-                className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg p-6 rounded-2xl shadow-sm border border-slate-200/50 dark:border-gray-700/50 flex flex-col justify-between h-32 relative overflow-hidden group"
+                className="bg-white/70 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-lg shadow-black/5 border border-white/20 dark:border-white/10 flex flex-col justify-between h-32 relative overflow-hidden group"
             >
                 <div className="relative z-10">
                     <p className="text-sm font-semibold text-slate-500 dark:text-gray-400 mb-1 tracking-wide">SALDO ATUAL</p>

@@ -278,9 +278,9 @@ export default function DriveExplorer({ initialFolderId, initialFolderName = 'CO
     };
 
     return (
-        <div className="flex flex-col h-full bg-slate-50 dark:bg-black relative" onContextMenu={(e) => { e.preventDefault(); }}>
+        <div className="flex flex-col h-full bg-transparent relative" onContextMenu={(e) => { e.preventDefault(); }}>
             {/* Header & Breadcrumbs */}
-            <div className="bg-white dark:bg-zinc-950 border-b border-slate-200 dark:border-white/10 px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="bg-white/50 dark:bg-zinc-950/50 backdrop-blur-md border border-white/20 dark:border-white/10 rounded-2xl mx-6 mt-4 px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm">
 
                 <div className="flex items-center gap-2 overflow-x-auto custom-scrollbar text-sm font-medium text-slate-600 no-scrollbar">
                     {breadcrumbs.length > 1 && (
@@ -408,7 +408,7 @@ export default function DriveExplorer({ initialFolderId, initialFolderName = 'CO
                                         whileHover={{ y: -4, boxShadow: "0px 10px 20px rgba(0,0,0,0.05)" }}
                                         onClick={(e) => handleFileClick(file, e as any)}
                                         onContextMenu={(e) => handleContextMenu(e as any, file)}
-                                        className={`group relative flex flex-col items-center p-4 bg-white dark:bg-zinc-900/50 rounded-xl border ${isSelected ? 'border-primary dark:border-amber-500 bg-primary/5 dark:bg-amber-500/10 ring-2 ring-primary/20 dark:ring-amber-500/20' : 'border-slate-200 dark:border-white/10 hover:border-primary/30 dark:hover:border-amber-500/30'} cursor-pointer transition-all duration-200`}
+                                        className={`group relative flex flex-col items-center p-4 bg-white/70 dark:bg-zinc-900/60 backdrop-blur-xl shadow-lg shadow-black/5 rounded-2xl border ${isSelected ? 'border-primary dark:border-amber-500 bg-primary/10 dark:bg-amber-500/20 ring-2 ring-primary/30 dark:ring-amber-500/30' : 'border-white/20 dark:border-white/10 hover:border-primary/50 dark:hover:border-amber-500/50'} cursor-pointer transition-all duration-200`}
                                     >
                                         {/* Selection Checkbox */}
                                         {(isSelectionMode || isSelected) && (

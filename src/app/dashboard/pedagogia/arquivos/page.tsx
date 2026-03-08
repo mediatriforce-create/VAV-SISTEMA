@@ -185,7 +185,7 @@ export default function ArquivosPage() {
                             <input ref={fileInputRef} type="file" className="hidden" onChange={handleUpload} accept="image/*,.pdf,.doc,.docx" />
                             <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
                                 onClick={() => fileInputRef.current?.click()} disabled={uploading}
-                                className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-200 px-4 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 hover:border-emerald-400 transition-colors disabled:opacity-50">
+                                className="bg-white/70 dark:bg-zinc-900/60 backdrop-blur-xl border border-white/20 dark:border-white/10 shadow-lg shadow-black/5 text-zinc-700 dark:text-zinc-200 px-4 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 hover:border-emerald-400 transition-colors disabled:opacity-50">
                                 <span className="material-symbols-outlined text-lg">{uploading ? 'hourglass_empty' : 'upload_file'}</span>
                                 {uploading ? 'Enviando...' : 'Upload'}
                             </motion.button>
@@ -231,7 +231,7 @@ export default function ArquivosPage() {
                                         href={f.webViewLink || '#'} target="_blank" rel="noopener noreferrer"
                                         initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
                                         whileHover={{ scale: 1.03, y: -2 }}
-                                        className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-2xl overflow-hidden hover:shadow-lg hover:border-emerald-300 dark:hover:border-emerald-700 transition-all cursor-pointer"
+                                        className="bg-white/70 dark:bg-zinc-900/60 backdrop-blur-xl border border-white/20 dark:border-white/10 shadow-lg shadow-black/5 rounded-2xl overflow-hidden hover:shadow-xl hover:border-emerald-300 dark:hover:border-emerald-700 transition-all cursor-pointer"
                                     >
                                         {isImage && f.thumbnailLink ? (
                                             <div className="w-full h-24 bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center overflow-hidden">
@@ -264,7 +264,7 @@ export default function ArquivosPage() {
                                     <motion.button key={folder.id} onClick={() => openFolder(folder, 'comm')}
                                         initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
                                         whileHover={{ scale: 1.03, y: -3 }}
-                                        className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-2xl p-6 flex flex-col items-center text-center hover:shadow-lg hover:border-blue-300 dark:hover:border-blue-700 transition-all cursor-pointer group">
+                                        className="bg-white/70 dark:bg-zinc-900/60 backdrop-blur-xl border border-white/20 dark:border-white/10 shadow-lg shadow-black/5 rounded-3xl p-6 flex flex-col items-center text-center hover:shadow-xl hover:border-blue-300 dark:hover:border-blue-700 transition-all cursor-pointer group">
                                         <span className="material-symbols-outlined text-4xl text-blue-400 group-hover:text-blue-500 mb-3 transition-colors">folder</span>
                                         <h4 className="font-bold text-sm text-zinc-800 dark:text-zinc-200">{folder.name}</h4>
                                         <p className="text-[10px] text-zinc-400 mt-1">Comunicação</p>
@@ -280,7 +280,7 @@ export default function ArquivosPage() {
                                 <h3 className="font-bold text-sm text-zinc-700 dark:text-zinc-300 uppercase tracking-wider">Pastas de Pedagogia</h3>
                             </div>
                             {pedFolders.length === 0 ? (
-                                <div className="bg-zinc-50 dark:bg-zinc-800/30 border border-dashed border-zinc-200 dark:border-zinc-700 rounded-2xl p-8 text-center">
+                                <div className="bg-white/40 dark:bg-zinc-900/40 backdrop-blur-md border border-dashed border-white/30 dark:border-white/10 rounded-3xl p-8 text-center">
                                     <span className="material-symbols-outlined text-3xl text-zinc-300 dark:text-zinc-600 mb-2">create_new_folder</span>
                                     <p className="text-xs text-zinc-400">Nenhuma pasta pedagógica. Clique em "Nova Pasta" para criar.</p>
                                 </div>
@@ -290,7 +290,7 @@ export default function ArquivosPage() {
                                         <motion.button key={folder.id} onClick={() => openFolder(folder, 'ped')}
                                             initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
                                             whileHover={{ scale: 1.03, y: -3 }}
-                                            className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-2xl p-6 flex flex-col items-center text-center hover:shadow-lg hover:border-emerald-300 dark:hover:border-emerald-700 transition-all cursor-pointer group">
+                                            className="bg-white/70 dark:bg-zinc-900/60 backdrop-blur-xl border border-white/20 dark:border-white/10 shadow-lg shadow-black/5 rounded-3xl p-6 flex flex-col items-center text-center hover:shadow-xl hover:border-emerald-300 dark:hover:border-emerald-700 transition-all cursor-pointer group">
                                             <span className="material-symbols-outlined text-4xl text-amber-400 group-hover:text-amber-500 mb-3 transition-colors">folder</span>
                                             <h4 className="font-bold text-sm text-zinc-800 dark:text-zinc-200">{folder.name}</h4>
                                             <p className="text-[10px] text-zinc-400 mt-1">Pedagogia</p>

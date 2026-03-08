@@ -29,7 +29,7 @@ export function TransactionTable({ entries }: TransactionTableProps) {
     }
 
     return (
-        <div className="flex-1 min-h-0 flex flex-col bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl border border-slate-200/50 dark:border-gray-700/50 shadow-sm overflow-hidden">
+        <div className="flex-1 min-h-0 flex flex-col bg-white/70 dark:bg-zinc-900/60 backdrop-blur-xl rounded-3xl border border-white/20 dark:border-white/10 shadow-lg shadow-black/5 overflow-hidden">
             <div className="flex-1 min-h-0 overflow-auto custom-scrollbar">
                 <table className="min-w-full divide-y divide-gray-200/50 dark:divide-gray-700/50">
                     <thead className="bg-slate-50/50 dark:bg-gray-800/50 backdrop-blur-md">

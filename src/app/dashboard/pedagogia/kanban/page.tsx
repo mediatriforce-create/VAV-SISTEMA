@@ -46,12 +46,12 @@ function KanbanCardItem({ card, onDelete, onClick }: { card: PedKanbanCard; onDe
                     e.stopPropagation();
                     onClick();
                 }}
-                className={`rounded-xl border p-4 shadow-sm hover:shadow-md transition-shadow cursor-pointer active:cursor-grabbing group
+                className={`rounded-2xl border p-4 shadow-md backdrop-blur-md transition-shadow cursor-pointer active:cursor-grabbing group
                     ${isCardRejected
-                        ? 'bg-red-50 dark:bg-red-500/10 border-red-300 dark:border-red-500/30'
+                        ? 'bg-red-500/10 border-red-500/30'
                         : card.demand_id
-                            ? 'bg-white dark:bg-zinc-800 border-amber-300 dark:border-amber-600 ring-1 ring-amber-200/50 dark:ring-amber-600/30'
-                            : 'bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700'
+                            ? 'bg-amber-500/10 border-amber-600/30'
+                            : 'bg-white/70 dark:bg-zinc-900/60 border-white/20 dark:border-white/10'
                     }`}
             >
                 {/* Tag de Demanda da Coordenação */}
@@ -126,10 +126,9 @@ function KanbanColumn({ col, cards, onDelete, onCardClick }: { col: typeof COLUM
                 <span className="text-xs font-bold bg-white/20 text-white px-2.5 py-0.5 rounded-full">{cards.length}</span>
             </div>
 
-            {/* Body */}
             <div
                 ref={setNodeRef}
-                className={`flex-1 bg-zinc-50 dark:bg-zinc-900/50 rounded-b-2xl border border-t-0 border-zinc-200 dark:border-zinc-800 p-3 space-y-3 overflow-y-auto custom-scrollbar transition-all ${isOver ? 'ring-2 ring-inset ring-emerald-400/30 bg-emerald-50/30 dark:bg-emerald-900/10' : ''}`}
+                className={`flex-1 bg-white/40 dark:bg-zinc-900/40 backdrop-blur-md rounded-b-2xl border border-t-0 border-white/20 dark:border-white/10 p-3 space-y-3 overflow-y-auto custom-scrollbar transition-all shadow-inner ${isOver ? 'ring-2 ring-inset ring-emerald-400/30 bg-emerald-500/20' : ''}`}
             >
                 {cards.map(card => (
                     <KanbanCardItem key={card.id} card={card} onDelete={onDelete} onClick={() => onCardClick(card)} />

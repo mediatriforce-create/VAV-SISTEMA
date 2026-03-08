@@ -30,7 +30,7 @@ export default function DemandCard({ demand, onClick }: DemandCardProps) {
     return (
         <div
             onClick={() => onClick?.(demand)}
-            className="group bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md p-5 rounded-2xl shadow-sm hover:shadow-xl border border-slate-200/60 dark:border-zinc-800/60 hover:border-primary/30 dark:hover:border-blue-500/30 transition-all duration-300 hover:-translate-y-1 cursor-pointer flex flex-col gap-4 relative overflow-hidden"
+            className="group bg-white/70 dark:bg-zinc-900/60 backdrop-blur-xl p-5 rounded-3xl shadow-lg shadow-black/5 hover:shadow-xl border border-white/20 dark:border-white/10 hover:border-primary/30 dark:hover:border-blue-500/30 transition-all duration-300 hover:-translate-y-1 cursor-pointer flex flex-col gap-4 relative overflow-hidden"
         >
             <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
 

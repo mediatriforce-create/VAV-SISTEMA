@@ -17,11 +17,11 @@ export default function KanbanColumn({ id, title, demands, color }: KanbanColumn
     });
 
     return (
-        <div className="flex flex-col h-full bg-slate-50 dark:bg-black/40 rounded-xl border border-slate-200 dark:border-white/10 min-w-[280px] w-full max-w-sm backdrop-blur-md">
+        <div className="flex flex-col h-full bg-white/40 dark:bg-zinc-900/40 rounded-3xl border border-white/20 dark:border-white/10 shadow-inner min-w-[280px] w-full max-w-sm backdrop-blur-md">
             {/* Header */}
-            <div className={`p-4 border-b border-slate-200 dark:border-white/10 rounded-t-xl ${color} bg-opacity-20 dark:bg-opacity-10`}>
+            <div className={`p-4 border-b border-white/20 dark:border-white/10 rounded-t-3xl ${color} bg-opacity-30 dark:bg-opacity-20 backdrop-blur-sm`}>
                 <div className="flex justify-between items-center">
-                    <h3 className="font-bold text-slate-700 dark:text-slate-200">{title}</h3>
+                    <h3 className="font-bold text-slate-800 dark:text-slate-100">{title}</h3>
                     <span className="text-xs font-semibold bg-white dark:bg-zinc-900 bg-opacity-60 dark:bg-opacity-60 px-2 py-1 rounded-full text-slate-600 dark:text-zinc-300">
                         {demands.length}
                     </span>

@@ -1,4 +1,4 @@
--- ==========================================
+﻿-- ==========================================
 -- RLS ROLE FIX SCRIPT
 -- ==========================================
 
@@ -139,7 +139,7 @@ create policy "Communication Assets: Full Access"
     exists (
       select 1 from public.profiles
       where profiles.id = auth.uid()
-      and profiles.role in ('Comunica��o', 'Coordenadora ADM', 'Presid�ncia', 'Dire��o')
+      and profiles.role in ('Estagiário(a) de Comunicação', 'Coordenadora ADM', 'Presid�ncia', 'Dire��o')
     )
   );
 
@@ -150,7 +150,7 @@ create policy "Communication Folders: Full Access"
     exists (
       select 1 from public.profiles
       where profiles.id = auth.uid()
-      and profiles.role in ('Comunica��o', 'Coordenadora ADM', 'Presid�ncia', 'Dire��o')
+      and profiles.role in ('Estagiário(a) de Comunicação', 'Coordenadora ADM', 'Presid�ncia', 'Dire��o')
     )
   );
 
@@ -161,7 +161,7 @@ create policy "Communication Files: Full Access"
     exists (
       select 1 from public.profiles
       where profiles.id = auth.uid()
-      and profiles.role in ('Comunica��o', 'Coordenadora ADM', 'Presid�ncia', 'Dire��o')
+      and profiles.role in ('Estagiário(a) de Comunicação', 'Coordenadora ADM', 'Presid�ncia', 'Dire��o')
     )
   );
 
@@ -172,7 +172,7 @@ with check (
     exists (
       select 1 from public.profiles
       where profiles.id = auth.uid()
-      and profiles.role in ('Comunica��o', 'Coordenadora ADM', 'Presid�ncia', 'Dire��o')
+      and profiles.role in ('Estagiário(a) de Comunicação', 'Coordenadora ADM', 'Presid�ncia', 'Dire��o')
     )
 );
 
@@ -183,7 +183,7 @@ using (
     exists (
       select 1 from public.profiles
       where profiles.id = auth.uid()
-      and profiles.role in ('Comunica��o', 'Coordenadora ADM', 'Presid�ncia', 'Dire��o')
+      and profiles.role in ('Estagiário(a) de Comunicação', 'Coordenadora ADM', 'Presid�ncia', 'Dire��o')
     )
 );
 
@@ -194,7 +194,7 @@ using (
     exists (
       select 1 from public.profiles
       where profiles.id = auth.uid()
-      and profiles.role in ('Comunica��o', 'Coordenadora ADM', 'Presid�ncia', 'Dire��o')
+      and profiles.role in ('Estagiário(a) de Comunicação', 'Coordenadora ADM', 'Presid�ncia', 'Dire��o')
     )
 );
 
@@ -205,7 +205,7 @@ with check (
     exists (
       select 1 from public.profiles
       where profiles.id = auth.uid()
-      and profiles.role in ('Comunica��o', 'Coordenadora ADM', 'Presid�ncia', 'Dire��o')
+      and profiles.role in ('Estagiário(a) de Comunicação', 'Coordenadora ADM', 'Presid�ncia', 'Dire��o')
     )
 );
 
@@ -216,7 +216,7 @@ using (
     exists (
       select 1 from public.profiles
       where profiles.id = auth.uid()
-      and profiles.role in ('Comunica��o', 'Coordenadora ADM', 'Presid�ncia', 'Dire��o')
+      and profiles.role in ('Estagiário(a) de Comunicação', 'Coordenadora ADM', 'Presid�ncia', 'Dire��o')
     )
 );
 
@@ -227,7 +227,7 @@ create policy "Communication Posts: Full Access"
     exists (
       select 1 from public.profiles
       where profiles.id = auth.uid()
-      and profiles.role in ('Comunica��o', 'Coordenadora ADM', 'Presid�ncia', 'Dire��o')
+      and profiles.role in ('Estagiário(a) de Comunicação', 'Coordenadora ADM', 'Presid�ncia', 'Dire��o')
     )
   );
 
@@ -238,7 +238,7 @@ create policy "Google Config: Full Access"
     exists (
       select 1 from public.profiles
       where profiles.id = auth.uid()
-      and profiles.role in ('Comunica��o', 'Coordenadora ADM', 'Presid�ncia', 'Dire��o')
+      and profiles.role in ('Estagiário(a) de Comunicação', 'Coordenadora ADM', 'Presid�ncia', 'Dire��o')
     )
   );
 
@@ -282,3 +282,55 @@ CREATE POLICY "Lideran�a gerencia as notas do mural" ON coordination_notes
         )
     );
 
+
+-- ==========================================
+-- CORREÇÕES: APPROVAL SUBMISSIONS
+-- ==========================================
+DROP POLICY IF EXISTS "approval_submissions_select" ON public.approval_submissions;
+CREATE POLICY "approval_submissions_select" ON public.approval_submissions FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "approval_submissions_insert" ON public.approval_submissions;
+CREATE POLICY "approval_submissions_insert" ON public.approval_submissions FOR INSERT WITH CHECK (auth.uid() = requested_by);
+
+DROP POLICY IF EXISTS "temp_approvals_insert" ON storage.objects;
+CREATE POLICY "temp_approvals_insert" ON storage.objects FOR INSERT WITH CHECK (bucket_id = 'temp_approvals' AND auth.uid() = owner);
+
+DROP POLICY IF EXISTS "temp_approvals_select" ON storage.objects;
+CREATE POLICY "temp_approvals_select" ON storage.objects FOR SELECT USING (bucket_id = 'temp_approvals');
+
+-- ==========================================
+-- CORREÇÕES: MODULOS ESQUECIDOS (FAIL-CLOSE FIX)
+-- ==========================================
+
+-- PEDAGOGIA KANBAN
+DROP POLICY IF EXISTS "Pedagogia Kanban: Full Access" ON public.ped_kanban_cards;
+CREATE POLICY "Pedagogia Kanban: Full Access" ON public.ped_kanban_cards FOR ALL USING (
+    EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role IN ('Estagiário(a) de Pedagogia', 'Educador', 'Coordenação de Pedagogia', 'Direção', 'Presidência'))
+);
+
+DROP POLICY IF EXISTS "Pedagogia Comments: Full Access" ON public.ped_kanban_comments;
+CREATE POLICY "Pedagogia Comments: Full Access" ON public.ped_kanban_comments FOR ALL USING (
+    EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role IN ('Estagiário(a) de Pedagogia', 'Educador', 'Coordenação de Pedagogia', 'Direção', 'Presidência'))
+);
+
+-- PEDAGOGIA BUCKETS
+DROP POLICY IF EXISTS "Pedagogia Media Bucket: All" ON storage.objects;
+CREATE POLICY "Pedagogia Media Bucket: All" ON storage.objects FOR ALL USING (
+    bucket_id = 'pedagogia_media' AND EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role IN ('Estagiário(a) de Pedagogia', 'Educador', 'Coordenação de Pedagogia', 'Direção', 'Presidência'))
+);
+
+-- FINANCEIRO
+DROP POLICY IF EXISTS "Financeiro Entries: Full Access" ON public.financial_entries;
+CREATE POLICY "Financeiro Entries: Full Access" ON public.financial_entries FOR ALL USING (
+    EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role IN ('Coordenadora ADM', 'Presidência', 'Direção', 'Estagiário(a) de ADM'))
+);
+
+-- CHAT E REUNIÕES
+DROP POLICY IF EXISTS "Chat Rooms: Select" ON public.chat_rooms;
+CREATE POLICY "Chat Rooms: Select" ON public.chat_rooms FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Chat Messages: Insert" ON public.chat_messages;
+CREATE POLICY "Chat Messages: Insert" ON public.chat_messages FOR INSERT WITH CHECK (auth.uid() = sender_id);
+
+DROP POLICY IF EXISTS "Meetings: Full Access" ON public.meetings;
+CREATE POLICY "Meetings: Full Access" ON public.meetings FOR ALL USING (true);

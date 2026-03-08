@@ -132,7 +132,7 @@ export default function TurmasPage() {
     return (
         <div className="h-full flex min-h-0">
             {/* Sidebar: Lista de Turmas */}
-            <div className="w-72 shrink-0 border-r border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 flex flex-col min-h-0">
+            <div className="w-72 shrink-0 border-r border-white/20 dark:border-white/10 bg-white/40 dark:bg-zinc-900/40 backdrop-blur-md flex flex-col min-h-0">
                 <div className="p-4 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between">
                     <h3 className="font-bold text-sm text-zinc-900 dark:text-white">Turmas</h3>
                     <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}
@@ -201,7 +201,7 @@ export default function TurmasPage() {
                                     {members.map(m => (
                                         <motion.div key={m.id}
                                             initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }}
-                                            className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-2xl p-4 flex items-center gap-4 group">
+                                            className="bg-white/70 dark:bg-zinc-900/60 backdrop-blur-xl border border-white/20 dark:border-white/10 shadow-lg shadow-black/5 rounded-3xl p-4 flex items-center gap-4 group">
                                             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white font-bold text-sm shrink-0">
                                                 {m.student.full_name.charAt(0).toUpperCase()}
                                             </div>
