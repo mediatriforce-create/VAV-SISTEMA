@@ -111,73 +111,82 @@ export function ClientAdminPage({
 
     // --- EXPORT TO EXCEL ("PROFESSIONAL") ---
     const handleExport = async () => {
-        if (filteredEntries.length === 0) return
-
-        // Dynamic check for library (client-side only)
-        // We need to import it dynamically or ensure it's loaded
-        // Dynamic Import with Interop fallback
-        const excelJsModule = await import('exceljs')
-        const ExcelJS = excelJsModule.default || excelJsModule
-        const { saveAs } = (await import('file-saver')).default
-
-        const workbook = new ExcelJS.Workbook()
-        const worksheet = workbook.addWorksheet('Extrato')
-
-        // 1. Columns Setup
-        worksheet.columns = [
-            { header: 'Data', key: 'date', width: 15 },
-            { header: 'Descrição', key: 'desc', width: 40 },
-            { header: 'Categoria', key: 'cat', width: 20 },
-            { header: 'Valor (R$)', key: 'val', width: 15 },
-            { header: 'Tipo', key: 'type', width: 10 },
-            { header: 'Responsável', key: 'resp', width: 25 },
-        ]
-
-        // 2. Style Header Row
-        const headerRow = worksheet.getRow(1)
-        headerRow.font = { bold: true, color: { argb: 'FFFFFFFF' } }
-        headerRow.fill = {
-            type: 'pattern',
-            pattern: 'solid',
-            fgColor: { argb: 'FF4F46E5' } // Primary Blue
-        }
-        headerRow.alignment = { vertical: 'middle', horizontal: 'center' }
-
-        // 3. Add Data
-        filteredEntries.forEach(e => {
-            const row = worksheet.addRow({
-                date: new Date(e.entry_date),
-                desc: e.description,
-                cat: e.category,
-                val: e.amount,
-                type: e.type === 'entrada' ? 'Entrada' : 'Saída',
-                resp: e.responsible_name || 'N/A'
-            })
-
-            // 4. Conditional Formatting (Green/Red)
-            const valCell = row.getCell('val')
-            valCell.numFmt = '#,##0.00' // Number format
-
-            if (e.type === 'entrada') {
-                valCell.font = { color: { argb: 'FF16A34A' }, bold: true } // Green
-                row.getCell('type').font = { color: { argb: 'FF16A34A' } }
-            } else {
-                valCell.font = { color: { argb: 'FFDC2626' }, bold: true } // Red
-                row.getCell('type').font = { color: { argb: 'FFDC2626' } }
+        try {
+            if (filteredEntries.length === 0) {
+                alert('Não há lançamentos no mês selecionado para exportar.')
+                return
             }
 
-            // Alignments
-            row.getCell('date').alignment = { horizontal: 'center' }
-            row.getCell('type').alignment = { horizontal: 'center' }
-        })
+            // Dynamic Imports with robust CommonJS/ESM interop
+            const excelJsModule = await import('exceljs')
+            const ExcelJS = excelJsModule.default || excelJsModule
 
-        // 5. Generate File
-        const buffer = await workbook.xlsx.writeBuffer()
-        const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
+            const fileSaverModule = await import('file-saver')
+            const saveAs = fileSaverModule.saveAs || (fileSaverModule.default && fileSaverModule.default.saveAs) || fileSaverModule.default
 
-        // File Name
-        const monthName = selectedDate.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })
-        saveAs(blob, `extrato_financeiro_${currentBankName}_${monthName.replace(/ /g, '_')}.xlsx`)
+            const workbook = new ExcelJS.Workbook()
+            const worksheet = workbook.addWorksheet('Extrato')
+
+            // 1. Columns Setup
+            worksheet.columns = [
+                { header: 'Data', key: 'date', width: 15 },
+                { header: 'Descrição', key: 'desc', width: 40 },
+                { header: 'Categoria', key: 'cat', width: 20 },
+                { header: 'Valor (R$)', key: 'val', width: 15 },
+                { header: 'Tipo', key: 'type', width: 10 },
+                { header: 'Responsável', key: 'resp', width: 25 },
+            ]
+
+            // 2. Style Header Row
+            const headerRow = worksheet.getRow(1)
+            headerRow.font = { bold: true, color: { argb: 'FFFFFFFF' } }
+            headerRow.fill = {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: { argb: 'FF4F46E5' } // Primary Blue
+            }
+            headerRow.alignment = { vertical: 'middle', horizontal: 'center' }
+
+            // 3. Add Data
+            filteredEntries.forEach(e => {
+                const row = worksheet.addRow({
+                    date: new Date(e.entry_date),
+                    desc: e.description,
+                    cat: e.category,
+                    val: e.amount,
+                    type: e.type === 'entrada' ? 'Entrada' : 'Saída',
+                    resp: e.responsible_name || 'N/A'
+                })
+
+                // 4. Conditional Formatting (Green/Red)
+                const valCell = row.getCell('val')
+                valCell.numFmt = '#,##0.00' // Number format
+
+                if (e.type === 'entrada') {
+                    valCell.font = { color: { argb: 'FF16A34A' }, bold: true } // Green
+                    row.getCell('type').font = { color: { argb: 'FF16A34A' } }
+                } else {
+                    valCell.font = { color: { argb: 'FFDC2626' }, bold: true } // Red
+                    row.getCell('type').font = { color: { argb: 'FFDC2626' } }
+                }
+
+                // Alignments
+                row.getCell('date').alignment = { horizontal: 'center' }
+                row.getCell('type').alignment = { horizontal: 'center' }
+            })
+
+            // 5. Generate File
+            const buffer = await workbook.xlsx.writeBuffer()
+            const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
+
+            // File Name
+            const monthName = selectedDate.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })
+            saveAs(blob, `extrato_financeiro_${currentBankName}_${monthName.replace(/ /g, '_')}.xlsx`)
+
+        } catch (error) {
+            console.error('Erro ao exportar planilha:', error);
+            alert('Ocorreu um erro ao gerar a planilha. Tente novamente ou contate o suporte.');
+        }
     }
 
     return (
