@@ -18,7 +18,7 @@ export async function createMeetingAction(payload: CreateMeetingPayload) {
         // 2. Extrair dados
         const { title, description, date, start_time, end_time } = payload;
 
-        // 3. Formatar as datas no padrão ISO 8601 (Ex: 2024-05-20T10:00:00-03:00)
+        // 3. Formatar as datas no padrão ISO 8601 (Ex: 2026-05-20T10:00:00-03:00)
         const startDateTime = `${date}T${start_time}:00-03:00`; // Ajuste o fuso conforme necessário (-03:00 para BRT)
         let endDateTime = `${date}T${end_time}:00-03:00`;
 

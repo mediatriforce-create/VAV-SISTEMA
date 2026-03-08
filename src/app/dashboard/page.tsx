@@ -254,7 +254,7 @@ export default function DashboardPage() {
 
             <footer className="relative z-10 w-full py-2 text-center shrink-0">
                 <p className="text-[10px] text-slate-400/50 dark:text-slate-600/50">
-                    System v2.5.0 • Acesso Seguro • © 2024 VAV Central
+                    System v2.5.0 &bull; Acesso Seguro &bull; &copy; 2026 VAV Central
                 </p>
             </footer>
         </div>

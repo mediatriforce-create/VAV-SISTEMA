@@ -96,7 +96,7 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="relative z-10 w-full py-3 text-center border-t border-zinc-200 dark:border-white/5 shrink-0">
-        <p className="text-xs text-zinc-400">© 2024 Central Viva a Vida. Todos os direitos reservados.</p>
+        <p className="text-xs text-zinc-400">&copy; 2026 Central Viva a Vida. Todos os direitos reservados.</p>
       </footer>
     </div>
   )

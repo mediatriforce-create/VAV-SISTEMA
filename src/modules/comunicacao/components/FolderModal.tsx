@@ -62,7 +62,7 @@ export default function FolderModal({ isOpen, onClose, parentId, onSuccess }: Fo
                             value={name}
                             onChange={e => setName(e.target.value)}
                             className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary/50 outline-none dark:bg-slate-700 dark:border-slate-600 dark:text-white"
-                            placeholder="Ex: Projetos 2024"
+                            placeholder="Ex: Projetos 2026"
                             autoFocus
                             required
                         />
