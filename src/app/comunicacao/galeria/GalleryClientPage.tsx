@@ -38,13 +38,18 @@ export default function GalleryClientPage({ initialPosts }: GalleryClientPagePro
     return (
         <div className="space-y-3 md:space-y-4 w-full max-w-6xl mx-auto pb-4">
             {/* Header */}
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 bg-white/70 dark:bg-zinc-900/60 backdrop-blur-xl p-4 rounded-3xl border border-white/20 dark:border-white/10 shadow-lg shadow-black/5">
-                <div className="flex-shrink-0">
-                    <h2 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Galeria Viva a Vida</h2>
-                    <p className="text-slate-500 dark:text-gray-400 text-xs md:text-sm mt-0.5 font-medium">Acervo oficial de mídias e registros.</p>
+            <div className="shrink-0 flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/30">
+                        <Grid className="text-white" size={24} />
+                    </div>
+                    <div>
+                        <h2 className="text-2xl font-extrabold text-zinc-900 dark:text-white">Central de Mídia</h2>
+                        <p className="text-sm text-zinc-500 dark:text-zinc-400 font-medium mt-0.5">Acervo oficial de mídias e registros da Comunicação</p>
+                    </div>
                 </div>
 
-                <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
+                <div className="flex items-center gap-4">
                     {/* Tabs Movidas para dentro do Header */}
                     <div className="flex justify-center gap-1 md:gap-2 p-1 bg-white/40 dark:bg-zinc-950/40 backdrop-blur-md rounded-2xl border border-white/20 dark:border-white/5 w-full md:w-auto overflow-x-auto no-scrollbar shadow-inner">
                         {[
@@ -58,7 +63,7 @@ export default function GalleryClientPage({ initialPosts }: GalleryClientPagePro
                                 <button
                                     key={tab.id}
                                     onClick={() => setActiveTab(tab.id as 'feed' | 'reels' | 'stories')}
-                                    className="relative flex items-center gap-1.5 px-3 py-1.5 text-[11px] md:text-xs font-bold uppercase tracking-wide rounded-lg transition-colors shrink-0"
+                                    className="relative flex items-center gap-2 px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-xl transition-all shrink-0"
                                 >
                                     {isActive && (
                                         <motion.div
@@ -68,8 +73,8 @@ export default function GalleryClientPage({ initialPosts }: GalleryClientPagePro
                                             transition={{ type: "spring", stiffness: 300, damping: 30 }}
                                         />
                                     )}
-                                    <span className={`relative z-10 flex items-center gap-1.5 ${isActive ? 'text-primary dark:text-blue-400' : 'text-slate-500 dark:text-gray-400 hover:text-slate-700 dark:hover:text-gray-200'}`}>
-                                        <Icon size={14} /> {tab.label}
+                                    <span className={`relative z-10 flex items-center gap-2 ${isActive ? 'text-blue-600 dark:text-blue-400 drop-shadow-sm' : 'text-slate-500 dark:text-gray-400 hover:text-slate-700 dark:hover:text-gray-200'}`}>
+                                        <Icon size={16} /> {tab.label}
                                     </span>
                                 </button>
                             )
@@ -80,7 +85,7 @@ export default function GalleryClientPage({ initialPosts }: GalleryClientPagePro
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                         onClick={() => setIsUploadOpen(true)}
-                        className="flex flex-shrink-0 items-center justify-center gap-2 bg-gradient-to-r from-primary to-accent text-white px-5 py-2 rounded-xl shadow-md hover:shadow-lg transition-all font-bold text-sm h-full w-full sm:w-auto"
+                        className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-blue-500/25 transition-all"
                     >
                         <Plus size={18} />
                         Novo Upload

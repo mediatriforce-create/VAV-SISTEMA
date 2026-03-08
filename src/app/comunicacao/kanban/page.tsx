@@ -237,10 +237,23 @@ export default function KanbanPage() {
     }
 
     return (
-        <div className="h-full flex flex-col min-h-0">
+        <div className="h-full flex flex-col min-h-0 p-4 sm:p-6">
+            {/* Header */}
+            <div className="shrink-0 flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/30">
+                        <span className="material-symbols-outlined text-white text-2xl">kanban</span>
+                    </div>
+                    <div>
+                        <h2 className="text-2xl font-extrabold text-zinc-900 dark:text-white">Quadro de Demandas</h2>
+                        <p className="text-sm text-zinc-500 dark:text-zinc-400 font-medium mt-0.5">Organização e fluxo de trabalhos da Comunicação</p>
+                    </div>
+                </div>
+            </div>
+
             {/* Kanban Board */}
             <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-                <div className="flex-1 min-h-0 flex gap-5 overflow-x-auto custom-scrollbar pb-2 items-stretch">
+                <div className="h-full flex gap-5 overflow-x-auto custom-scrollbar pb-2 items-stretch">
                     {COLUMNS.map(col => (
                         <KanbanColumn
                             key={col.id}

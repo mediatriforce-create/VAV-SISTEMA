@@ -279,7 +279,20 @@ export default function DriveExplorer({ initialFolderId, initialFolderName = 'CO
 
     return (
         <div className="flex flex-col h-full bg-transparent relative" onContextMenu={(e) => { e.preventDefault(); }}>
-            {/* Header & Breadcrumbs */}
+            {/* Main Overarching Header */}
+            <div className="shrink-0 flex items-center justify-between mx-6 mt-4">
+                <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/30">
+                        <FolderOpen className="text-white" size={24} />
+                    </div>
+                    <div>
+                        <h2 className="text-2xl font-extrabold text-zinc-900 dark:text-white">Repositório</h2>
+                        <p className="text-sm text-zinc-500 dark:text-zinc-400 font-medium mt-0.5">Gerenciador de arquivos integrado ao Google Drive</p>
+                    </div>
+                </div>
+            </div>
+
+            {/* Breadcrumbs & Actions Header */}
             <div className="bg-white/50 dark:bg-zinc-950/50 backdrop-blur-md border border-white/20 dark:border-white/10 rounded-2xl mx-6 mt-4 px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm">
 
                 <div className="flex items-center gap-2 overflow-x-auto custom-scrollbar text-sm font-medium text-slate-600 no-scrollbar">
