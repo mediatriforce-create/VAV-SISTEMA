@@ -205,14 +205,32 @@ export default function ArquivosPage() {
             {/* Content */}
             <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar">
                 {loading ? (
-                    <div className="flex items-center justify-center py-16">
-                        <div className="w-8 h-8 border-3 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+                    <div className="space-y-8">
+                        {[0, 1].map((s) => (
+                            <div key={s}>
+                                <div className="h-4 w-48 bg-zinc-200 dark:bg-zinc-700 rounded-lg animate-pulse mb-4" />
+                                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+                                    {Array.from({ length: 5 }).map((_, i) => (
+                                        <div key={i} className="rounded-3xl p-6 flex flex-col items-center gap-3 bg-zinc-100 dark:bg-zinc-800/50 animate-pulse">
+                                            <div className="w-10 h-10 rounded-xl bg-zinc-200 dark:bg-zinc-700" />
+                                            <div className="h-3 w-16 bg-zinc-200 dark:bg-zinc-700 rounded" />
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 ) : activeFolder ? (
-                    /* === ARQUIVOS DENTRO DA PASTA === */
                     filesLoading ? (
-                        <div className="flex items-center justify-center py-16">
-                            <div className="w-8 h-8 border-3 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+                            {Array.from({ length: 12 }).map((_, i) => (
+                                <div key={i} className="rounded-2xl overflow-hidden bg-zinc-100 dark:bg-zinc-800/50 animate-pulse">
+                                    <div className="w-full h-24 bg-zinc-200 dark:bg-zinc-700" />
+                                    <div className="p-3">
+                                        <div className="h-3 w-3/4 bg-zinc-200 dark:bg-zinc-700 rounded" />
+                                    </div>
+                                </div>
+                            ))}
                         </div>
                     ) : folderFiles.length === 0 ? (
                         <div className="flex flex-col items-center justify-center py-20 text-center">
