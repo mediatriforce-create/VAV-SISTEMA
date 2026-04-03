@@ -34,7 +34,7 @@ export default function LoginPage() {
     }
 
     return (
-        <div className="font-display bg-background-light dark:bg-background-dark h-screen w-full relative overflow-hidden flex items-center justify-center">
+        <div className="font-display bg-background-light dark:bg-background-dark min-h-screen w-full relative overflow-y-auto flex items-center justify-center py-8">
             {/* Simple Background for Performance */}
             <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 via-white to-orange-50/50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 pointer-events-none" />
 

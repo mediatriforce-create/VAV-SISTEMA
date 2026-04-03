@@ -129,7 +129,7 @@ export function NewEntryModal({ isOpen, onClose, bankId, currentUserName }: NewE
                 </div>
 
                 {/* Body */}
-                <div className="flex-1 min-h-0 p-6 md:p-8 overflow-y-auto custom-scrollbar">
+                <div className="flex-1 min-h-0 p-4 md:p-6 overflow-y-auto custom-scrollbar">
                     <div className="space-y-6">
 
                         {/* Row 1: Date & Type */}

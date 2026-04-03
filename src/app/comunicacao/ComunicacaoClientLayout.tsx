@@ -20,7 +20,7 @@ export function ComunicacaoClientLayout({
 
     return (
         <DashboardLayout>
-            <div className="w-full h-full flex-1 min-h-0 flex flex-col max-w-7xl mx-auto gap-6 sm:px-0">
+            <div className="w-full h-full flex-1 min-h-0 flex flex-col max-w-7xl mx-auto gap-6 px-4 sm:px-0">
                 {/* Header Module */}
                 <div className="shrink-0 flex flex-col md:flex-row justify-between items-end md:items-center gap-4 border-b border-slate-200 dark:border-white/10 pb-4">
                     <div className="flex items-center gap-3">

@@ -142,15 +142,15 @@ export default function AtividadesPage() {
                 <motion.button
                     whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
                     onClick={openModal}
-                    className="bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-emerald-500/25 flex items-center gap-2"
+                    className="bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-3 sm:px-5 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-emerald-500/25 flex items-center gap-2"
                 >
                     <span className="material-symbols-outlined text-lg">add</span>
-                    Nova Atividade
+                    <span className="hidden sm:inline">Nova Atividade</span>
                 </motion.button>
             </div>
 
             {/* Filtros */}
-            <div className="shrink-0 flex items-center gap-4 mb-5">
+            <div className="shrink-0 flex flex-wrap items-center gap-3 mb-5">
                 <div className="flex items-center gap-2">
                     <span className="material-symbols-outlined text-zinc-400 text-lg">groups</span>
                     <select value={selectedClass} onChange={e => setSelectedClass(e.target.value)}
@@ -227,7 +227,7 @@ export default function AtividadesPage() {
                                 </div>
 
                                 {/* Descrição + Observações compactos */}
-                                <div className="grid grid-cols-2 gap-3">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                     <div>
                                         <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1 block">Descrição</label>
                                         <textarea value={formDesc} onChange={e => setFormDesc(e.target.value)} rows={2} placeholder="O que foi feito..."
