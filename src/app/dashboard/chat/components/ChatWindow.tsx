@@ -360,7 +360,9 @@ export default function ChatWindow({ room, onBack }: ChatWindowProps) {
             )}
 
             {/* Input Composer Area */}
-            <div className="flex-shrink-0 px-3 py-2 bg-white/50 dark:bg-zinc-900/50 backdrop-blur-md border-t border-zinc-200 dark:border-white/10">
+            <div className="flex-shrink-0 px-3 pt-2 pb-2 md:pb-2 bg-white/50 dark:bg-zinc-900/50 backdrop-blur-md border-t border-zinc-200 dark:border-white/10"
+                style={{ paddingBottom: 'max(0.5rem, env(safe-area-inset-bottom))' }}
+            >
                 <form
                     onSubmit={handleSend}
                     className="flex items-center gap-2 bg-white dark:bg-black/40 rounded-2xl px-2 py-1.5 border border-zinc-200 dark:border-white/10 shadow-inner focus-within:border-secondary/50 dark:focus-within:border-primary/50 focus-within:ring-1 focus-within:ring-secondary/20 dark:focus-within:ring-primary/20 transition-all"

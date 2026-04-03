@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase'
@@ -74,18 +74,13 @@ export default function DashboardLayout({
         return hasPermission(profile.role as any, item.module as any);
     });
 
-    const containerVariants: Variants = {
-        hidden: { opacity: 0 },
-        show: {
-            opacity: 1,
-            transition: { staggerChildren: 0.08 }
-        }
-    }
+    // Mobile bottom nav: principais módulos + chat
+    const mobileNavItems = [
+        ...navItems.slice(0, 4),
+        ...(hasPermission(profile.role as any, 'chat' as any) ? [{ name: 'Chat', icon: 'forum', href: '/dashboard/chat' }] : []),
+    ]
 
-    const itemVariants: Variants = {
-        hidden: { opacity: 0, y: 15 },
-        show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } }
-    }
+    const isHidden = pathname === '/dashboard'
 
     return (
         <div className="flex h-[100dvh] w-screen overflow-hidden bg-background-base font-display text-foreground selection:bg-primary/30">
@@ -98,8 +93,8 @@ export default function DashboardLayout({
             {/* Main Content Area */}
             <div className="w-full flex-1 flex flex-col h-[100dvh] min-w-0 overflow-hidden relative z-10">
 
-                {/* Barra Lateral Vertical â€” oculta no dashboard principal */}
-                <div className={`fixed left-0 top-0 h-full z-50 flex ${pathname === '/dashboard' ? 'hidden' : ''}`}>
+                {/* Barra Lateral Vertical — apenas desktop, oculta no dashboard principal */}
+                <div className={`fixed left-0 top-0 h-full z-50 ${isHidden ? 'hidden' : 'hidden md:flex'}`}>
                     {/* Rail fino com ícones */}
                     <div className={`h-full flex flex-col bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border-r border-zinc-200/50 dark:border-white/10 shadow-lg transition-all duration-300 ${isMenuOpen ? 'w-56' : 'w-14'}`}>
 
@@ -113,7 +108,7 @@ export default function DashboardLayout({
                             </span>
                         </button>
 
-                        {/* Ãcones dos Módulos */}
+                        {/* Ícones dos Módulos */}
                         <nav className="flex-1 flex flex-col gap-1 py-3 px-2 overflow-y-auto custom-scrollbar no-scrollbar">
                             {navItems.map((item) => {
                                 const isActive = pathname === item.href || (pathname.startsWith(item.href) && item.href !== '/dashboard')
@@ -230,9 +225,11 @@ export default function DashboardLayout({
                     </div>
                 </div>
 
-                <main className={`flex-1 flex flex-col min-h-0 min-w-0 relative z-10 w-full ${pathname === '/dashboard' ? 'p-0 overflow-hidden'
-                    : pathname.startsWith('/dashboard/chat') ? 'pl-16 pt-2 pb-2 pr-2 overflow-hidden'
-                        : 'pl-16 pt-6 pb-6 pr-4 sm:pr-6 lg:pr-8 overflow-y-auto custom-scrollbar'
+                <main className={`flex-1 flex flex-col min-h-0 min-w-0 relative z-10 w-full ${pathname === '/dashboard'
+                    ? 'p-0 overflow-hidden'
+                    : pathname.startsWith('/dashboard/chat')
+                        ? 'md:pl-14 overflow-hidden pb-16 md:pb-0'
+                        : 'md:pl-14 pt-4 md:pt-6 pb-20 md:pb-6 px-4 md:pr-6 lg:pr-8 overflow-y-auto custom-scrollbar'
                     }`}>
                     <div className={`mx-auto w-full flex-1 flex flex-col min-h-0 ${(pathname === '/dashboard' || pathname.startsWith('/dashboard/chat')) ? 'max-w-none' : 'max-w-7xl'}`}>
                         <div className="w-full flex-1 flex flex-col min-h-0">
@@ -240,8 +237,49 @@ export default function DashboardLayout({
                         </div>
                     </div>
                 </main>
+
+                {/* Mobile Bottom Navigation — oculta no desktop e na tela inicial */}
+                {!isHidden && (
+                    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border-t border-zinc-200/50 dark:border-white/10 shadow-2xl"
+                        style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+                    >
+                        <div className="flex items-center justify-around px-2 pt-2 pb-1">
+                            {mobileNavItems.map((item) => {
+                                const isActive = pathname === item.href || (pathname.startsWith(item.href) && item.href !== '/dashboard')
+                                const isChatItem = item.href === '/dashboard/chat'
+                                return (
+                                    <Link
+                                        key={item.href}
+                                        href={item.href}
+                                        className="flex flex-col items-center gap-0.5 min-w-[56px] py-1 px-2 rounded-xl transition-all duration-200 active:scale-95"
+                                    >
+                                        <span className={`relative material-symbols-outlined text-2xl transition-all duration-200 ${isActive ? 'text-blue-600 dark:text-primary scale-110' : 'text-zinc-400 dark:text-zinc-500'}`}>
+                                            {item.icon}
+                                            {isChatItem && hasUnreadChat && !isActive && (
+                                                <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 rounded-full border border-white dark:border-zinc-900 animate-pulse" />
+                                            )}
+                                        </span>
+                                        <span className={`text-[9px] font-semibold uppercase tracking-wide transition-colors duration-200 ${isActive ? 'text-blue-600 dark:text-primary' : 'text-zinc-400 dark:text-zinc-500'}`}>
+                                            {item.name}
+                                        </span>
+                                    </Link>
+                                )
+                            })}
+                            <Link
+                                href="/dashboard/configuracoes"
+                                className="flex flex-col items-center gap-0.5 min-w-[56px] py-1 px-2 rounded-xl transition-all duration-200 active:scale-95"
+                            >
+                                <span className={`material-symbols-outlined text-2xl transition-colors duration-200 ${pathname.startsWith('/dashboard/configuracoes') ? 'text-blue-600 dark:text-primary' : 'text-zinc-400 dark:text-zinc-500'}`}>
+                                    settings
+                                </span>
+                                <span className={`text-[9px] font-semibold uppercase tracking-wide ${pathname.startsWith('/dashboard/configuracoes') ? 'text-blue-600 dark:text-primary' : 'text-zinc-400 dark:text-zinc-500'}`}>
+                                    Config
+                                </span>
+                            </Link>
+                        </div>
+                    </nav>
+                )}
             </div>
         </div>
     )
 }
-
