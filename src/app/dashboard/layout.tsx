@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase'
 import { useRouter, usePathname } from 'next/navigation'
 import Link from 'next/link'
-import { PERMISSIONS, hasPermission } from '@/lib/permissions'
+import { hasPermission } from '@/lib/permissions'
 import { motion, AnimatePresence, Variants } from 'framer-motion'
 import { useUnreadChat } from '@/hooks/useUnreadChat'
 
