@@ -46,26 +46,29 @@ export async function getUserChatRooms(): Promise<{ success: boolean; data?: Cha
             });
         }
 
-        // Para DMs precisamos do detalhe de QUEM é a outra pessoa
-        for (const rp of (dms || [])) {
-            // Se fosse uma lista com vários, precisaríamos cruzar quem é a ponta de lá, mas como é só a minha entrada, busco a outra ponta
-            const { data: otherParticipant } = await supabase
+        // Para DMs: busca todos os outros participantes em uma única query batch
+        const dmRoomIds = (dms || []).map((rp: any) => rp.room_id);
+
+        if (dmRoomIds.length > 0) {
+            const { data: otherParticipants } = await supabase
                 .from('room_participants')
-                .select(`
-                    profiles (id, full_name, avatar_url)
-                `)
-                .eq('room_id', rp.room_id)
-                .neq('profile_id', user.id)
-                .single();
+                .select('room_id, profiles:profile_id (id, full_name, avatar_url)')
+                .in('room_id', dmRoomIds)
+                .neq('profile_id', user.id);
 
-            const otherUser = otherParticipant?.profiles as unknown as Profile;
+            const participantsByRoom = new Map(
+                (otherParticipants || []).map((p: any) => [p.room_id, p.profiles as unknown as Profile])
+            );
 
-            chatList.push({
-                room_id: rp.room_id,
-                type: 'dm',
-                name: otherUser?.full_name || 'Desconhecido',
-                other_person_avatar: otherUser?.avatar_url,
-            });
+            for (const rp of (dms || [])) {
+                const otherUser = participantsByRoom.get(rp.room_id);
+                chatList.push({
+                    room_id: rp.room_id,
+                    type: 'dm',
+                    name: otherUser?.full_name || 'Desconhecido',
+                    other_person_avatar: otherUser?.avatar_url,
+                });
+            }
         }
 
         return { success: true, data: chatList };

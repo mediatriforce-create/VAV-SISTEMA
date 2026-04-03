@@ -154,6 +154,13 @@ export async function deleteFinancialEntry(id: string) {
 
 export async function getTeamMembers() {
     const supabase = await createClient()
+
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return []
+
+    const authorized = await checkPermission()
+    if (!authorized) return []
+
     const { data } = await supabase
         .from('profiles')
         .select('id, full_name, role')

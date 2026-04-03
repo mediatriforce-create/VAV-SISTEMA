@@ -133,7 +133,7 @@ export async function deleteKanbanCard(cardId: string): Promise<{ success: boole
 // ATIVIDADES DO DIA
 // ============================================================
 
-export async function getActivities(classId?: string, date?: string): Promise<{ success: boolean; data?: PedActivity[]; message?: string }> {
+export async function getActivities(classId?: string, date?: string, page = 0, pageSize = 30): Promise<{ success: boolean; data?: PedActivity[]; message?: string; hasMore?: boolean }> {
     try {
         const supabase = await createClient();
         let query = supabase
@@ -144,7 +144,8 @@ export async function getActivities(classId?: string, date?: string): Promise<{ 
                 creator:created_by(full_name),
                 files:ped_activity_files(file:file_id(*))
             `)
-            .order('activity_date', { ascending: false });
+            .order('activity_date', { ascending: false })
+            .range(page * pageSize, (page + 1) * pageSize);
 
         if (classId) query = query.eq('class_id', classId);
         if (date) query = query.eq('activity_date', date);
@@ -158,7 +159,7 @@ export async function getActivities(classId?: string, date?: string): Promise<{ 
             files: act.files?.map((f: any) => f.file).filter(Boolean) || []
         }));
 
-        return { success: true, data: activities as PedActivity[] };
+        return { success: true, data: activities as PedActivity[], hasMore: (data || []).length > pageSize };
     } catch (error: any) {
         console.error('getActivities Error:', error.message);
         return { success: false, message: error.message };
