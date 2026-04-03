@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
-import { PERMISSIONS } from '@/lib/permissions';
+import { hasPermission } from '@/lib/permissions';
 import CoordClientPage from './CoordClientPage'; // We'll move the client logic here
 
 export default async function CoordPage() {
@@ -23,8 +23,7 @@ export default async function CoordPage() {
     }
 
     // Check generic 'coordenacao' module permission
-    const allowedModules = PERMISSIONS[profile.role as keyof typeof PERMISSIONS];
-    if (!allowedModules?.includes('coordenacao')) {
+    if (!hasPermission(profile.role, 'coordenacao')) {
         return (
             <div className="flex h-screen items-center justify-center bg-slate-50">
                 <div className="text-center p-8 bg-white dark:bg-zinc-900 rounded-2xl shadow-sm border border-slate-200 dark:border-white/10 max-w-md">
