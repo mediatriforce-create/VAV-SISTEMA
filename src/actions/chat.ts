@@ -56,7 +56,7 @@ export async function getUserChatRooms(): Promise<{ success: boolean; data?: Cha
                 .in('room_id', dmRoomIds)
                 .neq('profile_id', user.id);
 
-            const participantsByRoom = new Map(
+            const participantsByRoom = new Map<string, Profile>(
                 (otherParticipants || []).map((p: any) => [p.room_id, p.profiles as unknown as Profile])
             );
 
