@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server';
 import { getCalendarClient } from '@/lib/google';
 import { CreateMeetingPayload } from '@/types/meeting';
 import { revalidatePath } from 'next/cache';
+import { canCreate } from '@/lib/permissions';
 
 export async function createMeetingAction(payload: CreateMeetingPayload) {
     try {
@@ -13,6 +14,17 @@ export async function createMeetingAction(payload: CreateMeetingPayload) {
         const { data: { user }, error: userError } = await supabase.auth.getUser();
         if (userError || !user) {
             throw new Error('Usuário não autenticado.');
+        }
+
+        // 1.1 Validar permissão de criar reunião
+        const { data: profile } = await supabase
+            .from('profiles')
+            .select('role')
+            .eq('id', user.id)
+            .single();
+
+        if (!profile || !canCreate(profile.role, 'reunioes')) {
+            throw new Error('Você não tem permissão para criar reuniões.');
         }
 
         // 2. Extrair dados

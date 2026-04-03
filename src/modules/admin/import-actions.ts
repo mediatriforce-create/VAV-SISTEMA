@@ -131,18 +131,6 @@ async function parsePDF(buffer: Buffer): Promise<ParsedTransaction[]> {
     const parseTask = pdf(buffer).then((data: any) => data.text)
     const text = await Promise.race([parseTask, timeout]) as string
 
-    // DEBUG LOG "V3"
-    console.log('--- PARSING V3 (Debug Public) ---')
-
-    // DEBUG LOG TO FILE (Public)
-    try {
-        const debugPath = require('path').join(process.cwd(), 'public', 'debug_import.txt')
-        require('fs').writeFileSync(debugPath, text)
-        console.log('Saved PDF debug to:', debugPath)
-    } catch (e) {
-        console.error('Failed to save debug PDF:', e)
-    }
-
     const lines = text.split('\n')
     const upperText = text.toUpperCase()
 

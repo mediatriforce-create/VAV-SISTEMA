@@ -29,11 +29,11 @@ export default async function MeetingRoomPage({ params }: { params: { id: string
     // Tentamos pela tabela Profiles, senao pegamos o começo do email
     const { data: profile } = await supabase
         .from('profiles')
-        .select('name')
+        .select('full_name')
         .eq('id', user.id)
         .single();
 
-    const userName = profile?.name || user.email?.split('@')[0] || 'Convidado Viva a Vida';
+    const userName = profile?.full_name || user.email?.split('@')[0] || 'Convidado Viva a Vida';
 
     return (
         <div className="w-full flex-1 flex flex-col pt-6 pb-8">
