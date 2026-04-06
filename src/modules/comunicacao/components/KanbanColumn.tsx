@@ -17,7 +17,7 @@ export default function KanbanColumn({ id, title, demands, color }: KanbanColumn
     });
 
     return (
-        <div className="flex flex-col h-full bg-white/40 dark:bg-zinc-900/40 rounded-3xl border border-white/20 dark:border-white/10 shadow-inner min-w-[280px] w-full max-w-sm backdrop-blur-md">
+        <div className="flex flex-col h-full bg-white/40 dark:bg-zinc-900/40 rounded-3xl border border-white/20 dark:border-white/10 shadow-inner flex-1 min-w-[220px] max-w-xs backdrop-blur-md">
             {/* Header */}
             <div className={`p-4 border-b border-white/20 dark:border-white/10 rounded-t-3xl ${color} bg-opacity-30 dark:bg-opacity-20 backdrop-blur-sm`}>
                 <div className="flex justify-between items-center">

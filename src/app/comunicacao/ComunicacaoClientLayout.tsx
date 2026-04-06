@@ -58,7 +58,7 @@ export function ComunicacaoClientLayout({
                 </div>
 
                 {/* Content */}
-                <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar pb-6">
+                <div className="flex-1 min-h-0 overflow-auto custom-scrollbar pb-6">
                     {children}
                 </div>
             </div>
