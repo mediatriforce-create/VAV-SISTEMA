@@ -35,7 +35,7 @@ export default async function GlobalCalendarPage() {
             </div>
 
             <div className="flex-1 min-h-0 relative z-10 mx-[-16px] sm:mx-0 sm:px-4">
-                <GlobalCalendar userRole={profile.role} />
+                <GlobalCalendar userRole={profile.role} userId={user.id} />
             </div>
             {/* Background decoration */}
             <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-500/5 rounded-full blur-[120px] mix-blend-screen pointer-events-none -z-10"></div>

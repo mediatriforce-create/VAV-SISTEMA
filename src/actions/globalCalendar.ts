@@ -146,7 +146,7 @@ export async function createGlobalEvent(
             .select()
             .single();
 
-        if (error) throw new Error(`Falha ao registrar evento: ${error.message} - Lembre-se, apenas Líderes da organização podem publicar no Mural.`);
+        if (error) throw new Error(`Falha ao registrar evento: ${error.message}`);
 
         revalidatePath('/dashboard/calendario');
         return { success: true, data };
@@ -162,7 +162,27 @@ export async function deleteGlobalEvent(id: string): Promise<GlobalEventResponse
 
         if (!user) throw new Error('Acesso negado.');
 
-        // RLS will fail this if user is not leadership
+        // Busca o evento para checar dono
+        const { data: event, error: fetchError } = await supabase
+            .from('global_calendar_events')
+            .select('created_by')
+            .eq('id', id)
+            .single();
+
+        if (fetchError || !event) throw new Error('Evento não encontrado.');
+
+        // Verifica se é o dono ou liderança
+        const { data: profile } = await supabase
+            .from('profiles')
+            .select('role')
+            .eq('id', user.id)
+            .single();
+
+        const isLeadership = ['Coordenadora ADM', 'Coordenação de Pedagogia', 'Direção', 'Presidência'].includes(profile?.role || '');
+        const isOwner = event.created_by === user.id;
+
+        if (!isOwner && !isLeadership) throw new Error('Você só pode apagar seus próprios eventos.');
+
         const { error } = await supabase
             .from('global_calendar_events')
             .delete()

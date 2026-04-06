@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { GlobalEvent, getGlobalEvents, createGlobalEvent, deleteGlobalEvent } from '@/actions/globalCalendar';
 import toast from 'react-hot-toast';
 
-export function GlobalCalendar({ userRole }: { userRole?: string }) {
+export function GlobalCalendar({ userRole, userId }: { userRole?: string; userId?: string }) {
     const [events, setEvents] = useState<GlobalEvent[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [currentDate, setCurrentDate] = useState(new Date());
@@ -78,7 +78,6 @@ export function GlobalCalendar({ userRole }: { userRole?: string }) {
     };
 
     const handleEmptyDayClick = (dateObj: Date) => {
-        if (!isLeadership) return;
         const localDate = new Date(dateObj.getTime() - (dateObj.getTimezoneOffset() * 60000)).toISOString().split('T')[0];
         setSelectedDateStr(localDate);
         setIsCreateModalOpen(true);
@@ -180,11 +179,11 @@ export function GlobalCalendar({ userRole }: { userRole?: string }) {
                                 onClick={() => cell.type === 'current' && handleEmptyDayClick(cell.date)}
                                 className={`bg-white dark:bg-zinc-950/80 p-2 min-h-[120px] flex flex-col gap-2 transition-colors relative group
                                     ${cell.type !== 'current' ? 'opacity-40 bg-zinc-50/50 dark:bg-black/50 pointer-events-none'
-                                        : (isLeadership ? 'cursor-pointer hover:bg-indigo-50/30 dark:hover:bg-indigo-900/10' : '')}
+                                        : 'cursor-pointer hover:bg-indigo-50/30 dark:hover:bg-indigo-900/10'}
                                 `}
                             >
                                 <div className="flex justify-between items-start">
-                                    {isLeadership && cell.type === 'current' && (
+                                    {cell.type === 'current' && (
                                         <span className="opacity-0 group-hover:opacity-100 transition-opacity text-indigo-400 material-symbols-outlined text-[16px]">add_circle</span>
                                     )}
                                     <span className={`text-sm ml-auto font-black w-7 h-7 flex items-center justify-center rounded-full ${isCurrentTs ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30' : 'text-zinc-500 dark:text-zinc-400'}`}>
@@ -339,7 +338,7 @@ export function GlobalCalendar({ userRole }: { userRole?: string }) {
                                     </button>
                                 )}
 
-                                {isLeadership && !selectedEvent.is_meeting && (
+                                {(isLeadership || selectedEvent.created_by === userId) && !selectedEvent.is_meeting && (
                                     <button
                                         onClick={() => handleDelete(selectedEvent.id)}
                                         disabled={isSaving}
