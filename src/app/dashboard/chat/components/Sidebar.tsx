@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import { ChatListItem, Profile } from '@/types/chat';
 import { getAvailableUsers, startOrGetDM } from '@/actions/chat';
 
@@ -86,7 +87,7 @@ export default function Sidebar({ rooms, selectedRoomId, onSelectRoom, onDMCreat
                         </span>
                     ) : (
                         room.other_person_avatar ? (
-                            <img src={room.other_person_avatar} alt="User Avatar" className="w-full h-full object-cover" />
+                            <Image src={room.other_person_avatar} alt="User Avatar" width={40} height={40} className="w-full h-full object-cover" />
                         ) : (
                             <span className="material-symbols-outlined text-[20px] text-zinc-500 dark:text-zinc-400">person</span>
                         )
@@ -176,7 +177,7 @@ export default function Sidebar({ rooms, selectedRoomId, onSelectRoom, onDMCreat
                                         >
                                             <div className="w-8 h-8 rounded-full bg-zinc-200 dark:bg-zinc-700 flex items-center justify-center overflow-hidden shrink-0">
                                                 {u.avatar_url ? (
-                                                    <img src={u.avatar_url} alt="" className="w-full h-full object-cover" />
+                                                    <Image src={u.avatar_url} alt={u.full_name} width={32} height={32} className="w-full h-full object-cover" />
                                                 ) : (
                                                     <span className="text-xs font-bold text-zinc-500 dark:text-zinc-400">{u.full_name.charAt(0)}</span>
                                                 )}

@@ -6,6 +6,8 @@ interface AdminStatsProps {
     balance: number
 }
 
+const springTransition = { type: 'spring' as const, stiffness: 300, damping: 25 }
+
 export function AdminStats({ totalInput, totalOutput, balance }: AdminStatsProps) {
     return (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -13,6 +15,7 @@ export function AdminStats({ totalInput, totalOutput, balance }: AdminStatsProps
             <motion.div
                 whileHover={{ y: -5, scale: 1.01 }}
                 whileTap={{ scale: 0.98 }}
+                transition={springTransition}
                 className="bg-white/70 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-lg shadow-black/5 border border-white/20 dark:border-white/10 flex flex-col justify-between h-32 relative overflow-hidden group"
             >
                 <div className="relative z-10">
@@ -32,6 +35,7 @@ export function AdminStats({ totalInput, totalOutput, balance }: AdminStatsProps
             <motion.div
                 whileHover={{ y: -5, scale: 1.01 }}
                 whileTap={{ scale: 0.98 }}
+                transition={springTransition}
                 className="bg-white/70 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-lg shadow-black/5 border border-white/20 dark:border-white/10 flex flex-col justify-between h-32 relative overflow-hidden group"
             >
                 <div className="relative z-10">
@@ -51,6 +55,7 @@ export function AdminStats({ totalInput, totalOutput, balance }: AdminStatsProps
             <motion.div
                 whileHover={{ y: -5, scale: 1.01 }}
                 whileTap={{ scale: 0.98 }}
+                transition={springTransition}
                 className="bg-white/70 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-lg shadow-black/5 border border-white/20 dark:border-white/10 flex flex-col justify-between h-32 relative overflow-hidden group"
             >
                 <div className="relative z-10">

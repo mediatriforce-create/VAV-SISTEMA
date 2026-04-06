@@ -1,5 +1,6 @@
 ﻿import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 import { ChatListItem, Message, FileMetadata } from '@/types/chat';
 import { getRoomMessages, sendMessage } from '@/actions/chat';
 import { uploadChatFile } from '@/actions/chat-drive';
@@ -242,7 +243,7 @@ export default function ChatWindow({ room, onBack }: ChatWindowProps) {
                             </span>
                         ) : (
                             room.other_person_avatar ? (
-                                <img src={room.other_person_avatar} alt="Avatar" className="w-full h-full object-cover rounded-[14px]" />
+                                <Image src={room.other_person_avatar} alt="Avatar" width={48} height={48} className="w-full h-full object-cover rounded-[14px]" />
                             ) : (
                                 <span className="material-symbols-outlined text-[24px] text-zinc-500">person</span>
                             )
@@ -313,7 +314,7 @@ export default function ChatWindow({ room, onBack }: ChatWindowProps) {
                                 >
                                     <div className="w-8 h-8 rounded-full bg-zinc-200 dark:bg-black/50 shrink-0 border border-zinc-300 dark:border-white/10 overflow-hidden hidden sm:block">
                                         {msg.sender?.avatar_url ? (
-                                            <img src={msg.sender.avatar_url} alt="A" className="w-full h-full object-cover" />
+                                            <Image src={msg.sender.avatar_url} alt={senderName} width={32} height={32} className="w-full h-full object-cover" />
                                         ) : (
                                             <span className="w-full h-full flex items-center justify-center text-xs font-bold text-zinc-500">
                                                 {senderName.charAt(0)}

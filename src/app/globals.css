@@ -70,8 +70,7 @@
 
 html,
 body {
-  font-size: 14.4px;
-  /* 90% of 16px — scales all rem-based values 10% smaller */
+  font-size: 16px;
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-display);

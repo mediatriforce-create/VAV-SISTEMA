@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase'
 import { hasPermission, Module, Role } from '@/lib/permissions'
 import Link from 'next/link'
+import Image from 'next/image'
 import ParticleCanvas from '@/components/ui/ParticleCanvas'
 import { useUnreadChat } from '@/hooks/useUnreadChat'
 
@@ -119,7 +120,7 @@ export default function DashboardPage() {
 
                 <div className="flex items-center gap-2">
                     {profile.avatar_url ? (
-                        <img src={profile.avatar_url} alt="" className="w-9 h-9 rounded-xl border-2 border-blue-500/30 object-cover" />
+                        <Image src={profile.avatar_url} alt={profile.full_name} width={36} height={36} className="rounded-xl border-2 border-blue-500/30 object-cover" />
                     ) : (
                         <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-xs border-2 border-blue-500/30">
                             {profile.full_name.charAt(0)}
@@ -149,7 +150,7 @@ export default function DashboardPage() {
                 </div>
 
                 {/* Grid dos 4 módulos */}
-                <div className="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-4">
+                <div className="flex-1 min-h-0 grid grid-cols-2 xl:grid-cols-4 gap-4 mb-4">
                     {MODULES_UI.map((module) => {
                         const canAccess = hasPermission(profile.role, module.id)
                         const isHovered = hoveredModule === module.id

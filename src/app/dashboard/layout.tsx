@@ -5,7 +5,7 @@ import { createClient } from '@/lib/supabase'
 import { useRouter, usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { hasPermission } from '@/lib/permissions'
-import { motion, AnimatePresence, Variants } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useUnreadChat } from '@/hooks/useUnreadChat'
 
 interface Profile {

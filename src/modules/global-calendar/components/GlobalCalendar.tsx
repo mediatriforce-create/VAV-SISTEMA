@@ -19,6 +19,18 @@ export function GlobalCalendar({ userRole, userId }: { userRole?: string; userId
     const [selectedEvent, setSelectedEvent] = useState<GlobalEvent | null>(null);
     const [isSaving, setIsSaving] = useState(false);
 
+    // Fechar modais com Escape
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                setIsCreateModalOpen(false);
+                setIsViewModalOpen(false);
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, []);
+
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
 
@@ -219,11 +231,15 @@ export function GlobalCalendar({ userRole, userId }: { userRole?: string; userId
             {/* Create Event Modal */}
             <AnimatePresence>
                 {isCreateModalOpen && (
-                    <div className="absolute inset-0 z-50 flex items-center justify-center p-4 bg-zinc-900/60 backdrop-blur-sm">
+                    <div
+                        className="absolute inset-0 z-50 flex items-center justify-center p-4 bg-zinc-900/60 backdrop-blur-sm"
+                        onClick={(e) => { if (e.target === e.currentTarget) setIsCreateModalOpen(false); }}
+                    >
                         <motion.div
                             initial={{ opacity: 0, scale: 0.95, y: 15 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.95, y: 15 }}
+                            transition={{ type: 'spring', stiffness: 300, damping: 25 }}
                             className="bg-white dark:bg-zinc-900 w-full max-w-lg rounded-[2rem] p-8 shadow-2xl border border-zinc-200 dark:border-white/10 relative overflow-hidden"
                         >
                             <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-indigo-500 to-purple-500"></div>
@@ -270,11 +286,15 @@ export function GlobalCalendar({ userRole, userId }: { userRole?: string; userId
             {/* View Event Modal */}
             <AnimatePresence>
                 {isViewModalOpen && selectedEvent && (
-                    <div className="absolute inset-0 z-50 flex items-center justify-center p-4 bg-zinc-900/80 backdrop-blur-md">
+                    <div
+                        className="absolute inset-0 z-50 flex items-center justify-center p-4 bg-zinc-900/80 backdrop-blur-md"
+                        onClick={(e) => { if (e.target === e.currentTarget) setIsViewModalOpen(false); }}
+                    >
                         <motion.div
                             initial={{ opacity: 0, scale: 0.95, y: 15 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.95, y: 15 }}
+                            transition={{ type: 'spring', stiffness: 300, damping: 25 }}
                             className="bg-white dark:bg-zinc-900 w-full max-w-lg rounded-[2rem] shadow-2xl border border-zinc-200 dark:border-white/10 relative overflow-hidden flex flex-col max-h-[90vh]"
                         >
                             {/* Banner Image */}
