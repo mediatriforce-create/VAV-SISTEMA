@@ -228,8 +228,8 @@ export default function DashboardLayout({
                 <main className={`flex-1 flex flex-col min-h-0 min-w-0 relative z-10 w-full ${pathname === '/dashboard'
                     ? 'p-0 overflow-hidden'
                     : pathname.startsWith('/dashboard/chat')
-                        ? 'md:pl-14 overflow-hidden pb-16 md:pb-0'
-                        : 'md:pl-14 pt-4 md:pt-6 pb-20 md:pb-6 px-4 md:pr-6 lg:pr-8 overflow-y-auto custom-scrollbar'
+                        ? 'md:pl-[76px] pt-3 md:pt-4 overflow-hidden pb-16 md:pb-0'
+                        : 'md:pl-[76px] pt-5 md:pt-7 pb-20 md:pb-8 px-5 md:pr-8 lg:pr-10 overflow-y-auto custom-scrollbar'
                     }`}>
                     <div className={`mx-auto w-full flex-1 flex flex-col min-h-0 ${(pathname === '/dashboard' || pathname.startsWith('/dashboard/chat')) ? 'max-w-none' : 'max-w-7xl'}`}>
                         <div className="w-full flex-1 flex flex-col min-h-0">
