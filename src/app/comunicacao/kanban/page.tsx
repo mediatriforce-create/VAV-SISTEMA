@@ -247,7 +247,7 @@ export default function KanbanPage() {
         new Map(
             demands
                 .filter(d => d.assignee?.full_name && d.assigned_to)
-                .map(d => [d.assigned_to, d.assignee!.full_name])
+                .map(d => [d.assigned_to as string, d.assignee!.full_name])
         ).entries()
     );
 
