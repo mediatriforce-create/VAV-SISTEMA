@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { hasPermission } from '@/lib/permissions'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useUnreadChat } from '@/hooks/useUnreadChat'
+import GlobalSearch from '@/components/ui/GlobalSearch'
 
 interface Profile {
     full_name: string
@@ -219,6 +220,11 @@ export default function DashboardLayout({
                                 {isMenuOpen && <span className="text-sm font-medium whitespace-nowrap">Aprovações</span>}
                             </Link>
                         </nav>
+
+                        {/* Busca Global */}
+                        <div className="border-t border-zinc-100 dark:border-white/5 py-2 px-2 shrink-0">
+                            <GlobalSearch />
+                        </div>
 
                         {/* Seção de Perfil no Fundo */}
                         <div className="border-t border-zinc-100 dark:border-white/5 py-2 px-2 flex flex-col gap-1 shrink-0">
