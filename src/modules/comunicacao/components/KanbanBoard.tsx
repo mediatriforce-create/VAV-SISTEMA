@@ -38,14 +38,13 @@ export default function KanbanBoard({ initialDemands }: KanbanBoardProps) {
     const supabase = createClient();
 
     useEffect(() => {
-        supabase.auth.getUser().then(({ data: { user } }) => {
+        void (async () => {
+            const { data: { user } } = await supabase.auth.getUser();
             if (!user) return;
             setCurrentUserId(user.id);
-            supabase.from('profiles').select('role').eq('id', user.id).single()
-                .then(({ data }) => {
-                    setIsLeadership(['Presidência', 'Direção'].includes(data?.role ?? ''));
-                });
-        });
+            const { data } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+            setIsLeadership(['Presidência', 'Direção'].includes(data?.role ?? ''));
+        })();
     }, []);
 
     const sensors = useSensors(
