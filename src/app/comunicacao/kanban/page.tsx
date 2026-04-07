@@ -146,7 +146,8 @@ export default function KanbanPage() {
     const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }));
 
     useEffect(() => {
-        supabase.auth.getUser().then(({ data: { user } }) => {
+        supabase.auth.getUser().then((res) => {
+            const user = res.data.user;
             if (!user) return;
             setCurrentUserId(user.id);
             supabase.from('profiles').select('role').eq('id', user.id).single()
