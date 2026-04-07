@@ -75,31 +75,31 @@ export default function GlobalSearch() {
             supabase.from('mural_posts').select('id, title, category').ilike('title', term).limit(4),
         ]);
 
-        (demands ?? []).forEach(d => collected.push({
+        (demands ?? []).forEach((d: any) => collected.push({
             id: d.id, title: d.title,
             subtitle: `Status: ${d.status?.replace('_', ' ')}`,
             type: 'demand', href: '/comunicacao/kanban',
             icon: TYPE_CONFIG.demand.icon, color: TYPE_CONFIG.demand.color,
         }));
-        (meetings ?? []).forEach(m => collected.push({
+        (meetings ?? []).forEach((m: any) => collected.push({
             id: m.id, title: m.title,
             subtitle: m.scheduled_at ? new Date(m.scheduled_at).toLocaleDateString('pt-BR') : undefined,
             type: 'meeting', href: '/dashboard/reunioes',
             icon: TYPE_CONFIG.meeting.icon, color: TYPE_CONFIG.meeting.color,
         }));
-        (events ?? []).forEach(e => collected.push({
+        (events ?? []).forEach((e: any) => collected.push({
             id: e.id, title: e.title,
             subtitle: e.start_time ? new Date(e.start_time).toLocaleDateString('pt-BR') : undefined,
             type: 'event', href: '/dashboard/calendario',
             icon: TYPE_CONFIG.event.icon, color: TYPE_CONFIG.event.color,
         }));
-        (students ?? []).forEach(s => collected.push({
+        (students ?? []).forEach((s: any) => collected.push({
             id: s.id, title: s.full_name,
             subtitle: 'Aluno',
             type: 'student', href: '/dashboard/pedagogia',
             icon: TYPE_CONFIG.student.icon, color: TYPE_CONFIG.student.color,
         }));
-        (mural ?? []).forEach(p => collected.push({
+        (mural ?? []).forEach((p: any) => collected.push({
             id: p.id, title: p.title,
             subtitle: p.category,
             type: 'mural', href: '/dashboard/mural',
