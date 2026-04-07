@@ -6,9 +6,10 @@ import DemandCard from '@/modules/coord/components/DemandCard';
 
 interface KanbanCardProps {
     demand: Demand;
+    onCardClick: (demand: Demand) => void;
 }
 
-export default function KanbanCard({ demand }: KanbanCardProps) {
+export default function KanbanCard({ demand, onCardClick }: KanbanCardProps) {
     const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
         id: demand.id,
         data: { ...demand },
@@ -23,7 +24,7 @@ export default function KanbanCard({ demand }: KanbanCardProps) {
 
     return (
         <div ref={setNodeRef} style={style} {...listeners} {...attributes}>
-            <DemandCard demand={demand} />
+            <DemandCard demand={demand} onClick={!isDragging ? onCardClick : undefined} />
         </div>
     );
 }

@@ -5,13 +5,14 @@ import { Demand } from '@/types/demands';
 import KanbanCard from './KanbanCard';
 
 interface KanbanColumnProps {
-    id: string; // "a_fazer", "em_andamento", etc.
+    id: string;
     title: string;
     demands: Demand[];
     color: string;
+    onCardClick: (demand: Demand) => void;
 }
 
-export default function KanbanColumn({ id, title, demands, color }: KanbanColumnProps) {
+export default function KanbanColumn({ id, title, demands, color, onCardClick }: KanbanColumnProps) {
     const { setNodeRef, isOver } = useDroppable({
         id: id,
     });
@@ -35,7 +36,7 @@ export default function KanbanColumn({ id, title, demands, color }: KanbanColumn
                     }`}
             >
                 {demands.map(demand => (
-                    <KanbanCard key={demand.id} demand={demand} />
+                    <KanbanCard key={demand.id} demand={demand} onCardClick={onCardClick} />
                 ))}
                 {demands.length === 0 && (
                     <div className="h-full flex items-center justify-center text-slate-300 dark:text-zinc-600 text-sm border-2 border-dashed border-slate-200 dark:border-white/10 rounded-lg">

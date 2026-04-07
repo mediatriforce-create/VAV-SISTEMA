@@ -1,6 +1,6 @@
 ﻿'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
     DndContext,
     DragEndEvent,
@@ -13,6 +13,7 @@ import {
 import { Demand } from '@/types/demands';
 import KanbanColumn from './KanbanColumn';
 import DemandCard from '@/modules/coord/components/DemandCard';
+import DemandDetailsModal from '@/modules/shared/components/DemandDetailsModal';
 import { createClient } from '@/lib/supabase';
 
 interface KanbanBoardProps {
@@ -30,8 +31,22 @@ const COLUMNS = [
 export default function KanbanBoard({ initialDemands }: KanbanBoardProps) {
     const [demands, setDemands] = useState<Demand[]>(initialDemands);
     const [activeDemand, setActiveDemand] = useState<Demand | null>(null);
+    const [selectedDemand, setSelectedDemand] = useState<Demand | null>(null);
+    const [currentUserId, setCurrentUserId] = useState<string>('');
+    const [isLeadership, setIsLeadership] = useState(false);
 
     const supabase = createClient();
+
+    useEffect(() => {
+        supabase.auth.getUser().then(({ data: { user } }) => {
+            if (!user) return;
+            setCurrentUserId(user.id);
+            supabase.from('profiles').select('role').eq('id', user.id).single()
+                .then(({ data }) => {
+                    setIsLeadership(['Presidência', 'Direção'].includes(data?.role ?? ''));
+                });
+        });
+    }, []);
 
     const sensors = useSensors(
         useSensor(PointerSensor, {
@@ -88,6 +103,7 @@ export default function KanbanBoard({ initialDemands }: KanbanBoardProps) {
                         title={col.title}
                         color={col.color}
                         demands={demands.filter(d => d.status === col.id)}
+                        onCardClick={setSelectedDemand}
                     />
                 ))}
             </div>
@@ -99,6 +115,14 @@ export default function KanbanBoard({ initialDemands }: KanbanBoardProps) {
                     </div>
                 ) : null}
             </DragOverlay>
+
+            <DemandDetailsModal
+                isOpen={!!selectedDemand}
+                onClose={() => setSelectedDemand(null)}
+                demand={selectedDemand}
+                currentUserId={currentUserId}
+                isLeadership={isLeadership}
+            />
         </DndContext >
     );
 }
