@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect, useCallback, useRef, useTransition } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { createClient } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
@@ -38,7 +39,7 @@ export default function GlobalSearch() {
         const handler = (e: KeyboardEvent) => {
             if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
                 e.preventDefault();
-                setOpen(v => !v);
+                setOpen((v: boolean) => !v);
             }
             if (e.key === 'Escape') setOpen(false);
         };
@@ -121,26 +122,16 @@ export default function GlobalSearch() {
         setOpen(false);
     };
 
-    const handleKeyDown = (e: React.KeyboardEvent) => {
-        if (e.key === 'ArrowDown') { e.preventDefault(); setSelectedIdx(i => Math.min(i + 1, results.length - 1)); }
-        if (e.key === 'ArrowUp')   { e.preventDefault(); setSelectedIdx(i => Math.max(i - 1, 0)); }
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'ArrowDown') { e.preventDefault(); setSelectedIdx((i: number) => Math.min(i + 1, results.length - 1)); }
+        if (e.key === 'ArrowUp')   { e.preventDefault(); setSelectedIdx((i: number) => Math.max(i - 1, 0)); }
         if (e.key === 'Enter' && results[selectedIdx]) navigate(results[selectedIdx].href);
     };
 
-    return (
-        <>
-            {/* Trigger button (shown in sidebar bottom) */}
-            <button
-                onClick={() => setOpen(true)}
-                title="Busca global (Ctrl+K)"
-                className="flex items-center gap-3 rounded-xl transition-all duration-200 w-full justify-center py-2.5 text-zinc-500 dark:text-zinc-400 hover:text-blue-600 dark:hover:text-primary hover:bg-zinc-100 dark:hover:bg-white/5"
-            >
-                <span className="material-symbols-outlined text-xl">search</span>
-            </button>
-
-            <AnimatePresence>
-                {open && (
-                    <motion.div
+    const modal = (
+        <AnimatePresence>
+            {open && (
+                <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
@@ -152,7 +143,7 @@ export default function GlobalSearch() {
                             animate={{ scale: 1, opacity: 1, y: 0 }}
                             exit={{ scale: 0.95, opacity: 0, y: -10 }}
                             transition={{ type: 'spring', stiffness: 320, damping: 26 }}
-                            onClick={e => e.stopPropagation()}
+                            onClick={(e: React.MouseEvent) => e.stopPropagation()}
                             className="w-full max-w-xl bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-zinc-200 dark:border-white/10 overflow-hidden"
                         >
                             {/* Search input */}
@@ -223,6 +214,21 @@ export default function GlobalSearch() {
                     </motion.div>
                 )}
             </AnimatePresence>
+    );
+
+    return (
+        <>
+            {/* Trigger button */}
+            <button
+                onClick={() => setOpen(true)}
+                title="Busca global (Ctrl+K)"
+                className="flex items-center gap-3 rounded-xl transition-all duration-200 w-full justify-center py-2.5 text-zinc-500 dark:text-zinc-400 hover:text-blue-600 dark:hover:text-primary hover:bg-zinc-100 dark:hover:bg-white/5"
+            >
+                <span className="material-symbols-outlined text-xl">search</span>
+            </button>
+
+            {/* Modal via portal — escapa do stacking context do sidebar */}
+            {typeof document !== 'undefined' && createPortal(modal, document.body)}
         </>
     );
 }
