@@ -74,9 +74,10 @@ export default function DashboardLayout({
         return hasPermission(profile.role as any, item.module as any);
     });
 
-    // Mobile bottom nav: principais módulos + chat
+    // Mobile bottom nav: principais módulos + chat + mural
     const mobileNavItems = [
-        ...navItems.slice(0, 4),
+        ...navItems.slice(0, 3),
+        { name: 'Mural', icon: 'campaign', href: '/dashboard/mural' },
         ...(hasPermission(profile.role as any, 'chat' as any) ? [{ name: 'Chat', icon: 'forum', href: '/dashboard/chat' }] : []),
     ]
 
@@ -193,6 +194,18 @@ export default function DashboardLayout({
                                     )}
                                 </Link>
                             )}
+
+                            <Link
+                                href="/dashboard/mural"
+                                title={!isMenuOpen ? 'Mural' : undefined}
+                                className={`flex items-center gap-3 rounded-xl transition-all duration-200 group/nav shrink-0 ${isMenuOpen ? 'px-3 py-2.5' : 'justify-center py-2.5'} ${pathname.startsWith('/dashboard/mural')
+                                    ? 'bg-blue-50 dark:bg-primary/10 text-blue-600 dark:text-primary font-bold'
+                                    : 'text-zinc-500 dark:text-zinc-400 hover:text-blue-600 dark:hover:text-primary hover:bg-zinc-100 dark:hover:bg-white/5'
+                                    }`}
+                            >
+                                <span className="material-symbols-outlined text-xl shrink-0 group-hover/nav:scale-110 transition-transform">campaign</span>
+                                {isMenuOpen && <span className="text-sm font-medium whitespace-nowrap">Mural</span>}
+                            </Link>
                         </nav>
 
                         {/* Seção de Perfil no Fundo */}
