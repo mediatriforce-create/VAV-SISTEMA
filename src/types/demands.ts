@@ -8,6 +8,13 @@ export interface ApprovalSubmission {
     submitted_by: string | null;
     justification_text: string | null;
     file_urls: string[];
+    status: 'pending' | 'approved' | 'rejected';
+    reviewed_by: string | null;
+    reviewed_at: string | null;
+    review_notes: string | null;
+    // Joins
+    submitter?: { full_name: string; avatar_url: string | null };
+    demand?: { title: string; sector: string };
 }
 export type DemandPriority = 'baixa' | 'media' | 'alta';
 export type DemandStatus = 'a_fazer' | 'em_andamento' | 'revisao' | 'aprovacao' | 'finalizado';

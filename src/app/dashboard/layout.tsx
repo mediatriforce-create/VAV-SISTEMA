@@ -206,6 +206,18 @@ export default function DashboardLayout({
                                 <span className="material-symbols-outlined text-xl shrink-0 group-hover/nav:scale-110 transition-transform">campaign</span>
                                 {isMenuOpen && <span className="text-sm font-medium whitespace-nowrap">Mural</span>}
                             </Link>
+
+                            <Link
+                                href="/dashboard/aprovacoes"
+                                title={!isMenuOpen ? 'Aprovações' : undefined}
+                                className={`flex items-center gap-3 rounded-xl transition-all duration-200 group/nav shrink-0 ${isMenuOpen ? 'px-3 py-2.5' : 'justify-center py-2.5'} ${pathname.startsWith('/dashboard/aprovacoes')
+                                    ? 'bg-blue-50 dark:bg-primary/10 text-blue-600 dark:text-primary font-bold'
+                                    : 'text-zinc-500 dark:text-zinc-400 hover:text-blue-600 dark:hover:text-primary hover:bg-zinc-100 dark:hover:bg-white/5'
+                                    }`}
+                            >
+                                <span className="material-symbols-outlined text-xl shrink-0 group-hover/nav:scale-110 transition-transform">task_alt</span>
+                                {isMenuOpen && <span className="text-sm font-medium whitespace-nowrap">Aprovações</span>}
+                            </Link>
                         </nav>
 
                         {/* Seção de Perfil no Fundo */}
