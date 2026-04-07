@@ -9,6 +9,7 @@ import {
 import { getKanbanCards, createKanbanCard, updateKanbanCardStatus, deleteKanbanCard, getMyClasses } from '@/actions/pedagogia';
 import { createClient } from '@/lib/supabase';
 import type { PedKanbanCard, Class, KanbanColumnStatus } from '@/types/pedagogia';
+import type { Demand } from '@/types/demands';
 import ApprovalSubmissionModal from '@/modules/shared/components/ApprovalSubmissionModal';
 import DemandDetailsModal from '@/modules/shared/components/DemandDetailsModal';
 
@@ -161,7 +162,7 @@ export default function PedagogiaKanbanPage() {
     const [submitting, setSubmitting] = useState(false);
     const [approvalModal, setApprovalModal] = useState<{ cardId: string; title: string } | null>(null);
     const [pendingApproval, setPendingApproval] = useState<{ cardId: string; oldStatus: KanbanColumnStatus } | null>(null);
-    const [detailsModalData, setDetailsModalData] = useState<any>(null);
+    const [selectedDemand, setSelectedDemand] = useState<Demand | null>(null);
 
     const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }));
 
@@ -294,14 +295,24 @@ export default function PedagogiaKanbanPage() {
                             col={col}
                             cards={cards.filter(c => c.column_status === col.id)}
                             onDelete={handleDelete}
-                            onCardClick={(c) => setDetailsModalData({
+                            onCardClick={(c) => setSelectedDemand({
+                                id: c.id,
                                 title: c.title,
                                 description: c.description,
                                 due_date: c.due_date,
-                                assigneeName: c.creator?.full_name,
                                 coordination_note: c.coordination_note,
-                                is_rejected: c.is_rejected
-                            })}
+                                is_rejected: c.is_rejected,
+                                assignee: c.creator ? { full_name: c.creator.full_name, avatar_url: null } : undefined,
+                                // required fields with defaults
+                                created_at: c.created_at,
+                                created_by: c.created_by ?? '',
+                                assigned_to: null,
+                                sector: 'pedagogia',
+                                priority: 'media',
+                                status: 'em_andamento',
+                                order_index: 0,
+                                is_archived: false,
+                            } as Demand)}
                         />
                     ))}
                 </div>
@@ -404,9 +415,9 @@ export default function PedagogiaKanbanPage() {
             />
 
             <DemandDetailsModal
-                isOpen={!!detailsModalData}
-                onClose={() => setDetailsModalData(null)}
-                data={detailsModalData}
+                isOpen={!!selectedDemand}
+                onClose={() => setSelectedDemand(null)}
+                demand={selectedDemand}
             />
         </div>
     );

@@ -136,10 +136,25 @@ export default function KanbanPage() {
     const [loading, setLoading] = useState(true);
     const [approvalModal, setApprovalModal] = useState<{ demandId: string; title: string } | null>(null);
     const [pendingApproval, setPendingApproval] = useState<{ demandId: string; oldStatus: DemandStatus } | null>(null);
-    const [detailsModalData, setDetailsModalData] = useState<any>(null);
+    const [selectedDemand, setSelectedDemand] = useState<Demand | null>(null);
+    const [filterPriority, setFilterPriority] = useState<DemandPriority | 'all'>('all');
+    const [filterAssignee, setFilterAssignee] = useState<string>('all');
+    const [currentUserId, setCurrentUserId] = useState('');
+    const [isLeadership, setIsLeadership] = useState(false);
 
     const supabase = createClient();
     const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }));
+
+    useEffect(() => {
+        supabase.auth.getUser().then(({ data: { user } }) => {
+            if (!user) return;
+            setCurrentUserId(user.id);
+            supabase.from('profiles').select('role').eq('id', user.id).single()
+                .then(({ data }) => {
+                    setIsLeadership(['Presidência', 'Direção'].includes(data?.role ?? ''));
+                });
+        });
+    }, []);
 
     useEffect(() => {
         async function fetchDemands() {
@@ -228,6 +243,24 @@ export default function KanbanPage() {
         setPendingApproval(null);
     };
 
+    // Derived: unique assignees in current demand list
+    const assignees = Array.from(
+        new Map(
+            demands
+                .filter(d => d.assignee?.full_name && d.assigned_to)
+                .map(d => [d.assigned_to, d.assignee!.full_name])
+        ).entries()
+    );
+
+    // Filtered demands
+    const filteredDemands = demands.filter(d => {
+        if (filterPriority !== 'all' && d.priority !== filterPriority) return false;
+        if (filterAssignee !== 'all' && d.assigned_to !== filterAssignee) return false;
+        return true;
+    });
+
+    const hasActiveFilters = filterPriority !== 'all' || filterAssignee !== 'all';
+
     if (loading) {
         return (
             <div className="h-full flex items-center justify-center">
@@ -251,6 +284,64 @@ export default function KanbanPage() {
                 </div>
             </div>
 
+            {/* Filter Bar */}
+            <div className="shrink-0 flex flex-wrap items-center gap-2 mb-4">
+                {/* Priority filters */}
+                <div className="flex items-center gap-1.5 bg-zinc-100 dark:bg-zinc-800 rounded-xl px-3 py-1.5">
+                    <span className="material-symbols-outlined text-sm text-zinc-400">flag</span>
+                    {(['all', 'baixa', 'media', 'alta'] as const).map(p => (
+                        <button
+                            key={p}
+                            onClick={() => setFilterPriority(p)}
+                            className={`text-xs font-semibold px-2.5 py-1 rounded-lg transition-all ${
+                                filterPriority === p
+                                    ? p === 'all' ? 'bg-zinc-700 text-white dark:bg-zinc-200 dark:text-zinc-900'
+                                    : p === 'baixa' ? 'bg-green-500 text-white'
+                                    : p === 'media' ? 'bg-yellow-500 text-white'
+                                    : 'bg-red-500 text-white'
+                                    : 'text-zinc-500 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700'
+                            }`}
+                        >
+                            {p === 'all' ? 'Todas' : p === 'media' ? 'Média' : p.charAt(0).toUpperCase() + p.slice(1)}
+                        </button>
+                    ))}
+                </div>
+
+                {/* Assignee filter */}
+                {assignees.length > 0 && (
+                    <div className="flex items-center gap-1.5 bg-zinc-100 dark:bg-zinc-800 rounded-xl px-3 py-1.5">
+                        <span className="material-symbols-outlined text-sm text-zinc-400">person</span>
+                        <select
+                            value={filterAssignee}
+                            onChange={e => setFilterAssignee(e.target.value)}
+                            className="text-xs font-semibold bg-transparent text-zinc-700 dark:text-zinc-300 outline-none cursor-pointer"
+                        >
+                            <option value="all">Todos</option>
+                            {assignees.map(([id, name]) => (
+                                <option key={id} value={id}>{name}</option>
+                            ))}
+                        </select>
+                    </div>
+                )}
+
+                {/* Clear filters */}
+                {hasActiveFilters && (
+                    <button
+                        onClick={() => { setFilterPriority('all'); setFilterAssignee('all'); }}
+                        className="text-xs font-semibold text-zinc-400 hover:text-red-500 flex items-center gap-1 transition-colors"
+                    >
+                        <span className="material-symbols-outlined text-sm">close</span>
+                        Limpar filtros
+                    </button>
+                )}
+
+                {hasActiveFilters && (
+                    <span className="text-xs text-zinc-400 ml-auto">
+                        {filteredDemands.length} de {demands.length} demanda{demands.length !== 1 ? 's' : ''}
+                    </span>
+                )}
+            </div>
+
             {/* Kanban Board */}
             <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
                 <div className="h-full flex gap-5 overflow-x-auto custom-scrollbar pb-2 items-stretch">
@@ -258,15 +349,8 @@ export default function KanbanPage() {
                         <KanbanColumn
                             key={col.id}
                             col={col}
-                            demands={demands.filter(d => d.status === col.id)}
-                            onCardClick={(d) => setDetailsModalData({
-                                title: d.title,
-                                description: d.description,
-                                due_date: d.due_date,
-                                assigneeName: d.assignee?.full_name,
-                                coordination_note: d.coordination_note,
-                                is_rejected: d.is_rejected
-                            })}
+                            demands={filteredDemands.filter(d => d.status === col.id)}
+                            onCardClick={setSelectedDemand}
                         />
                     ))}
                 </div>
@@ -292,9 +376,11 @@ export default function KanbanPage() {
             />
 
             <DemandDetailsModal
-                isOpen={!!detailsModalData}
-                onClose={() => setDetailsModalData(null)}
-                data={detailsModalData}
+                isOpen={!!selectedDemand}
+                onClose={() => setSelectedDemand(null)}
+                demand={selectedDemand}
+                currentUserId={currentUserId}
+                isLeadership={isLeadership}
             />
         </div>
     );

@@ -137,10 +137,23 @@ export default function KanbanPage() {
     const [loading, setLoading] = useState(true);
     const [approvalModal, setApprovalModal] = useState<{ demandId: string; title: string } | null>(null);
     const [pendingApproval, setPendingApproval] = useState<{ demandId: string; oldStatus: DemandStatus } | null>(null);
-    const [detailsModalData, setDetailsModalData] = useState<any>(null);
+    const [selectedDemand, setSelectedDemand] = useState<Demand | null>(null);
+    const [currentUserId, setCurrentUserId] = useState('');
+    const [isLeadership, setIsLeadership] = useState(false);
 
     const supabase = createClient();
     const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }));
+
+    useEffect(() => {
+        supabase.auth.getUser().then(({ data: { user } }) => {
+            if (!user) return;
+            setCurrentUserId(user.id);
+            supabase.from('profiles').select('role').eq('id', user.id).single()
+                .then(({ data }) => {
+                    setIsLeadership(['Presidência', 'Direção'].includes(data?.role ?? ''));
+                });
+        });
+    }, []);
 
     useEffect(() => {
         async function fetchDemands() {
@@ -269,14 +282,7 @@ export default function KanbanPage() {
                                 key={col.id}
                                 col={col}
                                 demands={demands.filter(d => d.status === col.id)}
-                                onCardClick={(d) => setDetailsModalData({
-                                    title: d.title,
-                                    description: d.description,
-                                    due_date: d.due_date,
-                                    assigneeName: d.assignee?.full_name,
-                                    coordination_note: d.coordination_note,
-                                    is_rejected: d.is_rejected
-                                })}
+                                onCardClick={(d) => setSelectedDemand(d)}
                             />
                         ))}
                     </div>
@@ -303,9 +309,11 @@ export default function KanbanPage() {
             />
 
             <DemandDetailsModal
-                isOpen={!!detailsModalData}
-                onClose={() => setDetailsModalData(null)}
-                data={detailsModalData}
+                isOpen={!!selectedDemand}
+                onClose={() => setSelectedDemand(null)}
+                demand={selectedDemand}
+                currentUserId={currentUserId}
+                isLeadership={isLeadership}
             />
         </div>
     );
