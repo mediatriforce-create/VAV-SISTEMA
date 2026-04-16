@@ -6,7 +6,7 @@ import Papa from 'papaparse'
 
 // --- POLYFILLS FOR PDF.JS ---
 if (typeof Promise.withResolvers === 'undefined') {
-    // @ts-ignore
+    // @ts-expect-error polyfill assignment
     Promise.withResolvers = function () {
         let resolve, reject;
         const promise = new Promise((res, rej) => {
@@ -18,23 +18,23 @@ if (typeof Promise.withResolvers === 'undefined') {
 }
 
 if (typeof global.self === 'undefined') {
-    // @ts-ignore
+    // @ts-expect-error polyfill assignment
     global.self = global;
 }
 
 if (typeof global.DOMMatrix === 'undefined') {
-    // @ts-ignore
+    // @ts-expect-error polyfill assignment
     global.DOMMatrix = class DOMMatrix {
         constructor() {
-            // @ts-ignore
+            // @ts-expect-error polyfill assignment
             this.a = 1; this.b = 0; this.c = 0; this.d = 1; this.e = 0; this.f = 0;
-            // @ts-ignore
+            // @ts-expect-error polyfill assignment
             this.m11 = 1; this.m12 = 0; this.m13 = 0; this.m14 = 0;
-            // @ts-ignore
+            // @ts-expect-error polyfill assignment
             this.m21 = 0; this.m22 = 1; this.m23 = 0; this.m24 = 0;
-            // @ts-ignore
+            // @ts-expect-error polyfill assignment
             this.m31 = 0; this.m32 = 0; this.m33 = 1; this.m34 = 0;
-            // @ts-ignore
+            // @ts-expect-error polyfill assignment
             this.m41 = 0; this.m42 = 0; this.m43 = 0; this.m44 = 1;
         }
     }
