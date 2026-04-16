@@ -51,7 +51,6 @@ export async function createMeetingAction(payload: CreateMeetingPayload) {
         const calendarId = process.env.GOOGLE_CALENDAR_ID;
 
         if (calendarId) {
-            console.log('Gerando evento no Google Calendar...');
             const calendar = getCalendarClient();
 
             const event = {
@@ -87,7 +86,6 @@ export async function createMeetingAction(payload: CreateMeetingPayload) {
                 requestBody: { location: hangoutLink }
             });
 
-            console.log('Evento gerado com sucesso. Link Local:', hangoutLink);
         } else {
             console.warn('Aviso: GOOGLE_CALENDAR_ID não configurado. Ponto de falha, agendando apenas no BD.');
         }

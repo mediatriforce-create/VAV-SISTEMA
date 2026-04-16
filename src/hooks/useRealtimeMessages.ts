@@ -66,9 +66,6 @@ export function useRealtimeMessages(roomId: string, initialMessages: Message[]) 
     useEffect(() => {
         if (!roomId) return;
 
-        console.log(`[WebSocket] Tentando conectar na sala: room_${roomId}...`);
-
-        // Inscreve no canal específico de Realtime para essa tabela E room específica
         const channel = supabase
             .channel(`room_${roomId}`)
             .on(
@@ -79,18 +76,14 @@ export function useRealtimeMessages(roomId: string, initialMessages: Message[]) 
                     table: 'messages',
                 },
                 (payload: any) => {
-                    console.log(`[WebSocket] NOVO PAYLOAD RECEBIDO NA SALA ${roomId}:`, payload);
                     if (handleNewMessageRef.current) {
                         handleNewMessageRef.current(payload);
                     }
                 }
             )
-            .subscribe((status: any) => {
-                console.log(`[WebSocket] Status da inscrição na sala ${roomId}:`, status);
-            });
+            .subscribe();
 
         return () => {
-            console.log(`[WebSocket] Desconectando da sala: room_${roomId}...`);
             supabase.removeChannel(channel);
         };
     }, [roomId, supabase]);

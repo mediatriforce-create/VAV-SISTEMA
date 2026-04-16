@@ -44,12 +44,9 @@ export function NewEntryModal({ isOpen, onClose, bankId, currentUserName }: NewE
         const formData = new FormData()
 
         try {
-            console.log('Starting manual save...')
-
             // 1. Upload File (Optional)
             let attachmentUrl = ''
             if (file) {
-                console.log('Uploading file:', file.name)
                 const fileExt = file.name.split('.').pop()
                 const fileName = `${Math.random()}.${fileExt}`
                 const filePath = `receipts/${fileName}`
@@ -77,14 +74,12 @@ export function NewEntryModal({ isOpen, onClose, bankId, currentUserName }: NewE
             formData.append('entry_date', entryDate)
             formData.append('attachment_url', attachmentUrl)
 
-            console.log('Calling server action...')
             const result = await createFinancialEntry(formData)
 
             if (result.error) {
                 console.error('Server error:', result.error)
                 alert('Erro ao salvar: ' + result.error)
             } else {
-                console.log('Success!')
                 alert('Lançamento salvo com sucesso!')
                 onClose()
 
