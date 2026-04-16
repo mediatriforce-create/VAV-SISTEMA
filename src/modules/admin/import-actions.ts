@@ -58,6 +58,12 @@ export async function parseFile(formData: FormData): Promise<{ success: boolean,
             return { success: false, error: 'Arquivo não fornecido.' }
         }
 
+        // Validacao de tamanho (extrato pode ser ate 10MB)
+        const MAX_BYTES = 10 * 1024 * 1024
+        if (file.size > MAX_BYTES) {
+            return { success: false, error: 'Arquivo excede 10 MB.' }
+        }
+
         const buffer = Buffer.from(await file.arrayBuffer())
         const fileType = file.name.split('.').pop()?.toLowerCase()
 

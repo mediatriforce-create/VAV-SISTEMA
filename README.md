@@ -1,36 +1,105 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# VAV Central
 
-## Getting Started
+ERP/LMS interno da ONG Viva a Vida. Cobre pedagogia, coordenacao,
+comunicacao, financeiro, reunioes, calendario, chat e aprovacoes.
 
-First, run the development server:
+## Stack
+
+- **Next.js 16** (App Router, Server Actions, Turbopack)
+- **React 19** + **TypeScript** (strict)
+- **Tailwind CSS v4** (com tema customizado, dark mode)
+- **Supabase** (Postgres + Auth + Storage + Realtime + RLS)
+- **Google APIs** (Drive para arquivos, Calendar/Meet para reunioes)
+- **Jitsi** (videoconferencia embarcada como fallback do Meet)
+
+## Setup local
 
 ```bash
+# 1. Clone e instale
+git clone <repo>
+cd VAV-SISTEMA
+npm install
+
+# 2. Variaveis de ambiente
+cp .env.example .env.local
+# preencha .env.local com as chaves do Supabase e Google
+
+# 3. Aplicar migrations no Supabase
+# Via CLI:
+supabase db push
+# Ou cole o conteudo de supabase/migrations/*.sql em ordem no SQL Editor
+
+# 4. Rodar
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abre em `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Estrutura
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+src/
+├── app/                     # Rotas (App Router)
+│   ├── dashboard/           # Area autenticada principal
+│   ├── comunicacao/         # Modulo de Comunicacao (Drive, Galeria, Kanban)
+│   ├── coord/               # Coordenacao + demandas
+│   ├── login/, signup/      # Auth
+│   └── api/                 # Endpoints REST internos
+├── modules/                 # Features (admin, aprovacoes, comunicacao,
+│                            #          coord, mural, pedagogia,
+│                            #          personal-area, settings, shared)
+├── actions/                 # Server actions
+├── components/              # Componentes UI compartilhados
+├── hooks/                   # Custom React hooks
+├── lib/                     # Integracao Supabase, Google, permissions
+└── types/                   # Tipos TS compartilhados
 
-## Learn More
+supabase/
+├── migrations/              # SQL versionado, aplicado em ordem
+└── destructive/             # Scripts perigosos (NAO rodar em producao)
 
-To learn more about Next.js, take a look at the following resources:
+scripts/
+└── dev-utilities/           # Scripts ad-hoc para debug local
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+proxy.ts                     # Auth + route guards (substitui middleware)
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Roles e permissoes
 
-## Deploy on Vercel
+Definidas em `src/lib/permissions.ts`. 8 roles:
+`Presidencia`, `Direcao`, `Coordenadora ADM`, `Coordenacao de Pedagogia`,
+`Educador`, `Estagiario(a) de ADM`, `Estagiario(a) de Comunicacao`,
+`Estagiario(a) de Pedagogia`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Cada role mapeia para 8 modulos (`administracao`, `coordenacao`,
+`comunicacao`, `pedagogia`, `reunioes`, `calendario`, `chat`,
+`configuracoes`) com nivel `full` / `view` / `none`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+`proxy.ts` aplica route guards baseados nesse mapa — usuario sem
+permissao e redirecionado para `/dashboard?forbidden=<modulo>`.
+
+## Comandos
+
+```bash
+npm run dev      # dev server (Turbopack)
+npm run build    # build de producao
+npm run start    # roda build de producao
+npm run lint     # ESLint
+npx tsc --noEmit # typecheck
+```
+
+## Integracoes externas
+
+| Servico | Uso | Vars de ambiente |
+|---|---|---|
+| Supabase | Auth, BD, Storage, Realtime | `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` |
+| Google Drive | Upload/listagem de arquivos | `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GOOGLE_REFRESH_TOKEN` ou Service Account |
+| Google Calendar/Meet | Agendamento de reunioes | `GOOGLE_CALENDAR_ID` |
+| Jitsi | Sala de reuniao embarcada | sem credencial (publico) |
+
+## Notas de seguranca
+
+- RLS habilitado em todas as tabelas sensiveis. Nunca contornar via service role no client.
+- Uploads validados em `src/lib/upload-validation.ts` (whitelist de MIME + limite 10MB).
+- Service Role key NUNCA deve aparecer em codigo client (`'use client'`).
+- `supabase/destructive/` contem scripts que apagam dados — uso restrito a dev/staging.

@@ -4,6 +4,9 @@ import React, { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { createFinancialEntry } from '../actions'
 import { createClient } from '@/lib/supabase'
+import { validateUploadedFile, ALLOWED_IMAGE_MIMES, ALLOWED_DOC_MIMES } from '@/lib/upload-validation'
+
+const RECEIPT_ALLOWED_MIMES = [...ALLOWED_IMAGE_MIMES, ...ALLOWED_DOC_MIMES]
 
 interface NewEntryModalProps {
     isOpen: boolean
@@ -47,6 +50,12 @@ export function NewEntryModal({ isOpen, onClose, bankId, currentUserName }: NewE
             // 1. Upload File (Optional)
             let attachmentUrl = ''
             if (file) {
+                const validation = validateUploadedFile(file, RECEIPT_ALLOWED_MIMES)
+                if (!validation.ok) {
+                    alert(validation.error)
+                    setLoading(false)
+                    return
+                }
                 const fileExt = file.name.split('.').pop()
                 const fileName = `${Math.random()}.${fileExt}`
                 const filePath = `receipts/${fileName}`
