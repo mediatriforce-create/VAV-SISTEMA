@@ -24,7 +24,9 @@ export async function getMeetingsAction(): Promise<Meeting[]> {
         }
 
         return data as Meeting[];
-    } catch (error) {
+    } catch (error: unknown) {
+        const digest = (error as { digest?: string })?.digest;
+        if (digest === 'DYNAMIC_SERVER_USAGE') return [];
         console.error('Erro no Catch Geral [getMeetingsAction]:', error);
         return [];
     }
