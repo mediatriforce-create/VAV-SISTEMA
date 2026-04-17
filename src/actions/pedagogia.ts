@@ -3,6 +3,7 @@
 import { createClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
 import type { Class, PedKanbanCard, PedActivity, PedFolder, PedFile } from '@/types/pedagogia';
+import { getErrorMessage } from '@/lib/error-utils';
 
 const MODULE_PATH = '/dashboard/pedagogia';
 
@@ -21,9 +22,9 @@ export async function getMyClasses(): Promise<{ success: boolean; data?: Class[]
 
         if (error) throw error;
         return { success: true, data: data as Class[] };
-    } catch (error: any) {
-        console.error('getMyClasses Error:', error.message);
-        return { success: false, message: error.message };
+    } catch (error: unknown) {
+        console.error('getMyClasses Error:', getErrorMessage(error));
+        return { success: false, message: getErrorMessage(error) };
     }
 }
 
@@ -46,15 +47,16 @@ export async function getKanbanCards(): Promise<{ success: boolean; data?: PedKa
         if (error) throw error;
 
         // Flatten classes join
-        const cards = (data || []).map((card: any) => ({
+        type RawCard = Omit<PedKanbanCard, 'classes'> & { classes?: { class: unknown }[] | null };
+        const cards = (data || []).map((card: RawCard) => ({
             ...card,
-            classes: card.classes?.map((c: any) => c.class).filter(Boolean) || []
+            classes: card.classes?.map((c) => c.class).filter(Boolean) || []
         }));
 
         return { success: true, data: cards as PedKanbanCard[] };
-    } catch (error: any) {
-        console.error('getKanbanCards Error:', error.message);
-        return { success: false, message: error.message };
+    } catch (error: unknown) {
+        console.error('getKanbanCards Error:', getErrorMessage(error));
+        return { success: false, message: getErrorMessage(error) };
     }
 }
 
@@ -94,9 +96,9 @@ export async function createKanbanCard(input: {
 
         revalidatePath(`${MODULE_PATH}/kanban`);
         return { success: true, data: card as PedKanbanCard };
-    } catch (error: any) {
-        console.error('createKanbanCard Error:', error.message);
-        return { success: false, message: error.message };
+    } catch (error: unknown) {
+        console.error('createKanbanCard Error:', getErrorMessage(error));
+        return { success: false, message: getErrorMessage(error) };
     }
 }
 
@@ -110,9 +112,9 @@ export async function updateKanbanCardStatus(cardId: string, newStatus: string):
 
         if (error) throw error;
         return { success: true };
-    } catch (error: any) {
-        console.error('updateKanbanCardStatus Error:', error.message);
-        return { success: false, message: error.message };
+    } catch (error: unknown) {
+        console.error('updateKanbanCardStatus Error:', getErrorMessage(error));
+        return { success: false, message: getErrorMessage(error) };
     }
 }
 
@@ -123,9 +125,9 @@ export async function deleteKanbanCard(cardId: string): Promise<{ success: boole
         if (error) throw error;
         revalidatePath(`${MODULE_PATH}/kanban`);
         return { success: true };
-    } catch (error: any) {
-        console.error('deleteKanbanCard Error:', error.message);
-        return { success: false, message: error.message };
+    } catch (error: unknown) {
+        console.error('deleteKanbanCard Error:', getErrorMessage(error));
+        return { success: false, message: getErrorMessage(error) };
     }
 }
 
@@ -154,15 +156,16 @@ export async function getActivities(classId?: string, date?: string, page = 0, p
         if (error) throw error;
 
         // Flatten files
-        const activities = (data || []).map((act: any) => ({
+        type RawActivity = Omit<PedActivity, 'files'> & { files?: { file: unknown }[] | null };
+        const activities = (data || []).map((act: RawActivity) => ({
             ...act,
-            files: act.files?.map((f: any) => f.file).filter(Boolean) || []
+            files: act.files?.map((f) => f.file).filter(Boolean) || []
         }));
 
         return { success: true, data: activities as PedActivity[], hasMore: (data || []).length > pageSize };
-    } catch (error: any) {
-        console.error('getActivities Error:', error.message);
-        return { success: false, message: error.message };
+    } catch (error: unknown) {
+        console.error('getActivities Error:', getErrorMessage(error));
+        return { success: false, message: getErrorMessage(error) };
     }
 }
 
@@ -202,9 +205,9 @@ export async function createActivity(input: {
 
         revalidatePath(`${MODULE_PATH}/atividades`);
         return { success: true, data: activity as PedActivity };
-    } catch (error: any) {
-        console.error('createActivity Error:', error.message);
-        return { success: false, message: error.message };
+    } catch (error: unknown) {
+        console.error('createActivity Error:', getErrorMessage(error));
+        return { success: false, message: getErrorMessage(error) };
     }
 }
 
@@ -223,9 +226,9 @@ export async function getFolders(): Promise<{ success: boolean; data?: PedFolder
 
         if (error) throw error;
         return { success: true, data: data as PedFolder[] };
-    } catch (error: any) {
-        console.error('getFolders Error:', error.message);
-        return { success: false, message: error.message };
+    } catch (error: unknown) {
+        console.error('getFolders Error:', getErrorMessage(error));
+        return { success: false, message: getErrorMessage(error) };
     }
 }
 
@@ -245,9 +248,9 @@ export async function createFolder(input: { name: string; school_year?: string; 
         if (error) throw error;
         revalidatePath(`${MODULE_PATH}/arquivos`);
         return { success: true, data: data as PedFolder };
-    } catch (error: any) {
-        console.error('createFolder Error:', error.message);
-        return { success: false, message: error.message };
+    } catch (error: unknown) {
+        console.error('createFolder Error:', getErrorMessage(error));
+        return { success: false, message: getErrorMessage(error) };
     }
 }
 
@@ -262,9 +265,9 @@ export async function getFilesInFolder(folderId: string): Promise<{ success: boo
 
         if (error) throw error;
         return { success: true, data: data as PedFile[] };
-    } catch (error: any) {
-        console.error('getFilesInFolder Error:', error.message);
-        return { success: false, message: error.message };
+    } catch (error: unknown) {
+        console.error('getFilesInFolder Error:', getErrorMessage(error));
+        return { success: false, message: getErrorMessage(error) };
     }
 }
 
@@ -329,9 +332,9 @@ export async function uploadPedFile(formData: FormData, folderId: string): Promi
         if (error) throw error;
         revalidatePath(`${MODULE_PATH}/arquivos`);
         return { success: true, data: data as PedFile };
-    } catch (error: any) {
-        console.error('uploadPedFile Error:', error.message);
-        return { success: false, message: error.message };
+    } catch (error: unknown) {
+        console.error('uploadPedFile Error:', getErrorMessage(error));
+        return { success: false, message: getErrorMessage(error) };
     }
 }
 
@@ -345,8 +348,8 @@ export async function getAllFiles(): Promise<{ success: boolean; data?: PedFile[
 
         if (error) throw error;
         return { success: true, data: data as PedFile[] };
-    } catch (error: any) {
-        console.error('getAllFiles Error:', error.message);
-        return { success: false, message: error.message };
+    } catch (error: unknown) {
+        console.error('getAllFiles Error:', getErrorMessage(error));
+        return { success: false, message: getErrorMessage(error) };
     }
 }

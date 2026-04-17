@@ -2,6 +2,7 @@
 
 import { createClient } from '@/lib/supabase/server';
 import { ChatListItem, Room, Profile, Message } from '@/types/chat';
+import { getErrorMessage } from '@/lib/error-utils';
 
 export async function getUserChatRooms(): Promise<{ success: boolean; data?: ChatListItem[]; message?: string }> {
     try {
@@ -47,7 +48,7 @@ export async function getUserChatRooms(): Promise<{ success: boolean; data?: Cha
         }
 
         // Para DMs: busca todos os outros participantes em uma única query batch
-        const dmRoomIds = (dms || []).map((rp: any) => rp.room_id);
+        const dmRoomIds = (dms || []).map((rp: { room_id: string }) => rp.room_id);
 
         if (dmRoomIds.length > 0) {
             const { data: otherParticipants } = await supabase
@@ -57,7 +58,7 @@ export async function getUserChatRooms(): Promise<{ success: boolean; data?: Cha
                 .neq('profile_id', user.id);
 
             const participantsByRoom = new Map<string, Profile>(
-                (otherParticipants || []).map((p: any) => [p.room_id, p.profiles as unknown as Profile])
+                (otherParticipants || []).map((p: { room_id: string; profiles: unknown }) => [p.room_id, p.profiles as unknown as Profile])
             );
 
             for (const rp of (dms || [])) {
@@ -72,8 +73,8 @@ export async function getUserChatRooms(): Promise<{ success: boolean; data?: Cha
         }
 
         return { success: true, data: chatList };
-    } catch (e: any) {
-        return { success: false, message: e.message };
+    } catch (e: unknown) {
+        return { success: false, message: getErrorMessage(e) };
     }
 }
 
@@ -101,8 +102,8 @@ export async function getRoomMessages(roomId: string): Promise<{ success: boolea
         if (error) throw error;
 
         return { success: true, data: messages as Message[] };
-    } catch (e: any) {
-        return { success: false, message: e.message };
+    } catch (e: unknown) {
+        return { success: false, message: getErrorMessage(e) };
     }
 }
 
@@ -121,7 +122,7 @@ export async function sendMessage(
 
         if (!user) throw new Error('Acesso negado.');
 
-        const insertData: any = {
+        const insertData: Record<string, unknown> = {
             ...(optimisticId ? { id: optimisticId } : {}),
             room_id: roomId,
             sender_id: user.id,
@@ -138,8 +139,8 @@ export async function sendMessage(
 
         if (error) throw error;
         return { success: true };
-    } catch (e: any) {
-        return { success: false, message: e.message };
+    } catch (e: unknown) {
+        return { success: false, message: getErrorMessage(e) };
     }
 }
 
@@ -160,8 +161,8 @@ export async function getAvailableUsers(): Promise<{ success: boolean; data?: Pr
 
         if (error) throw error;
         return { success: true, data: data as Profile[] };
-    } catch (e: any) {
-        return { success: false, message: e.message };
+    } catch (e: unknown) {
+        return { success: false, message: getErrorMessage(e) };
     }
 }
 
@@ -180,7 +181,7 @@ export async function startOrGetDM(otherUserId: string): Promise<{ success: bool
             .select('room_id')
             .eq('profile_id', user.id);
 
-        const myRoomIds = (myRooms || []).map((r: any) => r.room_id);
+        const myRoomIds = (myRooms || []).map((r: { room_id: string }) => r.room_id);
 
         if (myRoomIds.length > 0) {
             // Verifica se o outro usuário participa de alguma dessas rooms que seja DM
@@ -190,7 +191,7 @@ export async function startOrGetDM(otherUserId: string): Promise<{ success: bool
                 .eq('profile_id', otherUserId)
                 .in('room_id', myRoomIds);
 
-            const dmRoom = sharedRooms?.find((r: any) => r.rooms?.type === 'dm');
+            const dmRoom = sharedRooms?.find((r: { rooms?: { type?: string } | null }) => r.rooms?.type === 'dm');
             if (dmRoom) {
                 return { success: true, roomId: dmRoom.room_id };
             }
@@ -199,7 +200,7 @@ export async function startOrGetDM(otherUserId: string): Promise<{ success: bool
         // 2. Não existe — cria nova DM room
         const { data: newRoom, error: roomError } = await supabase
             .from('rooms')
-            .insert({ type: 'dm' as any, name: null })
+            .insert({ type: 'dm', name: null })
             .select('id')
             .single();
 
@@ -216,7 +217,7 @@ export async function startOrGetDM(otherUserId: string): Promise<{ success: bool
         if (partError) throw partError;
 
         return { success: true, roomId: newRoom.id };
-    } catch (e: any) {
-        return { success: false, message: e.message };
+    } catch (e: unknown) {
+        return { success: false, message: getErrorMessage(e) };
     }
 }

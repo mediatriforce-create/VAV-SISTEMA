@@ -3,6 +3,7 @@
 import { getGoogleDriveClient } from '@/lib/google/drive';
 import { createClient } from '@/lib/supabase/server';
 import { FileMetadata } from '@/types/chat';
+import { validateUploadedFile } from '@/lib/upload-validation';
 
 const ROOT_FOLDER_NAME = 'VAV SISTEMA';
 const CHATS_FOLDER_NAME = 'CHATS';
@@ -99,6 +100,9 @@ export async function uploadChatFile(
 
         const file = formData.get('file') as File;
         if (!file) return { success: false, message: 'Nenhum arquivo selecionado.' };
+
+        const validation = validateUploadedFile(file);
+        if (!validation.ok) return { success: false, message: validation.error };
 
         const drive = await getGoogleDriveClient();
 

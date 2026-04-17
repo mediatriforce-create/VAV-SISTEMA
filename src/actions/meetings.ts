@@ -5,6 +5,7 @@ import { getCalendarClient } from '@/lib/google';
 import { CreateMeetingPayload } from '@/types/meeting';
 import { revalidatePath } from 'next/cache';
 import { canCreate } from '@/lib/permissions';
+import { getErrorMessage } from '@/lib/error-utils';
 
 export async function createMeetingAction(payload: CreateMeetingPayload) {
     try {
@@ -119,11 +120,11 @@ export async function createMeetingAction(payload: CreateMeetingPayload) {
             message: 'Reunião agendada com sucesso!'
         };
 
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error('Erro no Catch Geral [createMeetingAction]:', error);
         return {
             success: false,
-            message: error.message || 'Erro inesperado ao criar reunião.'
+            message: getErrorMessage(error) || 'Erro inesperado ao criar reunião.'
         };
     }
 }
@@ -157,11 +158,11 @@ export async function deleteMeetingAction(meetingId: string) {
             success: true,
             message: 'Reunião excluída com sucesso!'
         };
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error('Erro ao excluir reunião [deleteMeetingAction]:', error);
         return {
             success: false,
-            message: error.message || 'Erro inesperado ao excluir reunião.'
+            message: getErrorMessage(error) || 'Erro inesperado ao excluir reunião.'
         };
     }
 }
