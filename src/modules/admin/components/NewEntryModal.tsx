@@ -4,6 +4,9 @@ import React, { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { createFinancialEntry } from '../actions'
 import { createClient } from '@/lib/supabase'
+import { validateUploadedFile, ALLOWED_IMAGE_MIMES, ALLOWED_DOC_MIMES } from '@/lib/upload-validation'
+
+const RECEIPT_ALLOWED_MIMES = [...ALLOWED_IMAGE_MIMES, ...ALLOWED_DOC_MIMES]
 
 interface NewEntryModalProps {
     isOpen: boolean
@@ -44,12 +47,15 @@ export function NewEntryModal({ isOpen, onClose, bankId, currentUserName }: NewE
         const formData = new FormData()
 
         try {
-            console.log('Starting manual save...')
-
             // 1. Upload File (Optional)
             let attachmentUrl = ''
             if (file) {
-                console.log('Uploading file:', file.name)
+                const validation = validateUploadedFile(file, RECEIPT_ALLOWED_MIMES)
+                if (!validation.ok) {
+                    alert(validation.error)
+                    setLoading(false)
+                    return
+                }
                 const fileExt = file.name.split('.').pop()
                 const fileName = `${Math.random()}.${fileExt}`
                 const filePath = `receipts/${fileName}`
@@ -77,14 +83,12 @@ export function NewEntryModal({ isOpen, onClose, bankId, currentUserName }: NewE
             formData.append('entry_date', entryDate)
             formData.append('attachment_url', attachmentUrl)
 
-            console.log('Calling server action...')
             const result = await createFinancialEntry(formData)
 
             if (result.error) {
                 console.error('Server error:', result.error)
                 alert('Erro ao salvar: ' + result.error)
             } else {
-                console.log('Success!')
                 alert('Lançamento salvo com sucesso!')
                 onClose()
 

@@ -2,6 +2,7 @@
 
 import { createClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
+import { getErrorMessage } from '@/lib/error-utils';
 
 export type GlobalEvent = {
     id: string;
@@ -65,13 +66,20 @@ export async function getGlobalEvents(year: number, month: number): Promise<Glob
         }
 
         // Formata os dados
-        const formattedGlobal: GlobalEvent[] = (globalData || []).map((ev: any) => ({
+        type RawGlobal = GlobalEvent & { profiles?: { full_name?: string } | null };
+        type RawMeeting = {
+            id: string; title: string; description: string | null;
+            date: string; start_time?: string; meet_link?: string | null;
+            created_by: string; created_at: string;
+        };
+
+        const formattedGlobal: GlobalEvent[] = (globalData || []).map((ev: RawGlobal) => ({
             ...ev,
             coordinator_name: ev.profiles?.full_name || 'Usuário VAV',
             profiles: undefined,
         }));
 
-        const formattedMeetings: GlobalEvent[] = (meetingsData || []).map((m: any) => ({
+        const formattedMeetings: GlobalEvent[] = (meetingsData || []).map((m: RawMeeting) => ({
             id: m.id,
             title: m.title,
             description: m.description,
@@ -88,8 +96,8 @@ export async function getGlobalEvents(year: number, month: number): Promise<Glob
         const allEvents = [...formattedGlobal, ...formattedMeetings].sort((a, b) => new Date(a.event_date).getTime() - new Date(b.event_date).getTime());
 
         return { success: true, data: allEvents };
-    } catch (e: any) {
-        return { success: false, message: e.message };
+    } catch (e: unknown) {
+        return { success: false, message: getErrorMessage(e) };
     }
 }
 
@@ -151,8 +159,8 @@ export async function createGlobalEvent(
 
         revalidatePath('/dashboard/calendario');
         return { success: true, data };
-    } catch (e: any) {
-        return { success: false, message: e.message };
+    } catch (e: unknown) {
+        return { success: false, message: getErrorMessage(e) };
     }
 }
 
@@ -193,7 +201,7 @@ export async function deleteGlobalEvent(id: string): Promise<GlobalEventResponse
 
         revalidatePath('/dashboard/calendario');
         return { success: true };
-    } catch (e: any) {
-        return { success: false, message: e.message };
+    } catch (e: unknown) {
+        return { success: false, message: getErrorMessage(e) };
     }
 }

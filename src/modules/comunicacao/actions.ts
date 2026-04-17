@@ -1,6 +1,7 @@
 'use server';
 
 import { getGoogleDriveClient } from '@/lib/google/drive';
+import { validateUploadedFile } from '@/lib/upload-validation';
 
 // Root folder names
 const ROOT_FOLDER_NAME = 'VAV SISTEMA';
@@ -127,6 +128,11 @@ export async function uploadGoogleDriveFile(formData: FormData, parentId: string
     try {
         const file = formData.get('file') as File;
         if (!file) throw new Error('No file provided');
+
+        const validation = validateUploadedFile(file);
+        if (!validation.ok) {
+            return { success: false, error: validation.error };
+        }
 
         const drive = await getGoogleDriveClient();
 

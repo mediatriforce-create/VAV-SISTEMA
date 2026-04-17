@@ -5,6 +5,7 @@ import { getCalendarClient } from '@/lib/google';
 import { CreateMeetingPayload } from '@/types/meeting';
 import { revalidatePath } from 'next/cache';
 import { canCreate } from '@/lib/permissions';
+import { getErrorMessage } from '@/lib/error-utils';
 
 export async function createMeetingAction(payload: CreateMeetingPayload) {
     try {
@@ -51,7 +52,6 @@ export async function createMeetingAction(payload: CreateMeetingPayload) {
         const calendarId = process.env.GOOGLE_CALENDAR_ID;
 
         if (calendarId) {
-            console.log('Gerando evento no Google Calendar...');
             const calendar = getCalendarClient();
 
             const event = {
@@ -87,7 +87,6 @@ export async function createMeetingAction(payload: CreateMeetingPayload) {
                 requestBody: { location: hangoutLink }
             });
 
-            console.log('Evento gerado com sucesso. Link Local:', hangoutLink);
         } else {
             console.warn('Aviso: GOOGLE_CALENDAR_ID não configurado. Ponto de falha, agendando apenas no BD.');
         }
@@ -121,11 +120,11 @@ export async function createMeetingAction(payload: CreateMeetingPayload) {
             message: 'Reunião agendada com sucesso!'
         };
 
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error('Erro no Catch Geral [createMeetingAction]:', error);
         return {
             success: false,
-            message: error.message || 'Erro inesperado ao criar reunião.'
+            message: getErrorMessage(error) || 'Erro inesperado ao criar reunião.'
         };
     }
 }
@@ -159,11 +158,11 @@ export async function deleteMeetingAction(meetingId: string) {
             success: true,
             message: 'Reunião excluída com sucesso!'
         };
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error('Erro ao excluir reunião [deleteMeetingAction]:', error);
         return {
             success: false,
-            message: error.message || 'Erro inesperado ao excluir reunião.'
+            message: getErrorMessage(error) || 'Erro inesperado ao excluir reunião.'
         };
     }
 }

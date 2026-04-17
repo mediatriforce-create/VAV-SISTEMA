@@ -419,7 +419,7 @@ export default function CoordClientPage({ currentUser, initialDemands, teamMembe
                     <div className="lg:col-span-9 flex flex-col min-h-0">
                         <DemandList
                             demands={initialDemands}
-                            onDemandClick={(d) => console.log('Clicked', d)}
+                            onDemandClick={() => { /* TODO: open demand details modal */ }}
                         />
                     </div>
                 </div>
